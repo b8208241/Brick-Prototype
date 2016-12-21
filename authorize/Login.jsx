@@ -1,25 +1,45 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {loginRequest, changeForm} from '../actions/auth.js'
 
-
-class Login extends React.Component {
+export default class Login extends React.Component {
   constructor (props) {
-    super(props)
-    this._login = this._login.bind(this)
+    super(props);
+    this.state={
+      formState: {
+        username: '',
+        password: ''
+      },
+      currentlySending:false,
+      error: ''
+    }
+    this._login = this._login.bind(this);
+    this._changeForm = this._changeForm.bind(this);
   }
 
-  _login (username, password) {
-    this.props.dispatch(loginRequest({username, password}))
+  _login () {
+    console.log('enter _login')
+    this.setState({
+      currentlySending: true
+    });
+    this.props.loginFlow(this.state.formState).next();
+  }
+
+  _changeForm(newFormState) {
+    this.setState({
+      formState: newFormState
+    })
   }
 
   render () {
-    let {logInFormState, currentlySending, error, dispatch} = this.props;
-
     return (
       <div className=''>
         <h2 className=''>Login</h2>
-        <Form data={logInFormState} dispatch={dispatch} history={this.props.history} onSubmit={this._login} error={error} currentlySending={currentlySending} />
+        <Form
+          formState={this.state.formState}
+          changeForm={this._changeForm}
+          onSubmit={this._login}
+          error={this.state.error}
+          currentlySending={this.state.currentlySending}
+        />
       </div>
     )
   }
@@ -37,20 +57,21 @@ class Form extends React.Component {
 
 
     _changeUsername () {
-      this._emitChange({...this.props.data, username: this.userName.value})
+      this._emitChange({...this.props.formState, username: this.userName.value})
     }
 
     _changePassword () {
-      this._emitChange({...this.props.data, password: this.password.value})
+      this._emitChange({...this.props.formState, password: this.password.value})
     }
 
     _emitChange (newFormState) {
-      this.props.dispatch(changeForm(newFormState))
+      this.props.changeForm(newFormState)
     }
 
     _onSubmit (event) {
-      event.preventDefault()
-      this.props.onSubmit(this.props.data.username, this.props.data.password)
+      console.log('enter form submit')
+      event.preventDefault();
+      this.props.onSubmit();
     }
 
   render () {
@@ -64,7 +85,7 @@ class Form extends React.Component {
             className=''
             type='text'
             id='username'
-            value={this.props.data.username}
+            value={this.props.username}
             placeholder='帳號'
             ref={(input) => this.userName = input}
             onChange={this._changeUsername}
@@ -80,7 +101,7 @@ class Form extends React.Component {
             className=''
             id='password'
             type='password'
-            value={this.props.data.password}
+            value={this.props.password}
             placeholder='••••••••••'
             ref={(input) => this.password = input}
             onChange={this._changePassword} />
@@ -143,13 +164,3 @@ class LoadingIndicator extends React.Component {
   )
   }
 }
-
-function mapStateToProps (state) {
-  return {
-    logInFormState: state.logInFormState,
-    currentlySending: state.currentlySending,
-    error: state.error
-  }
-}
-
-export default connnect(mapStateToProps)(Login)

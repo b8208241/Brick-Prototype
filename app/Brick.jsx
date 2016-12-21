@@ -1,26 +1,10 @@
 import React from 'react'
 import {Router, Route, browserHistory} from 'react-router'
-import {createStore, applyMiddleware} from 'redux'
-import createSagaMiddleware from 'redux-saga'
 import {Provider} from 'react-redux'
-
-import reducer from './reducer.js'
-import rootSaga from './saga.js'
 import {clearError} from './actions/auth.js'
-
-import Login from './pages/Login.jsx'
+//import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Main from './pages/Main.jsx'
-
-
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(
-  reducer,
-  applyMiddleware(sagaMiddleware)
-);
-
-sagaMiddleware.run(rootSaga);
-
 
 export default class Brick extends React.Component {
   constructor (props) {
@@ -29,8 +13,8 @@ export default class Brick extends React.Component {
   }
 
   authState (nextState, replace) {
-    let {loggedIn} = store.getState();
-    store.dispatch(clearError());
+    let {loggedIn} = this.props.store.getState();
+    this.props.store.dispatch(clearError());
 
     if (!loggedIn) {
       replace('/login')
@@ -39,7 +23,7 @@ export default class Brick extends React.Component {
 
   render () {
     return (
-      <Provider store={store}>
+      <Provider store={this.props.store}>
         <Router history={browserHistory}>
           <Route path='/login' component={Login} />
           <Route onEnter={this.authState}>

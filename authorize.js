@@ -1,0 +1,9 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Login from './authorize/Login.jsx'
+import {loginFlow, registerFlow} from './authorize/login.js'
+
+
+ReactDOM.render(
+  <Login loginFlow={loginFlow} registerFlow={registerFlow}/>, document.getElementById("app")
+);
