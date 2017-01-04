@@ -1,30 +1,24 @@
+//Important!! "babel-polyfill" is for es6 technique
+import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Brick from './app/Brick.jsx';
-import Login from './app/pages/Login.jsx'
 
 import {createStore, applyMiddleware} from 'redux'
 import createSagaMiddleware from 'redux-saga'
-
 import reducer from './app/reducer.js'
 import rootSaga from './app/saga.js'
 
+import Brick from './app/Brick_bundle.jsx';
+
 const sagaMiddleware = createSagaMiddleware();
+const preloadedState = window.__PRELOADED_STATE__
 const store = createStore(
   reducer,
+  preloadedState,
   applyMiddleware(sagaMiddleware)
 );
 
+console.log('start run rootSaga')
 sagaMiddleware.run(rootSaga);
 
-//Check status
-let {loggedIn} = store.getState();
-if(loggedIn) {
-  ReactDOM.render(<Brick store={store}/>, document.getElementById("app"));
-}else if(!loggedIn) {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Login/>
-    </Provider>,
-    document.getElementById("app"));
-}
+ReactDOM.render(<Brick store={store}/>, document.getElementById("app"));

@@ -1,35 +1,34 @@
-import auth from './auth/auth.js'
+import connection from './js/connection.js'
+
 import {
-  CHANGE_FORM,
-  SET_AUTH,
   SENDING_REQUEST,
   REQUEST_ERROR,
-  CLEAR_ERROR
-} from './constants_action.js'
+  CLEAR_ERROR,
+  UPDATE_USERDATA,
+  UPDATE_USERDATA_TOPICSAVED
+} from './actions/constants.js'
 
+/*
 let initialState = {
-  logInFormState: {
-    username: '',
-    password: ''
-  },
+  token: localStorage.token,
   error: '',
   currentlySending: false,
-  loggedIn: auth.loggedIn()
+  loggedIn:true,
+  userData:''
 }
+*/
 
 // Takes care of changing the application state
-function reducer (state = initialState, action) {
+function reducer (state, action) {
   switch (action.type) {
-    case CHANGE_FORM:
-      return {...state, logInFormState: action.newFormState}
-    case SET_AUTH:
-      return {...state, loggedIn: action.newAuthState}
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending}
     case REQUEST_ERROR:
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
+    case UPDATE_USERDATA:
+      return {...state, userData: action.data}
     default:
       return state
   }

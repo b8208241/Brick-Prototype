@@ -5,22 +5,23 @@ class Main extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      topicSaved: this.props.userData.topicSaved
     }
     this.handleNewSubmit = this.handleNewSubmit.bind(this);
   };
 
   handleNewSubmit(inputTopic){
-    //let state = this.state.topicSaved;
+    let state = this.state.topicSaved;
     let date = new Date();
     let time = date.getTime();
     let id = "topicBrick" + time;
     let url = "/topic.jsx?topic=topicBrick" + time;
-    /*
+
     state.push({id: id, topic: inputTopic, url: url});
     this.setState({
       topicSaved: state
     });
-    */
+
     axios.post('/index/newtopic', {
       "id": id,
   		"topic": inputTopic,
@@ -34,9 +35,10 @@ class Main extends React.Component {
   }
 
   render() {
+    console.log('enter component in Main')
     return(
       <section>
-        <TopicRow/>
+        <TopicRow topicSaved = {this.state.topicSaved}/>
         <NewTopicCreate handleNewSubmit={this.handleNewSubmit}/>
       </section>
     )
@@ -47,20 +49,20 @@ class TopicRow extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      topicSaved: this.props.topicSaved
     };
   };
 
   render() {
-    /*
+    console.log('enter component in Main: TopicRow')
     let topicBrick = this.state.topicSaved.map(
       function(objData){
           return <TopicHistoryBrick key={objData.id} id={objData.id} topic={objData.topic} url={objData.url}/>;
       }
     );
-    */
     return(
       <ol className="topic-Row">
-
+        {topicBrick}
       </ol>
     )
   }
@@ -103,7 +105,8 @@ class NewTopicCreate extends React.Component {
 
 function mapStateToProps (state) {
   return {
-
+    token: state.token,
+    userData: state.userData
   }
 }
 

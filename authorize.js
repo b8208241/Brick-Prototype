@@ -1,3 +1,5 @@
+//Important!! "babel-polyfill" is for es6 technique
+import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Login from './authorize/Login.jsx'

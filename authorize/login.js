@@ -67,7 +67,6 @@ function * authorize ({username, password, isRegistering}) {
       response = yield call(auth.register, username, hash)
     } else {
       response = yield auth.login(username, hash);
-      console.log(response)
     }
     if (response) {
       location.reload(true);

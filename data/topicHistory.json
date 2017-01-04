@@ -1,1 +1,21 @@
-{"topicSaved":[{"id":"topicBrick1480773018469","topic":"新增主題測試","url":"/topic.jsx?topic=topicBrick1480773018469"}]}
+{"berlin": {
+  "token": "localStorage.token",
+  "error": "''",
+  "currentlySending": "false",
+  "loggedIn":"true",
+  "userData":
+  {"topicSaved":[
+    {"id":"topicBrick1480773018469","topic":"新增主題測試","url":"/topic.jsx?topic=topicBrick1480773018469"}
+  ]}
+},
+"jay": {
+  "token": "localStorage.token",
+  "error": "''",
+  "currentlySending": "false",
+  "loggedIn":"true",
+  "userData":
+  {"topicSaved":[
+    {"id":"","topic":"","url":""}
+  ]}
+}
+}
