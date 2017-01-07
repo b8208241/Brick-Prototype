@@ -1,7 +1,7 @@
 import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race} from 'redux-saga/effects'
-import connection from './js/connection.js'
+import connection from './sagas/connection.js'
 
 import {
   SENDING_REQUEST,

@@ -2,7 +2,6 @@ import {hashSync} from 'bcryptjs'
 import genSalt from './salt.js'
 
 let auth_handler
-let localStorage = global.window.localStorage;
 let auth = {
  login (username, password) {
    /*
@@ -11,6 +10,7 @@ let auth = {
    axios.post('/log', {username, password})
    .then(res => {
      // Save token to local storage
+     let localStorage = global.window.localStorage;
      localStorage.token = res.data.token;
      auth_handler.next(true);
    });

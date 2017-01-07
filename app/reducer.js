@@ -1,4 +1,4 @@
-import connection from './js/connection.js'
+import connection from './sagas/connection.js'
 
 import {
   SENDING_REQUEST,
