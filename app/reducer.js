@@ -1,22 +1,12 @@
-import connection from './sagas/connection.js'
+import {combineReducers} from 'redux'
 
 import {
   SENDING_REQUEST,
   REQUEST_ERROR,
   CLEAR_ERROR,
-  UPDATE_USERDATA,
-  UPDATE_USERDATA_TOPICSAVED
+  UPDATE_TOPIC
 } from './actions/constants.js'
 
-/*
-let initialState = {
-  token: localStorage.token,
-  error: '',
-  currentlySending: false,
-  loggedIn:true,
-  userData:''
-}
-*/
 
 // Takes care of changing the application state
 function reducer (state, action) {
@@ -27,8 +17,16 @@ function reducer (state, action) {
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
-    case UPDATE_USERDATA:
-      return {...state, userData: action.data}
+    case UPDATE_TOPIC:
+      console.log('UPDATE_TOPIC')
+      let topicSaved = state.brickData.topicSaved;
+      let updatedTopicSaved = topicSaved.push(action.topic)
+      let topicContent = state.brickData.topicContent
+      topicContent[action.topic.topicId] = {}
+      return {
+        ...state,
+        brickData: {"topicSaved": updatedTopicSaved, "topicContent": topicContent}
+      }
     default:
       return state
   }

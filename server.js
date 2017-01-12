@@ -125,7 +125,7 @@ const process_LogIn =  {
             console.log('start jwt sign')
             var token = jwt.sign(
               {
-                account: user
+                userName: user
               },
               app.get('secret'),
               {
@@ -162,7 +162,7 @@ const process_LogIn =  {
             }else {
               var token = jwt.sign(
                 {
-                  account: result.user
+                  userName: result.user
                 },
                 app.get('secret'),
                 {
@@ -231,7 +231,7 @@ const server_Main = {
     jsonfile.readFile(topicHistory, function(err, data){
       if(err) throw err;
       console.log(req.decoded.account)
-      let userName = req.decoded.account;
+      let userName = req.decoded.userName;
       let preloadedState = data[userName];
       // Create a new Redux store instance
       let store = createStore(reducer, preloadedState);
@@ -427,12 +427,22 @@ app.use('/resource', function(req, res){
 })
 
 
-app.post('/data', function(req, res){
-  console.log('requesting data')
-  let user = req.decoded.account;
+app.post('/topic/newtopic/:username', function(req, res){
+  console.log('post NewTopic to the database')
+  let userName = req.params.username;
   jsonfile.readFile(topicHistory, function(err, data){
-    console.log(data);
-    res.json(data);
+    let userData = data[userName];
+    let topicSaved = userData.brickData.topicSaved;
+    let topicContent = userData.brickData.topicContent;
+    topicSaved.push(req.body.newtopic);
+    topicContent[req.body.newtopic.topicId] = {};
+    userData.brickData.topicSaved = topicSaved;
+    userData.brickData.topicContent = topicContent;
+    data[userName] = userData;
+    jsonfile.writeFile(topicHistory, data, function(err){
+      if(err) throw err;
+    })
+    res.json(topicSaved);
   })
 })
 

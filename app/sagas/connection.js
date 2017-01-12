@@ -1,13 +1,21 @@
+const token = window.localStorage.token;
+
 let connection = {
-  requesting_userData(token){
-    console.log('start axios')
-    return axios.post('/data', {
-      token: token
-    }).then(function(res){
-      let resData = res.data;
-      console.log('recieve res')
-      return resData
+  post_NewTopic(topicId, topic, url, userName){
+    console.log('ready to post NewTopic')
+    axios.post('/topic/newtopic/'+userName, {
+      "token": token,
+      "newtopic":{
+        "topicId": topicId,
+        "topic": topic,
+        "url": url
+      }
     })
+    .then(
+      function(res){
+        console.log(res.data);
+      }
+    );
   }
 }
 

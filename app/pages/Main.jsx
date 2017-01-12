@@ -1,104 +1,27 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import {TopicRow} from './components/TopicRow.jsx'
+import {NewTopicCreate} from './components/NewTopicCreate.jsx'
+
+import {newTopicSubmit} from '../actions/Main.js';
 
 class Main extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      topicSaved: this.props.userData.topicSaved
-    }
     this.handleNewSubmit = this.handleNewSubmit.bind(this);
   };
 
   handleNewSubmit(inputTopic){
-    let state = this.state.topicSaved;
-    let date = new Date();
-    let time = date.getTime();
-    let id = "topicBrick" + time;
-    let url = "/topic.jsx?topic=topicBrick" + time;
-
-    state.push({id: id, topic: inputTopic, url: url});
-    this.setState({
-      topicSaved: state
-    });
-
-    axios.post('/index/newtopic', {
-      "id": id,
-  		"topic": inputTopic,
-      "url": url
-    })
-    .then(
-      function(res){
-        console.log(res.data);
-      }
-    );
+    this.props.dispatch(newTopicSubmit(inputTopic, this.props.userData.userName));
   }
 
   render() {
     console.log('enter component in Main')
     return(
       <section>
-        <TopicRow topicSaved = {this.state.topicSaved}/>
+        <TopicRow topicSaved = {this.props.brickData.topicSaved}/>
         <NewTopicCreate handleNewSubmit={this.handleNewSubmit}/>
       </section>
-    )
-  }
-}
-
-class TopicRow extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      topicSaved: this.props.topicSaved
-    };
-  };
-
-  render() {
-    console.log('enter component in Main: TopicRow')
-    let topicBrick = this.state.topicSaved.map(
-      function(objData){
-          return <TopicHistoryBrick key={objData.id} id={objData.id} topic={objData.topic} url={objData.url}/>;
-      }
-    );
-    return(
-      <ol className="topic-Row">
-        {topicBrick}
-      </ol>
-    )
-  }
-}
-
-class TopicHistoryBrick extends React.Component {
-  render() {
-    return(
-      <a href={this.props.url}><li className="topic-Row-Brick" id={this.props.id}>{this.props.topic}</li></a>
-    )
-  }
-}
-
-class NewTopicCreate extends React.Component {
-  constructor(props){
-    super(props);
-    this.handleNewSubmit = this.handleNewSubmit.bind(this);
-  }
-
-  handleNewSubmit(){
-    this.props.handleNewSubmit(this.inputTopic.value);
-  }
-
-  render() {
-    return(
-      <div className="topic-New">
-      <input
-        type="text"
-        ref={(input) => this.inputTopic = input}
-      />
-      <input
-        type="submit"
-        value="新增"
-        onClick={this.handleNewSubmit}
-      />
-      </div>
     )
   }
 }
@@ -106,8 +29,11 @@ class NewTopicCreate extends React.Component {
 function mapStateToProps (state) {
   return {
     token: state.token,
+    brickData: state.brickData,
     userData: state.userData
   }
 }
 
-export default connect(mapStateToProps)(Main)
+export default connect(mapStateToProps)(
+  Main
+)

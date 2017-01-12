@@ -7,8 +7,8 @@ import {
   SENDING_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
-  USERDATA_REQUEST,
-  UPDATE_USERDATA
+  NEWTOPIC_SUBMIT,
+  UPDATE_TOPIC
 } from './actions/constants.js'
 
 /**
@@ -46,18 +46,25 @@ export function * logoutFlow () {
   }
 }
 
-export function * queryUserData(){
-  while(true) {
-    let request = yield take(USERDATA_REQUEST)
-    yield put({type: SENDING_REQUEST, sending: true})
-    console.log('recieve userdata request')
+/**
+Main page, fired when user submit a new topic.
+*/
+export function * newTopicSubmit(){
+  while(true){
+    let input = yield take(NEWTOPIC_SUBMIT);
 
-    let token = request.token
-    let userData = yield call(connection.requesting_userData, token)
-    yield put({type: UPDATE_USERDATA, data: userData})
-    console.log('update userdata complete')
-    yield put({type: SENDING_REQUEST, sending: false})
-    console.log('request end!')
+    let date = new Date();
+    let time = date.getTime();
+    let topicId = "topicBrick" + time;
+    let url = "/topic/" + topicId;
+
+    let userName = input.userName;
+    let topic = input.inputTopic;
+
+    connection.post_NewTopic(topicId, topic, url, userName)
+
+    console.log('ready to put UPDATE_TOPIC')
+    yield put({type: UPDATE_TOPIC, topic: {topicId: topicId, topic: input.inputTopic, url: url}});
   }
 }
 
@@ -67,5 +74,5 @@ export function * queryUserData(){
 // in the background, watching actions dispatched to the store.
 export default function * rootSaga () {
   yield fork(logoutFlow)
-  yield fork(queryUserData)
+  yield fork(newTopicSubmit)
 }
