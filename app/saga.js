@@ -7,7 +7,9 @@ import {
   SENDING_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
+  NEWCONTENT_SUBMIT,
   NEWTOPIC_SUBMIT,
+  SUBMIT_CONTENT,
   UPDATE_TOPIC
 } from './actions/constants.js'
 
@@ -63,8 +65,58 @@ export function * newTopicSubmit(){
 
     connection.post_NewTopic(topicId, topic, url, userName)
 
+    let topicContentPage = {
+      "rowOne":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowTwo":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowThree":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowFour":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}]
+    }
     console.log('ready to put UPDATE_TOPIC')
-    yield put({type: UPDATE_TOPIC, topic: {topicId: topicId, topic: input.inputTopic, url: url}});
+    yield put({type: UPDATE_TOPIC, topic: {topicId: topicId, topic: input.inputTopic, url: url}, topicContentPage: topicContentPage});
+  }
+}
+
+export function * newContentSubmit (){
+  while(true){
+    let data = yield take(NEWCONTENT_SUBMIT);
+    console.log('saga, newContentSubmit start')
+    let row
+    let date = new Date();
+    let time = date.getTime();
+    let brickId = "brickOriginal" + time;
+
+    switch (data.containerRow) {
+      case "1":
+        row = "rowOne"
+        break;
+      case "2":
+        row = "rowTwo"
+        break;
+      case "3":
+        row = "rowThree"
+        break;
+      case "4":
+        row = "rowFour"
+        break;
+      default:
+        console.log('no matched row')
+    }
+
+    let cell = {
+      "id":brickId,
+      "text":data.text,
+      "ref": data.ref ,
+      "class":"cell",
+      "index": data.containerIndex,
+      "row": data.containerRow
+    }
+    yield put({
+      type: SUBMIT_CONTENT,
+      topicId: data.topicId,
+      row: row,
+      index: data.containerIndex,
+      cell: cell
+    })
   }
 }
 
@@ -75,4 +127,5 @@ export function * newTopicSubmit(){
 export default function * rootSaga () {
   yield fork(logoutFlow)
   yield fork(newTopicSubmit)
+  yield fork(newContentSubmit)
 }

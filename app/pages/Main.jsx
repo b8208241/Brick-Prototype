@@ -19,7 +19,7 @@ class Main extends React.Component {
     console.log('enter component in Main')
     return(
       <section>
-        <TopicRow topicSaved = {this.props.brickData.topicSaved}/>
+        <TopicRow topicRow = {this.props.topicData.topicRow}/>
         <NewTopicCreate handleNewSubmit={this.handleNewSubmit}/>
       </section>
     )
@@ -29,7 +29,7 @@ class Main extends React.Component {
 function mapStateToProps (state) {
   return {
     token: state.token,
-    brickData: state.brickData,
+    topicData: state.topicData,
     userData: state.userData
   }
 }

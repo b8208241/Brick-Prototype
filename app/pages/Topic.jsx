@@ -1,65 +1,39 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import {ContentRow} from './components/ContentRow.jsx'
+import {CreateBrick} from './components/CreateBrick.jsx'
+import {newContentSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
+  constructor(props){
+    super(props);
+    this.handle_dispatch = this.handle_dispatch.bind(this)
+  }
+
+  handle_dispatch(text, ref, containerIndex, containerRow, topicId){
+    this.props.dispatch(newContentSubmit(text, ref, containerIndex, containerRow, topicId))
+  }
+
   render(){
     console.log('enter component Topic')
     let topicId = this.props.params.topicId;
-    let topicContent = this.props.brickData.topicContent[topicId];
+    let content = this.props.topicData[topicId];
     return(
       <section>
-        <ContentRow id="rowOne" rowRecord = {topicContent.rowOne}/>
-        <ContentRow id="rowTwo" rowRecord = {topicContent.rowTwo}/>
-        <ContentRow id="rowThree" rowRecord = {topicContent.rowThree}/>
-        <ContentRow id="rowFour" rowRecord = {topicContent.rowFour}/>
         <CreateBrick/>
+        <ContentRow id="rowOne" rowRecord = {content.rowOne} topicId = {topicId} handle_dispatch = {this.handle_dispatch}/>
+        <ContentRow id="rowTwo" rowRecord = {content.rowTwo} topicId = {topicId} handle_dispatch = {this.handle_dispatch}/>
+        <ContentRow id="rowThree" rowRecord = {content.rowThree} topicId = {topicId} handle_dispatch = {this.handle_dispatch}/>
+        <ContentRow id="rowFour" rowRecord = {content.rowFour} topicId = {topicId} handle_dispatch = {this.handle_dispatch}/>
       </section>
     )
-  }
-}
-
-class ContentRow extends React.Component {
-  constructor(props){
-    super(props);
-    this.loadRow = this.loadRow.bind(this);
-  };
-
-  loadRow(){
-    return {__html: this.props.rowRecord};
-  }
-
-  render() {
-    return (
-      <div className="row" id={this.props.id} dangerouslySetInnerHTML={this.loadRow()} />
-    )
-  }
-}
-
-class CreateBrick extends React.Component {
-  constructor(props){
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  };
-
-  handleSubmit(){
-    $.colorbox.close();
-  }
-
-  render() {
-    return(
-      <div id="addBox" className="add-dialogbox">
-		    <textarea className="add-input" id="main_text" ></textarea><br/>
-		    <p id="ref"></p><br/>
-		    <input type="submit" value="新增磚頭" onClick={this.handleSubmit}/>
-	    </div>
-    );
   }
 }
 
 function mapStateToProps (state) {
   return {
     token: state.token,
-    brickData: state.brickData,
+    topicData: state.topicData,
     userData: state.userData
   }
 }

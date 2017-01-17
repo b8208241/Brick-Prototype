@@ -435,7 +435,12 @@ app.post('/topic/newtopic/:username', function(req, res){
     let topicSaved = userData.brickData.topicSaved;
     let topicContent = userData.brickData.topicContent;
     topicSaved.push(req.body.newtopic);
-    topicContent[req.body.newtopic.topicId] = {};
+    topicContent[req.body.newtopic.topicId] = {
+      "rowOne":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowTwo":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowThree":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
+      "rowFour":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}]
+    };
     userData.brickData.topicSaved = topicSaved;
     userData.brickData.topicContent = topicContent;
     data[userName] = userData;

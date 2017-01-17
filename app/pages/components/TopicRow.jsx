@@ -5,26 +5,26 @@ export class TopicRow extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      topicSaved: this.props.topicSaved
+      topicRow: this.props.topicRow
     };
   };
 
   render() {
     console.log('enter component in Main: TopicRow')
-    let topicBricks = this.state.topicSaved.map(
+    let topicRowBricks = this.state.topicRow.map(
       function(obj){
-          return <TopicSavedBrick key={obj.topicId} id={obj.id} topic={obj.topic} url={obj.url}/>;
+          return <TopicRowBrick key={obj.topicId} id={obj.id} topic={obj.topic} url={obj.url}/>;
       }
     );
     return(
       <ol className="topic-Row">
-        {topicBricks}
+        {topicRowBricks}
       </ol>
     )
   }
 }
 
-class TopicSavedBrick extends React.Component {
+class TopicRowBrick extends React.Component {
   render() {
     return(
       <li className="topic-Row-Brick" id={this.props.id}><Link to={this.props.url}>{this.props.topic}</Link></li>

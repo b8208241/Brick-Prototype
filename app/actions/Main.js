@@ -2,19 +2,11 @@ import {
   SENDING_REQUEST,
   REQUEST_ERROR,
   CLEAR_ERROR,
-  SET_AUTH,
   REGISTER_REQUEST,
   LOGOUT,
-  NEWTOPIC_SUBMIT
+  NEWTOPIC_SUBMIT,
+  NEWCONTENT_SUBMIT
 } from './constants.js'
-
-/**
- * Sets the authentication state of the application
- * @param  {boolean} newAuthState True means a user is logged in, false means no user is logged in
- */
-export function setAuthState (newAuthState) {
-  return {type: SET_AUTH, newAuthState}
-}
 
 /**
  * Sets the `currentlySending` state, which displays a loading indicator during requests

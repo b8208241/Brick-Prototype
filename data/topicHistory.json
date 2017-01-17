@@ -1,25 +1,35 @@
 {"berlin":{
-  "token":"localStorage.token","error":"''","currentlySending":"false","loggedIn":"true",
-  "userData":{"userName":"berlin"},
-  "brickData":{
-    "topicSaved":[
-      {"topicId":"topicBrick1484129824497","topic":"post 功能檢查","url":"/topic/topicBrick1484129824497"},
-      {"topicId":"topicBrick1484194606052","topic":"功能檢查","url":"/topic/topicBrick1484194606052"}
+  "token":"localStorage.token",
+  "error":"''",
+  "currentlySending":"false",
+  "loggedIn":"true",
+  "userData":{
+    "userName":"berlin"
+  },
+  "topicData":{
+    "topicRow":[
+      {"topicId":"topicBrick1484194606052","topic":"功能檢查","url":"/topic/topicBrick1484194606052"},
+      {"topicId":"topicBrick1484212365971","topic":"增加新版content葉面","url":"/topic/topicBrick1484212365971"}
     ],
-    "topicContent":{
-      "topicBrick1484129824497":{
-        "rowOne":"<div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div>",
-        "rowTwo":"<div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div>",
-        "rowThree":"<div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div>",
-        "rowFour":"<div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div><div class=\"cell-default cboxElement\"></div><div class=\"placeholder\"></div>"
-      },
-      "topicBrick1484194606052":{
-        "rowOne":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-        "rowTwo":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-        "rowThree":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-        "rowFour":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}]
-      }
+    "topicBrick1484194606052":{
+      "rowOne":[{"class":"cell-default cboxElement", "index":"0", "row":"1"}, {"class":"placeholder", "index":"1", "row":"1"}, {"class":"cell-default cboxElement", "index":"2", "row":"1"}, {"class":"placeholder", "index":"3", "row":"1"}, {"class":"cell-default cboxElement", "index":"4", "row":"1"}, {"class":"placeholder", "index":"5", "row":"1"}],
+      "rowTwo":[{"class":"cell-default cboxElement", "index":"0", "row":"2"}, {"class":"placeholder", "index":"1", "row":"2"}, {"class":"cell-default cboxElement", "index":"2", "row":"2"}, {"class":"placeholder", "index":"3", "row":"2"}, {"class":"cell-default cboxElement", "index":"4", "row":"2"}, {"class":"placeholder", "index":"5", "row":"2"}],
+      "rowThree":[{"class":"cell-default cboxElement", "index":"0", "row":"3"}, {"class":"placeholder", "index":"1", "row":"3"}, {"class":"cell-default cboxElement", "index":"2", "row":"3"}, {"class":"placeholder", "index":"3", "row":"3"}, {"class":"cell-default cboxElement", "index":"4", "row":"3"}, {"class":"placeholder", "index":"5", "row":"3"}],
+      "rowFour":[{"class":"cell-default cboxElement", "index":"0", "row":"4"}, {"class":"placeholder", "index":"1", "row":"4"}, {"class":"cell-default cboxElement", "index":"2", "row":"4"}, {"class":"placeholder", "index":"3", "row":"4"}, {"class":"cell-default cboxElement", "index":"4", "row":"4"}, {"class":"placeholder", "index":"5", "row":"4"}]
+    },
+    "topicBrick1484212365971":{
+      "rowOne":[{"class":"cell-default cboxElement", "index":"0", "row":"1"}, {"class":"placeholder", "index":"1", "row":"1"}, {"class":"cell-default cboxElement", "index":"2", "row":"1"}, {"class":"placeholder", "index":"3", "row":"1"}, {"class":"cell-default cboxElement", "index":"4", "row":"1"}, {"class":"placeholder", "index":"5", "row":"1"}],
+      "rowTwo":[{"class":"cell-default cboxElement", "index":"0", "row":"2"}, {"class":"placeholder", "index":"1", "row":"2"}, {"class":"cell-default cboxElement", "index":"2", "row":"2"}, {"class":"placeholder", "index":"3", "row":"2"}, {"class":"cell-default cboxElement", "index":"4", "row":"2"}, {"class":"placeholder", "index":"5", "row":"2"}],
+      "rowThree":[{"class":"cell-default cboxElement", "index":"0", "row":"3"}, {"class":"placeholder", "index":"1", "row":"3"}, {"class":"cell-default cboxElement", "index":"2", "row":"3"}, {"class":"placeholder", "index":"3", "row":"3"}, {"class":"cell-default cboxElement", "index":"4", "row":"3"}, {"class":"placeholder", "index":"5", "row":"3"}],
+      "rowFour":[{"class":"cell-default cboxElement","index":"0", "row":"4"}, {"class":"placeholder", "index":"1", "row":"4"}, {"id":"amillisecond","text":"某條新聞標題","ref":"http://somewhere.com","class":"cell", "index":"2", "row":"4"}, {"class":"placeholder", "index":"3", "row":"4"}, {"class":"cell-default cboxElement", "index":"4", "row":"4"}, {"class":"placeholder", "index":"5", "row":"4"}]
     }
   }
 },
-"jay":{"token":"localStorage.token","error":"''","currentlySending":"false","loggedIn":"true","userData":{},"brickData":{"topicSaved":[{"topicId":"","topic":"","url":""}]}}}
+  "jay":{
+    "token":"localStorage.token","error":"''","currentlySending":"false","loggedIn":"true",
+    "userData":{},
+    "topicData":{
+      "topicRow":[{"topicId":"","topic":"","url":""}]
+    }
+  }
+}

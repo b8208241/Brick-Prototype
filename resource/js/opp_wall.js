@@ -1,6 +1,6 @@
 function drag(ev) {
     //target the <a> tag which wrapping the "brick"<div>
-	ev.dataTransfer.setData("a_brick", ev.target.parentElement.id);
+	ev.dataTransfer.setData("dragging", ev.target.parentElement.id);
 }
 
 function dragleave_handler(ev) {
@@ -32,9 +32,10 @@ function dragover_handler(ev) {
 }
 
 function drop(ev) {
-    ev.preventDefault();ev.stopPropagation();
+  ev.preventDefault();
+	ev.stopPropagation();
 	var cell = document.createElement('div')
-	var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
+	var brick = document.getElementById(ev.dataTransfer.getData("dragging"));
 	var source_cell = brick.parentElement;
 	var source_row = source_cell.parentElement;
 	var row = ev.target.parentElement;
@@ -67,7 +68,7 @@ function drop(ev) {
 
 function drop_toTemp(ev){
 	 ev.preventDefault();ev.stopPropagation();
-	 var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
+	 var brick = document.getElementById(ev.dataTransfer.getData("dragging"));
 	 var source_cell = brick.parentElement;
 	 var source_row = source_cell.parentElement;
 	 //check source, forbidden temp row to temp row
@@ -105,9 +106,9 @@ function add_Title(event){
 	document.getElementById('ref').innerHTML = title;
 }
 
-function cellDelete_colorbox(ev){
+function cellDelete_colorbox(event){
 	//for IE environment
-	var ev = ev || window.event;
+	var ev = event || window.event;
 	var target = ev.target || ev.srcElement;
 	var brickId = target.parentElement.getAttribute('id')
 	//starting locking the one should be replaced
@@ -137,73 +138,7 @@ function rowSubmit(rowId, rowCode){
   );
 }
 
-function set_Colorbox_celldefault(targetElement){
-	$(targetElement).colorbox({
-		href:"#addBox",
-		inline: true,
-		width:"30%",
-		height:"50%",
-		closeButton: false,
-		onLoad: function(){
-			$('#addBox').show();
-		},
-		onCleanup: function(obj){
-			$('#addBox').hide();
-			var container = obj.el;
-			let parentRow = obj.el.parentElement;
-			let rowId = parentRow.getAttribute('id');
-
-			var text = document.getElementById('main_text').value;
-			var ref = document.getElementById('ref').innerHTML;
-
-			text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-			ref = ref.replace(/ /g, '&nbsp;');
-			if (text.length < 1){
-				return false;
-			} else {
-				var cell = document.createElement('div');
-				cell.classList.add('cell');
-				$(container).replaceWith(cell);
-				cell.innerHTML += (
-				//wrap the "brick" with a anchor tag, for linking colorbox
-				//id of the anchor was used by "drag()"
-				'<a class="colorbox-anchor" id="anchor_brickOriginal'
-				+ document.getElementsByClassName('brickOriginal').length
-				+ '" href="#brickOriginal'
-				+ document.getElementsByClassName('brickOriginal').length
-				+  '">'
-				//then create the brick style`
-				+ '<div id="brickOriginal'
-				+ document.getElementsByClassName('brickOriginal').length
-				+ '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
-				//then pull in the main_text and reference
-            	+ '<div class="brick-content">' + text + '</div>'
-				+ '<p class="brick-ref">' + ref + '</p>'
-				+ '<input type="submit" value="Delete" onClick="cellDelete_colorbox(event);"/>'
-            	+ '</div>'
-				+ '</a>');
-				//link the anchor tag to the colorbox effect
-				var newAnchor = cell.getElementsByTagName('a')[0];
-				$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
-				document.getElementById('main_text').value = null;
-   				document.getElementById('ref').innerHTML = null;
-			}
-
-				rowSubmit(rowId, parentRow.innerHTML);
-
-		}
-	});
-}
-
-function set_Colorbox_cell(targetElement) {
-	$(targetElement).colorbox({
-		inline: true,
-		width:"50%",
-		height:"50%",
-		closeButton: false
-	});
-}
-
+/*
 function initialize(){
     document.addEventListener('drop', function(ev){
 		if(ev.target.parentElement.classList.contains('row')){
@@ -219,9 +154,4 @@ function initialize(){
 	document.getElementById('main_text').addEventListener('paste', add_Title);
 }
 
-window.onload = initialize;
-
-$(document).ready(function() {
-	set_Colorbox_celldefault('.cell-default');
-	set_Colorbox_cell('.colorbox-anchor');
-});
+window.onload = initialize;*/
