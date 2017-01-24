@@ -2,7 +2,7 @@
 
 let link = [
   {"href": "/resource/css/main.css", rel: "stylesheet"},
-  {"href": "/resource/css/wall.css", rel: "stylesheet"}
+  {"href": "/resource/css/topic.css", rel: "stylesheet"}
 ]
 link.forEach(function(ele){
   let newLink = document.createElement('link');
@@ -12,7 +12,7 @@ link.forEach(function(ele){
 })
 let script = [
   {"src": "/resource/js/opp_main.js", type:"text/javascript"},
-  {"src": "/resource/js/opp_wall.js", type:"text/javascript"}
+  {"src": "/resource/js/opp_topic.js", type:"text/javascript"}
 ];
 script.forEach(function(ele){
   let newScript = document.createElement('script');

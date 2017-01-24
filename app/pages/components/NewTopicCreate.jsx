@@ -3,11 +3,12 @@ import React from 'react';
 export class NewTopicCreate extends React.Component {
   constructor(props){
     super(props);
-    this.handleNewSubmit = this.handleNewSubmit.bind(this);
+    this.handle_NewSubmit = this.handle_NewSubmit.bind(this);
   }
 
-  handleNewSubmit(){
-    this.props.handleNewSubmit(this.inputTopic.value);
+  handle_NewSubmit(){
+    this.props.handle_NewSubmit(this.inputTopic.value);
+    this.inputTopic.value = null;
   }
 
   render() {
@@ -20,7 +21,7 @@ export class NewTopicCreate extends React.Component {
       <input
         type="submit"
         value="新增"
-        onClick={this.handleNewSubmit}
+        onClick={this.handle_NewSubmit}
       />
       </div>
     )

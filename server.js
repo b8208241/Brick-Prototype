@@ -230,7 +230,6 @@ const server_Main = {
     */
     jsonfile.readFile(topicHistory, function(err, data){
       if(err) throw err;
-      console.log(req.decoded.account)
       let userName = req.decoded.userName;
       let preloadedState = data[userName];
       // Create a new Redux store instance
@@ -382,11 +381,12 @@ app.use(function (req, res, next) {
 
 //read data after authentication
 app.use(express.static(__dirname + '/data'));
-app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/app/actions'));
 app.use(express.static(__dirname + '/app/pages'));
 app.use(express.static(__dirname + '/app/js'));
 app.use(express.static(__dirname + '/app/css'));
+app.use(express.static(__dirname + '/app/img'));
+app.use(express.static(__dirname + '/app/pages/components'))
 
 //bundle those pages needed to be authorized
 app.use('/bundle', function(req, res){
@@ -422,7 +422,7 @@ app.use('/resource', function(req, res){
       res.sendFile(path.join(__dirname+"/resource/resource_Main.js"));
       break;
     default:
-      res.end({message: "path err", location: location});
+      res.json({message: "path err", location: location});
   }
 })
 

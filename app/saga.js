@@ -1,7 +1,18 @@
 import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
-import {take, call, put, fork, race} from 'redux-saga/effects'
+import {take, call, put, fork, race, select} from 'redux-saga/effects'
 import connection from './sagas/connection.js'
+import {getTopicData} from './sagas/getState.js'
+import {
+  defineTime,
+  defineTopic,
+  updateTopic,
+  updateRow,
+  updateObject,
+  createObject,
+  defaultCell,
+  defaultContentPage
+} from './sagas/topicData.js'
 
 import {
   SENDING_REQUEST,
@@ -9,7 +20,9 @@ import {
   REQUEST_ERROR,
   NEWCONTENT_SUBMIT,
   NEWTOPIC_SUBMIT,
+  POSITIONCHANGE_SUBMIT,
   SUBMIT_CONTENT,
+  SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
 } from './actions/constants.js'
 
@@ -53,26 +66,31 @@ Main page, fired when user submit a new topic.
 */
 export function * newTopicSubmit(){
   while(true){
-    let input = yield take(NEWTOPIC_SUBMIT);
-
-    let date = new Date();
-    let time = date.getTime();
+    let data = yield take(NEWTOPIC_SUBMIT);
+    console.log('saga, newTopicSubmit start')
+    const [topicData, time] = yield [
+      select(getTopicData),
+      call(defineTime)
+    ]
     let topicId = "topicBrick" + time;
     let url = "/topic/" + topicId;
+    let userName = data.userName;
+    let topicText = data.inputTopic;
 
-    let userName = input.userName;
-    let topic = input.inputTopic;
+    topicData.activeTopicRow.push({topicId: topicId, topic: topicText, url: url})
+    defaultContentPage.topic=topicText;
+    const [updatedActiveTopicRow, newContentPage] = yield [
+      call(createObject, "activeTopicRow", topicData.activeTopicRow),
+      call(createObject, topicId, defaultContentPage)
+    ]
+    const updatedComponent = yield call(updateObject, updatedActiveTopicRow, newContentPage)
+    //connection.post_NewTopic(topicId, topicText, url, userName)
 
-    connection.post_NewTopic(topicId, topic, url, userName)
-
-    let topicContentPage = {
-      "rowOne":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowTwo":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowThree":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowFour":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}]
-    }
     console.log('ready to put UPDATE_TOPIC')
-    yield put({type: UPDATE_TOPIC, topic: {topicId: topicId, topic: input.inputTopic, url: url}, topicContentPage: topicContentPage});
+    yield put({
+      type: UPDATE_TOPIC,
+      updatedComponent: updatedComponent
+    });
   }
 }
 
@@ -80,28 +98,13 @@ export function * newContentSubmit (){
   while(true){
     let data = yield take(NEWCONTENT_SUBMIT);
     console.log('saga, newContentSubmit start')
-    let row
-    let date = new Date();
-    let time = date.getTime();
+    const [topicData, time] = yield [
+      select(getTopicData),
+      call(defineTime)
+    ]
+    const topicThis = yield call(defineTopic, topicData, data.topicId)
+
     let brickId = "brickOriginal" + time;
-
-    switch (data.containerRow) {
-      case "1":
-        row = "rowOne"
-        break;
-      case "2":
-        row = "rowTwo"
-        break;
-      case "3":
-        row = "rowThree"
-        break;
-      case "4":
-        row = "rowFour"
-        break;
-      default:
-        console.log('no matched row')
-    }
-
     let cell = {
       "id":brickId,
       "text":data.text,
@@ -110,12 +113,48 @@ export function * newContentSubmit (){
       "index": data.containerIndex,
       "row": data.containerRow
     }
+
+    const newRowObject = yield call(updateRow, topicThis, data.containerRow, cell)
+    const updatedTopicThis = yield call(updateTopic, topicThis, data.topicId, newRowObject)
+
     yield put({
       type: SUBMIT_CONTENT,
       topicId: data.topicId,
-      row: row,
-      index: data.containerIndex,
-      cell: cell
+      updatedTopicThis: updatedTopicThis
+    })
+  }
+}
+
+export function * positionChangeSubmit (){
+  while(true){
+    let data = yield take(POSITIONCHANGE_SUBMIT);
+    console.log('saga, positionChangeSubmit start')
+    let topicId = data.topicId
+    let originRow = data.originRow
+    let originIndex = data.originIndex
+    let newRow = data.newRow
+    let newIndex = data.newIndex
+    const topicData = yield select(getTopicData)
+    const topicThis = yield call(defineTopic, topicData, topicId)
+
+    const originBrick = topicThis[originRow][originIndex]
+    const brickContent = yield call(updateObject, originBrick, {row: newRow, index: newIndex})
+    defaultCell.index = originIndex
+    defaultCell.row = originRow
+
+    let [newTargetRowObject, newOriginRowObject] = yield [
+      call(updateRow, topicThis, newRow, brickContent),
+      call(updateRow, topicThis, originRow, defaultCell)
+    ]
+
+    const changedRow = yield call(updateObject, newTargetRowObject, newOriginRowObject)
+    const updatedTopicThis = yield call(updateTopic, topicThis, topicId, changedRow)
+
+    console.log('ready to put SUBMIT_POSITIONCHANGE')
+    yield put({
+      type: SUBMIT_POSITIONCHANGE,
+      topicId: topicId,
+      updatedTopicThis: updatedTopicThis
     })
   }
 }
@@ -128,4 +167,5 @@ export default function * rootSaga () {
   yield fork(logoutFlow)
   yield fork(newTopicSubmit)
   yield fork(newContentSubmit)
+  yield fork(positionChangeSubmit)
 }

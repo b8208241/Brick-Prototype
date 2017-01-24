@@ -3,11 +3,16 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
   LOGOUT,
-  NEWCONTENT_SUBMIT
+  NEWCONTENT_SUBMIT,
+  POSITIONCHANGE_SUBMIT
 } from './constants.js'
 
 export function newContentSubmit (text, ref, containerIndex, containerRow, topicId) {
   return {type: NEWCONTENT_SUBMIT, text, ref, containerIndex, containerRow, topicId}
+}
+
+export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {
+  return {type: POSITIONCHANGE_SUBMIT, originIndex, originRow, newIndex, newRow, topicId}
 }
 
 export function requestError (error) {

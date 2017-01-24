@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux'
+import {defineTopic, updateTopic, updateRow, updateObject} from './sagas/topicData.js'
 
 import {
   SENDING_REQUEST,
   REQUEST_ERROR,
   CLEAR_ERROR,
   SUBMIT_CONTENT,
+  SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
 } from './actions/constants.js'
 
@@ -20,74 +22,31 @@ function reducer (state, action) {
       return {...state, error: ''}
     case UPDATE_TOPIC:
       console.log('UPDATE_TOPIC')
-      let topicData_updateTopic = state.topicData;
-      topicData_updateTopic.topicRow.push(action.topic);
-      topicData_updateTopic[action.topic.topicId] = action.topicContentPage;
+      const topicData_updateTopic = updateObject(state.topicData, action.updatedComponent);
+
       return {
         ...state,
         topicData: topicData_updateTopic
       }
     case SUBMIT_CONTENT:
       console.log('SUBMIT_CONTENT')
-      const oldTopicDataObject = state.topicData
-      const newTopicObject = updateTopic(oldTopicDataObject, action.topicId, action.row, action.cell)
-      const newTopicDataObject = updateObject(oldTopicDataObject, newTopicObject)
+      const topicData_submitContent = updateObject(state.topicData, action.updatedTopicThis)
 
       return{
         ...state,
-        topicData: newTopicDataObject
+        topicData: topicData_submitContent
+      }
+    case SUBMIT_POSITIONCHANGE:
+      console.log('SUBMIT_POSITIONCHANGE')
+      const topicData_positionChanged = updateObject(state.topicData, action.updatedTopicThis)
+
+      return{
+        ...state,
+        topicData: topicData_positionChanged
       }
     default:
       return state
   }
-}
-
-function defineData(topicData, topicId) {
-  console.log("enter defineData")
-  return topicData[topicId]
-}
-
-function updateObject(oldObject, newValue) {
-    return Object.assign({}, oldObject, newValue)
-}
-
-function createObject(key, value) {
-  const obj = {}
-  obj[key] = value
-  return obj
-}
-
-function updateRowArray(oldRowArray, newBrick) {
-  console.log('enter updateRowArray')
-  const updatedRowArray = oldRowArray.map(function(oldItem){
-    if(oldItem.index !== newBrick.index){
-      return oldItem
-    }
-
-    const updatedItem = updateObject(oldItem, newBrick)
-    return updatedItem
-  })
-
-  return updatedRowArray
-}
-
-function updateRow(oldTopicObject, row, newBrick) {
-  console.log("enter updateRow")
-  const oldRowArray = oldTopicObject[row]
-  const newRowArray = updateRowArray(oldRowArray, newBrick)
-  const updatedRowObject = createObject(row, newRowArray)
-
-  return updatedRowObject
-}
-
-function updateTopic(oldTopicDataObject, id, row, newBrick) {
-  console.log("enter updateTopic")
-  const oldTopicObject = defineData(oldTopicDataObject, id)
-  const newRowObject = updateRow(oldTopicObject, row, newBrick)
-  const newPresentTopicObject = updateObject(oldTopicObject, newRowObject)
-  const updatedTopicObject = createObject(id, newPresentTopicObject)
-
-  return updatedTopicObject
 }
 
 export default reducer

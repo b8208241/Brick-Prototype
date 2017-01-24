@@ -5,7 +5,8 @@ export class ContentRow extends React.Component {
     super(props);
     this.set_Colorbox_celldefault = this.set_Colorbox_celldefault.bind(this);
     this.set_Colorbox_cell = this.set_Colorbox_cell.bind(this);
-    this.handle_dispatch = this.handle_dispatch.bind(this);
+    this.handle_dispatch_newContentSubmit = this.handle_dispatch_newContentSubmit.bind(this);
+    this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
     this.handle_Drop = this.handle_Drop.bind(this);
     this.preventDefault = this.preventDefault.bind(this);
   }
@@ -14,26 +15,30 @@ export class ContentRow extends React.Component {
     event.preventDefault();
   }
 
+  handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId){
+    console.log('handle_dispatch_positionChangeSubmit in ContentRow')
+    this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId)
+  }
+
+  handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId){
+    console.log('handle_dispatch_newContentSubmit in ContentRow')
+    this.props.handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId)
+  }
+
   handle_Drop(event){
     console.log('handle_Drop in ContentRow')
     event.preventDefault();
     event.stopPropagation();
-    const originCellId = event.dataTransfer.getData("dragging");
-    const originData = $('#'+originCellId).html();
-    const targetContainer = event.target;
+    const topicId = this.props.topicId
+    const anchorId = event.dataTransfer.getData("dragging");
+    const newContainer = event.target;
 
-    let targetIndex =
-    let targetRow =
-    let originIndex =
-    let origin Row =
-    let text
-    let ref
+    let newIndex = $(newContainer).attr("id").charAt(0);
+    let newRow = $(newContainer).attr("id").charAt(1);
+    let originIndex = $('#'+anchorId).parent().attr('id').charAt(0);
+    let originRow = $('#'+anchorId).parent().attr('id').charAt(1);
 
-  }
-
-  handle_dispatch(text, ref, containerIndex, containerRow, topicId){
-    console.log('handle_dispatch in ContentRow')
-    this.props.handle_dispatch(text, ref, containerIndex, containerRow, topicId)
+    this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId)
   }
 
   set_Colorbox_cell(colorBoxAnchor){
@@ -45,10 +50,8 @@ export class ContentRow extends React.Component {
     });
   }
 
-  set_Colorbox_celldefault(cellDefault, handle_dispatch){
-    // this is here due to "this" would be changed in the colobox setting
-    let topicId = this.props.topicId
-
+  set_Colorbox_celldefault(cellDefault, handle_dispatch_newContentSubmit){
+    const topicId = this.props.topicId
     $(cellDefault).colorbox({
       href:"#addBox",
       inline: true,
@@ -70,7 +73,7 @@ export class ContentRow extends React.Component {
         if (text.length < 1){
           return false
         }else{
-          handle_dispatch(text, ref, containerIndex, containerRow, topicId);
+          handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId);
         }
 
         $('#addBox').hide();
@@ -82,13 +85,13 @@ export class ContentRow extends React.Component {
 
   componentDidMount(){
     console.log('component did mount')
-    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch);
+    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch_newContentSubmit);
     this.set_Colorbox_cell('.colorbox-anchor');
   }
 
   componentDidUpdate(){
     console.log('component did update')
-    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch);
+    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch_newContentSubmit);
     this.set_Colorbox_cell('.colorbox-anchor');
   }
 
@@ -118,7 +121,7 @@ export class ContentRow extends React.Component {
     )
 
     return(
-      <div className="row" id={this.props.id}>
+      <div className={this.props.class} id={this.props.id}>
         <div className="placeholder"></div>
         {contentBricks}
       </div>
