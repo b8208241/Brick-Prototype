@@ -8,7 +8,7 @@ import {SelfProfile} from './components/SelfProfile.jsx'
 import {SelfAccumulation} from './components/SelfAccumulation.jsx'
 
 export default (
-  <Route>
+  <Route component={Nav}>
     <Route path='/' component={Main}>
       <IndexRoute component={SelfNutrition}/>
       <Route path="profile" component={SelfProfile}/>

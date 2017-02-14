@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import { Route } from 'react-router'
-import {ActiveTopicRow} from './components/ActiveTopicRow.jsx'
-import {NewTopicCreate} from './components/NewTopicCreate.jsx'
+import {MainInputGroup} from './components/MainInputGroup.jsx'
 import {SelfNav} from './components/SelfNav.jsx'
 
 import {newTopicSubmit} from '../actions/Main.js';
@@ -30,8 +29,9 @@ class Main extends React.Component {
     return(
       <section>
         <section className='section-Main'>
-          <ActiveTopicRow activeTopicRow = {this.props.topicData.activeTopicRow}/>
-          <NewTopicCreate handle_NewSubmit={this.handle_NewSubmit}/>
+          <h4>{this.props.userData.userName}</h4>
+          <h1>Brick</h1>
+          <MainInputGroup contentsBucket={this.props.contentsBucket} topicData={this.props.topicData} handle_NewSubmit={this.handle_NewSubmit}/>
         </section>
         <section className='section-Self'>
           <SelfNav/>
@@ -46,7 +46,8 @@ function mapStateToProps (state) {
   return {
     token: state.token,
     topicData: state.topicData,
-    userData: state.userData
+    userData: state.userData,
+    contentsBucket: state.contentsBucket
   }
 }
 

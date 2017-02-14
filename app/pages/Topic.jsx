@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {ContentRow} from './components/ContentRow.jsx'
-import {ContentRowMemo} from './components/ContentRowMemo.jsx'
-import {ManipulateRow} from './components/ManipulateRow.jsx'
-import {CreateBrick} from './components/CreateBrick.jsx'
+import {TopicWall} from './components/TopicWall.jsx';
+import {TopicCollect} from './components/TopicCollect.jsx';
+import {ManipulateRow} from './components/ManipulateRow.jsx';
 import {newContentSubmit, positionChangeSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
@@ -25,20 +24,17 @@ class Topic extends React.Component {
   }
 
   render(){
-    console.log('enter component Topic')
+    console.log('enter page Topic')
     let topicId = this.props.params.topicId;
-    let content = this.props.topicData[topicId];
+    let topicData = this.props.topicData;
     return(
       <section>
-        <section className='section-Topic'>
-          <CreateBrick/>
-          <ManipulateRow handle_archive = {this.handle_archive}/>
-          <ContentRow id="rowOne" class="row" rowRecord = {content[1]} topicId = {topicId} handle_dispatch_newContentSubmit = {this.handle_dispatch_newContentSubmit} handle_dispatch_positionChangeSubmit = {this.handle_dispatch_positionChangeSubmit}/>
-          <ContentRowMemo topicId = {topicId} topicData = {this.props.topicData} handle_dispatch_newContentSubmit = {this.handle_dispatch_newContentSubmit} handle_dispatch_positionChangeSubmit = {this.handle_dispatch_positionChangeSubmit}/>
-          <ContentRow id="rowFour" class="row" rowRecord = {content[4]} topicId = {topicId} handle_dispatch_newContentSubmit = {this.handle_dispatch_newContentSubmit} handle_dispatch_positionChangeSubmit = {this.handle_dispatch_positionChangeSubmit}/>
+        <section className='section-TopicWall'>
+          <TopicWall topicData = {topicData} topicId={topicId} handle_dispatch_newContentSubmit={this.handle_dispatch_newContentSubmit} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}/>
+          <TopicCollect/>
         </section>
         <div>
-          <h3>{content.topic}</h3>
+          <ManipulateRow handle_archive = {this.handle_archive}/>
         </div>
       </section>
     )

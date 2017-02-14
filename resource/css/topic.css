@@ -1,8 +1,16 @@
-section .section-Topic{
-	width: 1180px;
-  border: 1px solid #8f967e;
+section .section-TopicWall{
 	display: inline-block;
+	width: 90%;
+	min-width: 1180px;
+  border: 1px solid #8f967e;
+	margin-left: 5%;
 	font-size: 13px;
+}
+
+.topic {
+	width: 23%;
+	height: 140px;
+	display: inline-block;
 }
 
 .row {
@@ -10,8 +18,19 @@ section .section-Topic{
 	height: 137px;
 	display: flex;
 	box-sizing:border-box;
-	border-color: #8f967e;
-	border: 1px solid ;
+	border-color: transparent;
+	border: 1px;
+	border-left: none;
+	border-right: none;
+}
+
+.rowFour {
+	width: 77%;
+	height: 137px;
+	display: inline-flex;
+	box-sizing:border-box;
+	border-color: transparent;
+	border: 1px;
 	border-left: none;
 	border-right: none;
 }
@@ -22,14 +41,6 @@ section .section-Topic{
 	border: 1px dotted;
 }
 
-.row-container {
-	width: 71.1%;
-}
-
-.row-memo-container {
-	width: 105%;
-	display: inline-flex;
-}
 .Manipulate-button {
 	float: right;
 }
@@ -38,7 +49,7 @@ section .section-Topic{
 	width: 10px;
 	height: 135px;
 	display: inline-block;
-	background-color: #8f967e;
+	background-color:transparent;
 	margin: 0;
 	padding: 0;
 }
@@ -47,12 +58,16 @@ section .section-Topic{
 	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
+	border: 1px solid;
+	border-color: #EA2F11;
 }
 
 .cell-default {
 	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
+	border: 1px solid;
+	border-color: #A08C8A;
 }
 
 .brickOriginal {
@@ -60,7 +75,7 @@ section .section-Topic{
     height: 100%;
 	margin:0;
 	padding:0;
-	background-image:url(/img/template_BrickOriginal.svg);
+	background-image:url(template_BrickOriginal.svg);
 	background-repeat:no-repeat;
 	position: relative;
 }
@@ -80,6 +95,7 @@ section .section-Topic{
 	left: 6%;
 	line-height: 1.4em;
 	font-size: 1.3em;
+	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .brick-ref {

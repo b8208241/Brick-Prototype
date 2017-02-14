@@ -4,11 +4,28 @@ import {connect} from 'react-redux';
 
 class Nav extends React.Component {
   render() {
+    let token = this.props.token
+    let topicData = this.props.topicData
+    let userData = this.props.userData
+    let contentsBucket = this.props.contentsBucket
+    let children = React.Children.map(this.props.children, function (child) {
+      return React.cloneElement(
+        child,
+        {
+          token: token,
+          topicData: topicData,
+          userData: userData,
+          contentsBucket: contentsBucket
+        })
+      })
     return(
-      <div>
-        <ul>
-          <li><Link to='/'>Nav bar 位置示意</Link></li>
+      <div className="app">
+        <ul className="nav">
+          <li><Link to='/'>Nav bar: 回Main Page</Link></li>
         </ul>
+        <div className="container">
+          {children}
+        </div>
       </div>
     )
   }
@@ -18,7 +35,8 @@ function mapStateToProps (state) {
   return {
     token: state.token,
     topicData: state.topicData,
-    userData: state.userData
+    userData: state.userData,
+    contentsBucket: state.contentsBucket
   }
 }
 

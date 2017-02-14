@@ -147,22 +147,23 @@ const process_LogIn =  {
 /*  log: function(req, res){
     mysqlPool.getConnection(function(err, connection){
       if (err) {
-         connection.release();
          res.json({"code" : 100, "status" : "Error in connection database"});
          return;
       };
-      connection.query('SELECT*FROM `member` WHERE `user` == req.body.username',
+      console.log('connection success during log')
+      connection.query('SELECT*FROM `` WHERE `` == req.body.username',
         function(err, result){
           if(err) throw err;
           if(!result){
             res.json({ success: false, message: 'Authenticate failed. User not found'});
           }else if(result){
+            console.log(result)
             if (result.password != req.body.password){
               res.json({ success: false, message: 'Authenticate failed. Wrong password'});
             }else {
               var token = jwt.sign(
                 {
-                  userName: result.user
+                  userName: result.
                 },
                 app.get('secret'),
                 {
@@ -185,18 +186,17 @@ const server_Main = {
   server_Render: function(req, res){
     /*mysqlPool.getConnection(function(err, connection){
       if (err) {
-         connection.release();
          res.json({"code" : 100, "status" : "Error in connection database"});
          return;
       };
-      connection.query('SELECT*FROM `` WHERE `user` == req.decoded.account',
+      connection.query('SELECT*FROM `` WHERE `` == req.decoded.userName',
         function(err, result){
           if(err) throw err;
           if(!result){
             res.json({ success: false, message: 'Authenticate failed. User not found'});
           }else if(result){
-            let userName =
-            let preloadedState =
+            console.log(result)
+            let preloadedState = result
             // Create a new Redux store instance
             let store = createStore(reducer, preloadedState);
             let initialState = store.getState();
@@ -209,14 +209,13 @@ const server_Main = {
                 } else if (redirect) {
                   //if there are any need for redirection from client side
                 } else if (matchProps) {
-                  console.log('routes match to props')
                   // if we got props then we matched a route
                   let appHtml = ReactDOMServer.renderToString(React.createFactory(Brick_server)({
                     store: store,
                     matchProps: matchProps
                   }));
                   res.setHeader('content-type', 'application/javascript');
-                  res.send(server_Main.renderToApp(appHtml, initialState))
+                  res.json({appHtml, initialState})
                 } else {
                   // no errors, no redirect, we just didn't match anything
                   console.log('404 Not Found')
@@ -244,7 +243,6 @@ const server_Main = {
           } else if (redirect) {
             //if there are any need for redirection from client side
           } else if (matchProps) {
-            console.log('routes match to props')
             // if we got props then we matched a route
             let appHtml = ReactDOMServer.renderToString(React.createFactory(Brick_server)({
               store: store,
@@ -319,8 +317,8 @@ app.use('/resource/:filetype/:filename', function(req, res){
     };
     res.sendFile(filename, options, function (err) {
       if (err) {
-      console.log(err);
-      res.status(err.status).end();
+        console.log(err);
+        res.status(err.status).end();
       }else {
         console.log('Sent:', filename);
       }

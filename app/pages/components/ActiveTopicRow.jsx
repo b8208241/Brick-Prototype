@@ -13,11 +13,11 @@ export class ActiveTopicRow extends React.Component {
     console.log('enter component in Main: ActiveTopicRow')
     let activeTopicRowBricks = this.state.activeTopicRow.map(
       function(obj){
-          return <ActiveTopicRowBrick key={obj.topicId} id={obj.id} topic={obj.topic} url={obj.url}/>;
+          return <ActiveTopicRowBrick key={obj.topicId} id={obj.topicId} topic={obj.topic} url={obj.url}/>;
       }
     );
     return(
-      <ol className="topic-Row">
+      <ol className="block-topic">
         {activeTopicRowBricks}
       </ol>
     )
@@ -27,7 +27,7 @@ export class ActiveTopicRow extends React.Component {
 class ActiveTopicRowBrick extends React.Component {
   render() {
     return(
-      <li className="topic-Row-Brick" id={this.props.id}><Link to={this.props.url}>{this.props.topic}</Link></li>
+      <li className="block-topic-brick" id={this.props.id}><Link to={this.props.url}>{this.props.topic}</Link></li>
     )
   }
 }
