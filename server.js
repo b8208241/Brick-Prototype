@@ -281,6 +281,7 @@ app.set('secret', verify.secret);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/authorize'));
+app.use(express.static(__dirname + '/resource/css/img'));
 
 //attach required resource to the html
 app.use('/resource/:filetype/:filename', function(req, res){
