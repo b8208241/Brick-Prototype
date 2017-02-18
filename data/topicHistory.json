@@ -19,7 +19,8 @@
       {"topicId":"topicBrick1484212365971","topic":"增加新版content葉面","url":"/topic/topicBrick1484212365971"}
     ],
     "topicBrick1484194606052":{
-      "topic":"功能檢查",
+      "topic":"Memo功能研究",
+      "memoRecords":[{"memoIndex":"", "row":"", "index":"", "id":"", "text":"", "ref":""}],
       "1":[{"class":"cell-default cboxElement", "index":"0", "row":"1"}, {"class":"placeholder", "index":"1", "row":"1"}, {"class":"cell-default cboxElement", "index":"2", "row":"1"}, {"class":"placeholder", "index":"3", "row":"1"}, {"class":"cell-default cboxElement", "index":"4", "row":"1"}, {"class":"placeholder", "index":"5", "row":"1"}],
       "2":[{"class":"cell-default cboxElement", "index":"0", "row":"2"}, {"class":"placeholder", "index":"1", "row":"2"}, {"class":"cell-default cboxElement", "index":"2", "row":"2"}, {"class":"placeholder", "index":"3", "row":"2"}, {"class":"cell-default cboxElement", "index":"4", "row":"2"}, {"class":"placeholder", "index":"5", "row":"2"}],
       "3":[{"class":"cell-default cboxElement", "index":"0", "row":"3"}, {"class":"placeholder", "index":"1", "row":"3"}, {"class":"cell-default cboxElement", "index":"2", "row":"3"}, {"class":"placeholder", "index":"3", "row":"3"}, {"class":"cell-default cboxElement", "index":"4", "row":"3"}, {"class":"placeholder", "index":"5", "row":"3"}],

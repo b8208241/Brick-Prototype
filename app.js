@@ -18,7 +18,6 @@ const store = createStore(
   applyMiddleware(sagaMiddleware)
 );
 
-console.log('start run rootSaga')
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(<Brick store={store}/>, document.getElementById("app"));

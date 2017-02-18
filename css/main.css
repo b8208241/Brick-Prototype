@@ -1,0 +1,62 @@
+.app {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+}
+
+section .section-Main{
+  width: 1080px;
+  height: 500px;
+  position: relative;
+  top: 35%;
+  margin-left: auto;
+  margin-right: auto;
+	font-size: 18pt;
+}
+
+.block {
+  display: none;
+  width: 75%;
+  height: 200px;
+}
+
+.block-topic {
+  width: 100%;
+  height: 75%;
+  border-top: solid;
+  border-bottom: solid;
+  position: relative;;
+  top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.block-topic-brick{
+  display: inline-block;
+  width: 250px;
+  height: 137px;
+  border: 1px solid;
+  position: relative;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.block-content {
+  width: 100%;
+  height: 75%;
+  border-top: solid;
+  border-bottom: solid;
+  position: relative;;
+  top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.block-content-brick {
+  display: inline-block;
+  width: 250px;
+  height: 50%;
+	background-color: transparent;
+}
