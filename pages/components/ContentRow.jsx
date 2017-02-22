@@ -1,8 +1,13 @@
 import React from 'react';
+import {Memo} from './Memo.jsx';
+import {ModalBox} from './ModalBox.jsx';
 
 export class ContentRow extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      isShowingBrick : false
+    }
     this.set_Colorbox_celldefault = this.set_Colorbox_celldefault.bind(this);
     this.set_Colorbox_cell = this.set_Colorbox_cell.bind(this);
     this.handle_dispatch_newContentSubmit = this.handle_dispatch_newContentSubmit.bind(this);
@@ -15,30 +20,29 @@ export class ContentRow extends React.Component {
     event.preventDefault();
   }
 
-  handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId){
+  handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
     console.log('handle_dispatch_positionChangeSubmit in ContentRow')
-    this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId)
+    this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
-  handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId){
+  handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow){
     console.log('handle_dispatch_newContentSubmit in ContentRow')
-    this.props.handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId)
+    this.props.handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow)
   }
 
   handle_Drop(event){
     console.log('handle_Drop in ContentRow')
     event.preventDefault();
     event.stopPropagation();
-    const topicId = this.props.topicId
     const anchorId = event.dataTransfer.getData("dragging");
     const newContainer = event.target;
 
-    let newIndex = $(newContainer).attr("id").charAt(0);
-    let newRow = $(newContainer).attr("id").charAt(1);
-    let originIndex = $('#'+anchorId).parent().attr('id').charAt(0);
-    let originRow = $('#'+anchorId).parent().attr('id').charAt(1);
+    let newIndex = Number($(newContainer).attr("id").charAt(0));
+    let newRow = Number($(newContainer).attr("id").charAt(1));
+    let originIndex = Number($('#'+anchorId).parent().attr('id').charAt(0));
+    let originRow = Number($('#'+anchorId).parent().attr('id').charAt(1));
 
-    this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId)
+    this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
   set_Colorbox_cell(colorBoxAnchor){
@@ -51,7 +55,6 @@ export class ContentRow extends React.Component {
   }
 
   set_Colorbox_celldefault(cellDefault, handle_dispatch_newContentSubmit){
-    const topicId = this.props.topicId
     $(cellDefault).colorbox({
       href:"#addBox",
       inline: true,
@@ -73,7 +76,7 @@ export class ContentRow extends React.Component {
         if (text.length < 1){
           return false
         }else{
-          handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow, topicId);
+          handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow);
         }
 
         $('#addBox').hide();
@@ -82,6 +85,7 @@ export class ContentRow extends React.Component {
       }
     })
   }
+
 
   componentDidMount(){
     console.log('component did mount')
@@ -104,7 +108,7 @@ export class ContentRow extends React.Component {
       function(obj){
         if(obj.class == 'cell'){
           return (
-            <div key={obj.index} className={obj.class} id={obj.index + obj.row + "_" + obj.id}>
+            <div key={obj.index} className={obj.class} id={String(obj.index) + String(obj.row) + "_" + obj.id}>
               <a className="colorbox-anchor" href={"#"+obj.id} id={"anchor_"+obj.id}>
                 <div className="brickOriginal"  id={obj.id} draggable="true" onDragStart={drag}>
                   <div className="brick-content">{obj.text}</div>
@@ -115,7 +119,7 @@ export class ContentRow extends React.Component {
             </div>
           )
         }else{
-          return <div key={obj.index} className={obj.class} id={obj.index+obj.row+obj.class} onDragOver={preventDefault} onDrop={handle_Drop}/>;
+          return <div key={obj.index} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onDragOver={preventDefault} onDrop={handle_Drop}/>;
         }
       }
     )

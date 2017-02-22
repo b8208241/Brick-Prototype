@@ -33,10 +33,10 @@ class Nav extends React.Component {
 
 function mapStateToProps (state) {
   return {
-    token: state.token,
+    token: state.others.token,
     topicData: state.topicData,
-    userData: state.userData,
-    contentsBucket: state.contentsBucket
+    userData: state.others.userData,
+    contentsBucket: state.others.contentsBucket
   }
 }
 

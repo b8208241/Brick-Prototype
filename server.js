@@ -52,8 +52,8 @@ const container = {
     var htmlHead = ReactDOMServer.renderToStaticMarkup(
       head(
         null,
-        script({src: "https://unpkg.com/axios/dist/axios.min.js"}),
         script({src: "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js", type: "text/javascript"}),
+        script({src: "https://unpkg.com/axios/dist/axios.min.js"}),
         link({href: "/resource/basic/colorbox.css", rel: "stylesheet"}),
         script({src: "/resource/basic/jquery.colorbox.js", type: "text/javascript"})
       )
