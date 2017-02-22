@@ -8,8 +8,8 @@ export class ContentRow extends React.Component {
     this.state = {
       isShowingBrick : false
     }
-    this.handle_dispatch_newContentSubmit = this.handle_dispatch_newContentSubmit.bind(this);
     this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
+    this.handle_Drag = this.handle_Drag.bind(this);
     this.handle_Drop = this.handle_Drop.bind(this);
     this.preventDefault = this.preventDefault.bind(this);
   }
@@ -23,55 +23,49 @@ export class ContentRow extends React.Component {
     this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
-  handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow){
-    console.log('handle_dispatch_newContentSubmit in ContentRow')
-    this.props.handle_dispatch_newContentSubmit(text, ref, containerIndex, containerRow)
+  handle_Drag(event){
+      //target the "brickOriginal" <div>
+    event.dataTransfer.setData("dragging", event.target.id);
   }
 
   handle_Drop(event){
     console.log('handle_Drop in ContentRow')
     event.preventDefault();
     event.stopPropagation();
-    const anchorId = event.dataTransfer.getData("dragging");
+    const brickId = event.dataTransfer.getData("dragging");
     const newContainer = event.target;
 
     let newIndex = Number($(newContainer).attr("id").charAt(0));
     let newRow = Number($(newContainer).attr("id").charAt(1));
-    let originIndex = Number($('#'+anchorId).parent().attr('id').charAt(0));
-    let originRow = Number($('#'+anchorId).parent().attr('id').charAt(1));
+    let originIndex = Number($('#'+brickId).parent().attr('id').charAt(0));
+    let originRow = Number($('#'+brickId).parent().attr('id').charAt(1));
 
     this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
   componentDidMount(){
     console.log('component did mount')
-    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch_newContentSubmit);
-    this.set_Colorbox_cell('.colorbox-anchor');
   }
 
   componentDidUpdate(){
     console.log('component did update')
-    this.set_Colorbox_celldefault('.cell-default', this.handle_dispatch_newContentSubmit);
-    this.set_Colorbox_cell('.colorbox-anchor');
   }
 
   render(){
     console.log('enter ContentRow')
     let preventDefault = this.preventDefault
     let handle_Drop = this.handle_Drop
+    let handle_Drag = this.handle_Drag
 
     let contentBricks = this.props.rowRecord.map(
       function(obj){
         if(obj.class == 'cell'){
           return (
             <div key={obj.index} className={obj.class} id={String(obj.index) + String(obj.row) + "_" + obj.id}>
-              <a className="colorbox-anchor" href={"#"+obj.id} id={"anchor_"+obj.id}>
-                <div className="brickOriginal"  id={obj.id} draggable="true" onDragStart={drag}>
+                <div className="brickOriginal"  id={obj.id} draggable="true" onDragStart={handle_Drag}>
                   <div className="brick-content">{obj.text}</div>
                   <p className="brick-ref">{obj.ref}</p>
-                  <input type="submit" value="Delete" onClick={cellDelete_colorbox} />
                 </div>
-              </a>
             </div>
           )
         }else{

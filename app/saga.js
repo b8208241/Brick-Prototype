@@ -24,11 +24,9 @@ import {
   SENDING_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
-  NEWCONTENT_SUBMIT,
   NEWMEMO_SUBMIT,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
-  SUBMIT_CONTENT,
   SUBMIT_MEMO,
   SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
@@ -99,37 +97,6 @@ export function * newTopicSubmit(){
       type: UPDATE_TOPIC,
       updatedComponent: updatedComponent
     });
-  }
-}
-
-export function * newContentSubmit (){
-  while(true){
-    let data = yield take(NEWCONTENT_SUBMIT);
-    console.log('saga, newContentSubmit start')
-    const [topicThis, time] = yield [
-      select(getTopicThis, data.topicId),
-      call(defineTime)
-    ]
-
-    //let time = yield call(defineTime)
-    let brickId = "brickOriginal" + time;
-    let cell = {
-      "id":brickId,
-      "text":data.text,
-      "ref": data.ref ,
-      "class":"cell",
-      "index": data.containerIndex,
-      "row": data.containerRow
-    }
-
-    const newRowObject = yield call(updateRow, topicThis, data.containerRow, cell)
-    const updatedTopicThis = yield call(updateTopic, topicThis, data.topicId, newRowObject)
-
-    yield put({
-      type: SUBMIT_CONTENT,
-      topicId: data.topicId,
-      updatedTopicThis: updatedTopicThis
-    })
   }
 }
 
@@ -208,7 +175,6 @@ export function * positionChangeSubmit (){
 export default function * rootSaga () {
   yield fork(logoutFlow)
   yield fork(newTopicSubmit)
-  yield fork(newContentSubmit)
   yield fork(positionChangeSubmit)
   yield fork(newMemoSubmit)
 }

@@ -18,10 +18,6 @@ function topicData (state={}, action) {
       console.log('UPDATE_TOPIC')
       return updateObject(state, action.updatedComponent);
 
-    case SUBMIT_CONTENT:
-      console.log('SUBMIT_CONTENT')
-      return updateObject(state, action.updatedTopicThis)
-
     case SUBMIT_MEMO:
       console.log('SUBMIT_MEMO')
       return updateObject(state, action.updatedTopicThis)

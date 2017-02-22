@@ -1,8 +1,3 @@
-function drag(ev) {
-    //target the <a> tag which wrapping the "brick"<div>
-	ev.dataTransfer.setData("dragging", ev.target.parentElement.id);
-}
-
 function dragleave_handler(ev) {
     ev.preventDefault();
 	if (ev.target.classList.contains("dragover")){
