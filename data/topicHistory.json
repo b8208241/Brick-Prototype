@@ -1,18 +1,21 @@
 {"berlin":{
-  "token":"localStorage.token",
-  "error":"''",
-  "currentlySending":"false",
-  "loggedIn":"true",
-  "userData":{
-    "userName":"berlin"
-  },
-  "accumulation":{
+  "others":{
+    "token":"localStorage.token",
+    "error":"''",
+    "currentlySending":"false",
+    "loggedIn":"true",
+    "userData":{
+      "userName":"berlin"
+    },
+    "accumulation":{
 
-  },
-  "contentsBucket":[
-    {"id":"brickOriginal1484301234568","text":"隨手存上的雅虎首頁","ref":"http://tw.yahoo.com","class":"block-content-brick", "index":"", "row":""},
-    {"id":"brickOriginal1484301502983","text":"隨手存上的臉書","ref":"http://www.facebook.com","class":"block-content-brick", "index":"", "row":""}
-  ],
+    },
+    "contentsBucket":[
+      {"id":"brickOriginal1484301234568","text":"隨手存上的雅虎首頁","ref":"http://tw.yahoo.com","class":"block-content-brick", "index":"", "row":""},
+      {"id":"brickOriginal1484301502983","text":"隨手存上的臉書","ref":"http://www.facebook.com","class":"block-content-brick", "index":"", "row":""}
+    ]
+  }
+  ,
   "topicData":{
     "activeTopicRow":[
       {"topicId":"topicBrick1484194606052","topic":"功能檢查","url":"/topic/topicBrick1484194606052"},
@@ -20,18 +23,19 @@
     ],
     "topicBrick1484194606052":{
       "topic":"Memo功能研究",
-      "memoRecords":[{"memoIndex":"", "row":"", "index":"", "id":"", "text":"", "ref":""}],
-      "1":[{"class":"cell-default cboxElement", "index":"0", "row":"1"}, {"class":"placeholder", "index":"1", "row":"1"}, {"class":"cell-default cboxElement", "index":"2", "row":"1"}, {"class":"placeholder", "index":"3", "row":"1"}, {"class":"cell-default cboxElement", "index":"4", "row":"1"}, {"class":"placeholder", "index":"5", "row":"1"}],
-      "2":[{"class":"cell-default cboxElement", "index":"0", "row":"2"}, {"class":"placeholder", "index":"1", "row":"2"}, {"class":"cell-default cboxElement", "index":"2", "row":"2"}, {"class":"placeholder", "index":"3", "row":"2"}, {"class":"cell-default cboxElement", "index":"4", "row":"2"}, {"class":"placeholder", "index":"5", "row":"2"}],
-      "3":[{"class":"cell-default cboxElement", "index":"0", "row":"3"}, {"class":"placeholder", "index":"1", "row":"3"}, {"class":"cell-default cboxElement", "index":"2", "row":"3"}, {"class":"placeholder", "index":"3", "row":"3"}, {"class":"cell-default cboxElement", "index":"4", "row":"3"}, {"class":"placeholder", "index":"5", "row":"3"}],
-      "4":[{"class":"cell-default cboxElement", "index":"0", "row":"4"}, {"class":"placeholder", "index":"1", "row":"4"}, {"class":"cell-default cboxElement", "index":"2", "row":"4"}, {"class":"placeholder", "index":"3", "row":"4"}, {"class":"cell-default cboxElement", "index":"4", "row":"4"}, {"class":"placeholder", "index":"5", "row":"4"}]
+      "memoRecords":[{"memoIndex":"0", "id":"", "text":"東京地鐵24時間劵", "ref":"http://www.tokyometro.jp/tcn/ticket/value/1day/"}],
+      "1":[{"class":"cell-default cboxElement", "index":0, "row":"1"}, {"class":"placeholder", "index":1, "row":"1"}, {"class":"cell-default cboxElement", "index":2, "row":"1"}, {"class":"placeholder", "index":3, "row":"1"}, {"class":"cell-default cboxElement", "index":4, "row":"1"}, {"class":"placeholder", "index":5, "row":"1"}],
+      "2":[{"class":"cell-default cboxElement", "index":0, "row":"2"}, {"class":"placeholder", "index":1, "row":"2"}, {"class":"cell-default cboxElement", "index":2, "row":"2"}, {"class":"placeholder", "index":3, "row":"2"}, {"class":"cell-default cboxElement", "index":4, "row":"2"}, {"class":"placeholder", "index":5, "row":"2"}],
+      "3":[{"class":"cell-default cboxElement", "index":0, "row":"3"}, {"class":"placeholder", "index":1, "row":"3"}, {"class":"cell-default cboxElement", "index":2, "row":"3"}, {"class":"placeholder", "index":3, "row":"3"}, {"class":"cell-default cboxElement", "index":4, "row":"3"}, {"class":"placeholder", "index":5, "row":"3"}],
+      "4":[{"class":"cell-default cboxElement", "index":0, "row":"4"}, {"class":"placeholder", "index":1, "row":"4"}, {"class":"cell-default cboxElement", "index":2, "row":"4"}, {"class":"placeholder", "index":3, "row":"4"}, {"class":"cell-default cboxElement", "index":4, "row":"4"}, {"class":"placeholder", "index":5, "row":"4"}]
     },
     "topicBrick1484212365971":{
       "topic":"增加新版content葉面",
-      "1":[{"class":"cell-default cboxElement", "index":"0", "row":"1"}, {"class":"placeholder", "index":"1", "row":"1"}, {"class":"cell-default cboxElement", "index":"2", "row":"1"}, {"class":"placeholder", "index":"3", "row":"1"}, {"class":"cell-default cboxElement", "index":"4", "row":"1"}, {"class":"placeholder", "index":"5", "row":"1"}],
-      "2":[{"class":"cell-default cboxElement", "index":"0", "row":"2"}, {"class":"placeholder", "index":"1", "row":"2"}, {"class":"cell-default cboxElement", "index":"2", "row":"2"}, {"class":"placeholder", "index":"3", "row":"2"}, {"class":"cell-default cboxElement", "index":"4", "row":"2"}, {"class":"placeholder", "index":"5", "row":"2"}],
-      "3":[{"class":"cell-default cboxElement", "index":"0", "row":"3"}, {"class":"placeholder", "index":"1", "row":"3"}, {"class":"cell-default cboxElement", "index":"2", "row":"3"}, {"class":"placeholder", "index":"3", "row":"3"}, {"class":"cell-default cboxElement", "index":"4", "row":"3"}, {"class":"placeholder", "index":"5", "row":"3"}],
-      "4":[{"class":"cell-default cboxElement","index":"0", "row":"4"}, {"class":"placeholder", "index":"1", "row":"4"}, {"id":"brickOriginal1484245665971","text":"某條新聞標題","ref":"http://somewhere.com","class":"cell", "index":"2", "row":"4"}, {"class":"placeholder", "index":"3", "row":"4"}, {"class":"cell-default cboxElement", "index":"4", "row":"4"}, {"class":"placeholder", "index":"5", "row":"4"}]
+      "memoRecords":[],
+      "1":[{"class":"cell-default cboxElement", "index":0, "row":"1"}, {"class":"placeholder", "index":1, "row":"1"}, {"class":"cell-default cboxElement", "index":2, "row":"1"}, {"class":"placeholder", "index":3, "row":"1"}, {"class":"cell-default cboxElement", "index":4, "row":"1"}, {"class":"placeholder", "index":5, "row":"1"}],
+      "2":[{"class":"cell-default cboxElement", "index":0, "row":"2"}, {"class":"placeholder", "index":1, "row":"2"}, {"class":"cell-default cboxElement", "index":2, "row":"2"}, {"class":"placeholder", "index":3, "row":"2"}, {"class":"cell-default cboxElement", "index":4, "row":"2"}, {"class":"placeholder", "index":5, "row":"2"}],
+      "3":[{"class":"cell-default cboxElement", "index":0, "row":"3"}, {"class":"placeholder", "index":1, "row":"3"}, {"class":"cell-default cboxElement", "index":2, "row":"3"}, {"class":"placeholder", "index":3, "row":"3"}, {"class":"cell-default cboxElement", "index":4, "row":"3"}, {"class":"placeholder", "index":5, "row":"3"}],
+      "4":[{"class":"cell-default cboxElement","index":0, "row":"4"}, {"class":"placeholder", "index":1, "row":"4"}, {"id":"brickOriginal1484245665971","text":"某條新聞標題","ref":"http://somewhere.com","class":"cell", "index":2, "row":"4"}, {"class":"placeholder", "index":3, "row":"4"}, {"class":"cell-default cboxElement", "index":4, "row":"4"}, {"class":"placeholder", "index":5, "row":"4"}]
     }
   }
 },

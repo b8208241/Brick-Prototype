@@ -1,18 +1,42 @@
 import {combineReducers} from 'redux'
-import {defineTopic, updateTopic, updateRow, updateObject} from './sagas/topicData.js'
+import {updateObject} from './sagas/modifier.js';
+import {defineTopic, updateTopic, updateRow} from './sagas/topicData.js';
 
 import {
   SENDING_REQUEST,
   REQUEST_ERROR,
   CLEAR_ERROR,
   SUBMIT_CONTENT,
+  SUBMIT_MEMO,
   SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
 } from './actions/constants.js'
 
+function topicData (state={}, action) {
+  switch (action.type) {
+    case UPDATE_TOPIC:
+      console.log('UPDATE_TOPIC')
+      return updateObject(state, action.updatedComponent);
+
+    case SUBMIT_CONTENT:
+      console.log('SUBMIT_CONTENT')
+      return updateObject(state, action.updatedTopicThis)
+
+    case SUBMIT_MEMO:
+      console.log('SUBMIT_MEMO')
+      return updateObject(state, action.updatedTopicThis)
+
+    case SUBMIT_POSITIONCHANGE:
+      console.log('SUBMIT_POSITIONCHANGE')
+      return updateObject(state, action.updatedTopicThis)
+
+    default:
+      return state
+  }
+}
 
 // Takes care of changing the application state
-function reducer (state, action) {
+function others (state={}, action) {
   switch (action.type) {
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending}
@@ -20,33 +44,12 @@ function reducer (state, action) {
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
-    case UPDATE_TOPIC:
-      console.log('UPDATE_TOPIC')
-      const topicData_updateTopic = updateObject(state.topicData, action.updatedComponent);
-
-      return {
-        ...state,
-        topicData: topicData_updateTopic
-      }
-    case SUBMIT_CONTENT:
-      console.log('SUBMIT_CONTENT')
-      const topicData_submitContent = updateObject(state.topicData, action.updatedTopicThis)
-
-      return{
-        ...state,
-        topicData: topicData_submitContent
-      }
-    case SUBMIT_POSITIONCHANGE:
-      console.log('SUBMIT_POSITIONCHANGE')
-      const topicData_positionChanged = updateObject(state.topicData, action.updatedTopicThis)
-
-      return{
-        ...state,
-        topicData: topicData_positionChanged
-      }
     default:
       return state
   }
 }
 
-export default reducer
+export default combineReducers({
+  topicData,
+  others
+})

@@ -4,8 +4,13 @@ import {
   CLEAR_ERROR,
   LOGOUT,
   NEWCONTENT_SUBMIT,
+  NEWMEMO_SUBMIT,
   POSITIONCHANGE_SUBMIT
 } from './constants.js'
+
+export function newMemoSubmit (text, ref, topicId) {
+  return {type: NEWMEMO_SUBMIT, text, ref, topicId}
+}
 
 export function newContentSubmit (text, ref, containerIndex, containerRow, topicId) {
   return {type: NEWCONTENT_SUBMIT, text, ref, containerIndex, containerRow, topicId}

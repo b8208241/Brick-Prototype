@@ -2,15 +2,21 @@ import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race, select} from 'redux-saga/effects'
 import connection from './sagas/connection.js'
-import {getTopicData} from './sagas/getState.js'
+import {getTopicData, getTopicThis, getMemoRecords} from './sagas/getState.js'
 import {
-  defineTime,
-  defineTopic,
-  updateTopic,
-  updateRow,
   updateObject,
   createObject,
+  spliceArray
+} from './sagas/modifier.js'
+import {
+  defineTime,
+  rowDecide,
+  insertBrick,
+  updateMemoRecords,
+  updateTopic,
+  updateRow,
   defaultCell,
+  defaultPlaceHolder,
   defaultContentPage
 } from './sagas/topicData.js'
 
@@ -19,9 +25,11 @@ import {
   LOGOUT,
   REQUEST_ERROR,
   NEWCONTENT_SUBMIT,
+  NEWMEMO_SUBMIT,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
   SUBMIT_CONTENT,
+  SUBMIT_MEMO,
   SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
 } from './actions/constants.js'
@@ -98,12 +106,12 @@ export function * newContentSubmit (){
   while(true){
     let data = yield take(NEWCONTENT_SUBMIT);
     console.log('saga, newContentSubmit start')
-    const [topicData, time] = yield [
-      select(getTopicData),
+    const [topicThis, time] = yield [
+      select(getTopicThis, data.topicId),
       call(defineTime)
     ]
-    const topicThis = yield call(defineTopic, topicData, data.topicId)
 
+    //let time = yield call(defineTime)
     let brickId = "brickOriginal" + time;
     let cell = {
       "id":brickId,
@@ -125,6 +133,42 @@ export function * newContentSubmit (){
   }
 }
 
+export function * newMemoSubmit (){
+  while(true){
+    let data = yield take(NEWMEMO_SUBMIT);
+    console.log('saga, newMemoSubmit start')
+    const [topicThis, time] = yield [
+      select(getTopicThis, data.topicId),
+      call(defineTime)
+    ]
+    const row = yield call(rowDecide, topicThis)
+    const memoRecords = topicThis.memoRecords;
+
+    let newRecord = {
+      "memoIndex":memoRecords.length,
+      "id":"brickOriginal" + time,
+      "text":data.text,
+      "ref":data.ref,
+      "class":"cell",
+      "index": 0,
+      "row": row
+    }
+
+    const [newMemoRecordsObj, newRowObject] = yield [
+      call(updateMemoRecords, memoRecords, newRecord),
+      call(insertBrick, topicThis[row], row, newRecord)
+    ]
+
+    const memoRowObject = yield call(updateObject, newMemoRecordsObj, newRowObject)
+    const updatedTopicThis = yield call(updateTopic, topicThis, data.topicId, memoRowObject)
+
+    yield put({
+      type: SUBMIT_MEMO,
+      updatedTopicThis: updatedTopicThis
+    })
+  }
+}
+
 export function * positionChangeSubmit (){
   while(true){
     let data = yield take(POSITIONCHANGE_SUBMIT);
@@ -134,8 +178,7 @@ export function * positionChangeSubmit (){
     let originIndex = data.originIndex
     let newRow = data.newRow
     let newIndex = data.newIndex
-    const topicData = yield select(getTopicData)
-    const topicThis = yield call(defineTopic, topicData, topicId)
+    const topicThis = yield select(getTopicThis, topicId)
 
     const originBrick = topicThis[originRow][originIndex]
     const brickContent = yield call(updateObject, originBrick, {row: newRow, index: newIndex})
@@ -153,7 +196,6 @@ export function * positionChangeSubmit (){
     console.log('ready to put SUBMIT_POSITIONCHANGE')
     yield put({
       type: SUBMIT_POSITIONCHANGE,
-      topicId: topicId,
       updatedTopicThis: updatedTopicThis
     })
   }
@@ -168,4 +210,5 @@ export default function * rootSaga () {
   yield fork(newTopicSubmit)
   yield fork(newContentSubmit)
   yield fork(positionChangeSubmit)
+  yield fork(newMemoSubmit)
 }

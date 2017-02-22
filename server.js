@@ -53,9 +53,7 @@ const container = {
       head(
         null,
         script({src: "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js", type: "text/javascript"}),
-        script({src: "https://unpkg.com/axios/dist/axios.min.js"}),
-        link({href: "/resource/basic/colorbox.css", rel: "stylesheet"}),
-        script({src: "/resource/basic/jquery.colorbox.js", type: "text/javascript"})
+        script({src: "https://unpkg.com/axios/dist/axios.min.js"})
       )
     );
     var htmlBody = ReactDOMServer.renderToStaticMarkup(
@@ -289,12 +287,6 @@ app.use('/resource/:filetype/:filename', function(req, res){
   let filename = req.params.filename;
   if(filetype == "basic"){
     switch (filename) {
-      case "colorbox.css":
-        res.sendFile(path.join(__dirname+'/resource/basic/colorbox-master/colorbox.css'));
-        break;
-      case "jquery.colorbox.js":
-        res.sendFile(path.join(__dirname+'/resource/basic/colorbox-master/jquery.colorbox.js'));
-        break;
       default:
         res.json({filename: filename, message: "resource not Found!"});
     }
