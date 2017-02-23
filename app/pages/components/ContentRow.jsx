@@ -11,6 +11,7 @@ export class ContentRow extends React.Component {
     this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
     this.handle_Drag = this.handle_Drag.bind(this);
     this.handle_Drop = this.handle_Drop.bind(this);
+    this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
     this.preventDefault = this.preventDefault.bind(this);
   }
 
@@ -21,6 +22,12 @@ export class ContentRow extends React.Component {
   handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
     console.log('handle_dispatch_positionChangeSubmit in ContentRow')
     this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
+  }
+
+  handle_Click_Brick(event){
+    let clickedBrickIndex = Number($(event.target).parent().attr('id').charAt(0));
+    let clickedBrickRow = Number($(event.target).parent().attr('id').charAt(1));
+    this.props.handle_Click_Brick(clickedBrickIndex, clickedBrickRow);
   }
 
   handle_Drag(event){
@@ -37,8 +44,8 @@ export class ContentRow extends React.Component {
 
     let newIndex = Number($(newContainer).attr("id").charAt(0));
     let newRow = Number($(newContainer).attr("id").charAt(1));
-    let originIndex = Number($('#'+brickId).parent().attr('id').charAt(0));
-    let originRow = Number($('#'+brickId).parent().attr('id').charAt(1));
+    let originIndex = Number($('#'+brickId).attr('id').charAt(0));
+    let originRow = Number($('#'+brickId).attr('id').charAt(1));
 
     this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
@@ -56,20 +63,23 @@ export class ContentRow extends React.Component {
     let preventDefault = this.preventDefault
     let handle_Drop = this.handle_Drop
     let handle_Drag = this.handle_Drag
+    let handle_Click_Brick = this.handle_Click_Brick
+    let date = new Date();
+    let time = date.getTime();
 
     let contentBricks = this.props.rowRecord.map(
       function(obj){
         if(obj.class == 'cell'){
           return (
-            <div key={obj.index} className={obj.class} id={String(obj.index) + String(obj.row) + "_" + obj.id}>
-                <div className="brickOriginal"  id={obj.id} draggable="true" onDragStart={handle_Drag}>
+            <div key={obj.id} className={obj.class} id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id} onClick={handle_Click_Brick}>
+                <div className="brickOriginal"  id={String(obj.index) + String(obj.row) + "_" + obj.id} draggable="true" onDragStart={handle_Drag}>
                   <div className="brick-content">{obj.text}</div>
                   <p className="brick-ref">{obj.ref}</p>
                 </div>
             </div>
           )
         }else{
-          return <div key={obj.index} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onDragOver={preventDefault} onDrop={handle_Drop}/>;
+          return <div key={String(obj.index) + String(obj.row) + time} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onDragOver={preventDefault} onDrop={handle_Drop}/>;
         }
       }
     )

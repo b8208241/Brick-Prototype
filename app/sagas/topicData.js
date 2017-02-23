@@ -5,14 +5,16 @@ import {
   spliceArray
 } from './modifier.js';
 
+export const brickCell = {"class":"cell", "index":"", "row":"", "id":"", "memoIndex":"", "text":"", "ref":""}
 export const defaultCell = {"class":"cell-default cboxElement","index":"", "row":"", "id":"", "memoIndex":"", "text":"", "ref":""}
-export const defaultPlaceHolder = {"class":"placeholder", "index":"", "row":""}
+export const defaultPlaceHolder = {"class":"placeholder", "index":"", "row":"", "id":"", "memoIndex":"", "text":"", "ref":""}
 export const defaultContentPage = {
   "topic":"",
-  "1":[{"class":"cell-default cboxElement", "index":0, "row":"1"}, {"class":"placeholder", "index":1, "row":"1"}, {"class":"cell-default cboxElement", "index":2, "row":"1"}, {"class":"placeholder", "index":3, "row":"1"}, {"class":"cell-default cboxElement", "index":4, "row":"1"}, {"class":"placeholder", "index":5, "row":"1"}],
-  "2":[{"class":"cell-default cboxElement", "index":0, "row":"2"}, {"class":"placeholder", "index":1, "row":"2"}, {"class":"cell-default cboxElement", "index":2, "row":"2"}, {"class":"placeholder", "index":3, "row":"2"}, {"class":"cell-default cboxElement", "index":4, "row":"2"}, {"class":"placeholder", "index":5, "row":"2"}],
-  "3":[{"class":"cell-default cboxElement", "index":0, "row":"3"}, {"class":"placeholder", "index":1, "row":"3"}, {"class":"cell-default cboxElement", "index":2, "row":"3"}, {"class":"placeholder", "index":3, "row":"3"}, {"class":"cell-default cboxElement", "index":4, "row":"3"}, {"class":"placeholder", "index":5, "row":"3"}],
-  "4":[{"class":"cell-default cboxElement", "index":0, "row":"4"}, {"class":"placeholder", "index":1, "row":"4"}, {"class":"cell-default cboxElement", "index":2, "row":"4"}, {"class":"placeholder", "index":3, "row":"4"}, {"class":"cell-default cboxElement", "index":4, "row":"4"}, {"class":"placeholder", "index":5, "row":"4"}]
+  "memoRecords":[],
+  "1":[{"class":"cell-default cboxElement", "index":0, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}],
+  "2":[{"class":"cell-default cboxElement", "index":0, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}],
+  "3":[{"class":"cell-default cboxElement", "index":0, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"3", "id":"", "memoIndex":"", "text":"", "ref":""}],
+  "4":[{"class":"cell-default cboxElement", "index":0, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"4", "id":"", "memoIndex":"", "text":"", "ref":""}]
 }
 
 export function defineTime(){
@@ -40,34 +42,12 @@ export function updateRowArray(oldRowArray, brickContent) {
   return updatedRowArray
 }
 
-export function updateRow(oldTopicObject, row, brickContent) {
+export function updateRow(oldRow, row, brickContent) {
   console.log("enter updateRow")
-  const oldRowArray = oldTopicObject[row]
-  const newRowArray = updateRowArray(oldRowArray, brickContent)
-  const updatedRowObject = createObject(row, newRowArray)
+  const newRowArray = updateRowArray(oldRow, brickContent)
+  const updatedRowObject = createObject(row, oldRow)
 
   return updatedRowObject
-}
-
-export function rowDecide(topicThis){
-  console.log('enter rowDecide')
-  if(topicThis["4"].length < 8){
-    return "4"
-  }else {
-    if(topicThis['3'].length < 10){
-      return "3"
-    }else {
-      if(topicThis['2'].length < 10){
-        return "2"
-      }else {
-        if(topicThis['1'].length < 10){
-          return "1"
-        }else {
-          alert("請刪減磚頭")
-        }
-      }
-    }
-  }
 }
 
 export function updateTopic(oldTopicObject, topicId, newObject) {
@@ -92,4 +72,25 @@ export function * insertBrick(targetRow, row, newRecord){
   let rowArray = yield call(spliceArray, targetRow, 0, 0, [newRecord, placeHolder]);
 
   return yield call(createObject, row, rowArray)
+}
+
+export function rowDecide(topicThis){
+  console.log('enter rowDecide')
+  if(topicThis["4"].length < 8){
+    return "4"
+  }else {
+    if(topicThis['3'].length < 10){
+      return "3"
+    }else {
+      if(topicThis['2'].length < 10){
+        return "2"
+      }else {
+        if(topicThis['1'].length < 10){
+          return "1"
+        }else {
+          alert("請刪減磚頭")
+        }
+      }
+    }
+  }
 }

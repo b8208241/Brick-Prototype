@@ -15,6 +15,7 @@ import {
   updateMemoRecords,
   updateTopic,
   updateRow,
+  brickCell,
   defaultCell,
   defaultPlaceHolder,
   defaultContentPage
@@ -138,32 +139,39 @@ export function * newMemoSubmit (){
 
 export function * positionChangeSubmit (){
   while(true){
-    let data = yield take(POSITIONCHANGE_SUBMIT);
-    console.log('saga, positionChangeSubmit start')
-    let topicId = data.topicId
-    let originRow = data.originRow
-    let originIndex = data.originIndex
-    let newRow = data.newRow
-    let newIndex = data.newIndex
-    const topicThis = yield select(getTopicThis, topicId)
+    const data = yield take(POSITIONCHANGE_SUBMIT);
+    console.log('saga, positionChangeSubmit start');
 
-    const originBrick = topicThis[originRow][originIndex]
-    const brickContent = yield call(updateObject, originBrick, {row: newRow, index: newIndex})
-    defaultCell.index = originIndex
-    defaultCell.row = originRow
+    const topicThisState = yield select(getTopicThis, data.topicId);
+    const topicThisData = yield call(updateObject, {}, topicThisState);
+    let [originRow, originIndex, targetIndex, targetRow] = [data.originRow, data.originIndex, data.newIndex, data.newRow];
+    let originBrickContent = topicThisData[originRow][originIndex];
+    console.log(originBrickContent)
 
-    let [newTargetRowObject, newOriginRowObject] = yield [
-      call(updateRow, topicThis, newRow, brickContent),
-      call(updateRow, topicThis, originRow, defaultCell)
-    ]
+    let newbrickContent = {
+      "class":"cell",
+      "index":targetIndex,
+      "row":targetRow,
+      "id":originBrickContent.id,
+      "memoIndex":originBrickContent.memoIndex,
+      "text":originBrickContent.text,
+      "ref":originBrickContent.ref
+    }
+    let replaceCellDefault = {
+      "class":"cell-default cboxElement",
+      "index":originIndex,
+      "row":originRow,
+      "id":"",
+      "memoIndex":"",
+      "text":"",
+      "ref":""
+    }
+    topicThisData[originRow][originIndex] = replaceCellDefault;
+    topicThisData[targetRow][targetIndex] = newbrickContent;
 
-    const changedRow = yield call(updateObject, newTargetRowObject, newOriginRowObject)
-    const updatedTopicThis = yield call(updateTopic, topicThis, topicId, changedRow)
-
-    console.log('ready to put SUBMIT_POSITIONCHANGE')
     yield put({
       type: SUBMIT_POSITIONCHANGE,
-      updatedTopicThis: updatedTopicThis
+      updatedTopicThis: topicThisData
     })
   }
 }
