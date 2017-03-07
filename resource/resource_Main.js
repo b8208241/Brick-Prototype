@@ -1,6 +1,7 @@
 // token = window.localStorage.token;
 
 let link = [
+  {"href": "/resource/css/nav.css", rel: "stylesheet"},
   {"href": "/resource/css/main.css", rel: "stylesheet"},
   {"href": "/resource/css/topic.css", rel: "stylesheet"}
 ]

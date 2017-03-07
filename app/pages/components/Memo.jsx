@@ -1,25 +1,37 @@
 import React from 'react';
+import {DraftEditor} from './DraftEditor.jsx';
+import {keyBindingFn} from './DraftKeyBindingFn.jsx';
+import {isURL, requestFromServer} from '../../../resource/js/tool.js';
 
 export class Memo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      textValue: ''
+      inputValue: '',
+      attachmentPreview: null
     };
-    this.handle_keypress = this.handle_keypress.bind(this);
-    this.changeText = this.changeText.bind(this);
+    this.handle_paste = this.handle_paste.bind(this);
+    this.handle_xmlRequest_res = this.handle_xmlRequest_res.bind(this);
+    this.changeInput = this.changeInput.bind(this);
   };
 
-  handle_keypress(ev){
-    if(ev.charCode  === 13){
-      console.log('handle_keypress, enter pressed')
-      this.props.handle_dispatch_newMemoSubmit(this.textValueInput.value);
-      this.setState({textValue: ''});
+  handle_xmlRequest_res(res){
+    console.log('call handle_xmlRequest_res')
+    this.setState({attachmentPreview: res});
+  }
+
+  handle_paste(ev){
+    let dataStr = String(ev.clipboardData.getData('Text'))
+    let URLJudgment = isURL(dataStr);
+    console.log(URLJudgment.result, URLJudgment.url)
+    if(URLJudgment.result){
+      let url = URLJudgment.url;
+      requestFromServer(url, this.handle_xmlRequest_res);
     }
   }
 
-  changeText(ev){
-    this.setState({textValue: ev.target.value});
+  changeInput(ev){
+    this.setState({inputValue: ev.target.value});
   }
 
   render() {
@@ -27,24 +39,34 @@ export class Memo extends React.Component {
       function(obj){
         return (
           <li key={obj.memoIndex}>
-            {obj.text}<br/>
-            {obj.ref}
+            {obj.brickTopic}<br/>
+            {obj.memoTime}{obj.ref}
+            <span style={{float: 'right', fontSize:'0.8em'}}>X</span>
+            <span onClick="" style={{float: 'right', fontSize:'0.8em'}}>磚頭</span>
           </li>
         )
       }
     )
+
     return(
       <div className="memo">
-        <div id="addBox" style={{width: '500px'}}>
-          <textarea
-            className="add-input"
-            id="main_text"
-            value={this.state.textValue}
-            ref={(input) => {this.textValueInput = input; }}
-            onChange={this.changeText}
-            onKeyPress={this.handle_keypress}/>
-          <br/>
-          <p id="ref">p of ref</p><br/>
+        <div id="addBox" style={{width: '100%'}}>
+          <input
+            className= ""
+            style={{width: '88%', marginLeft:'5%', border:'none', borderBottom:'solid 1px'}}
+            id= "memoinput"
+            value= {this.state.inputValue}
+            ref={(input) => {this.inputValueInput = input;}}
+            onChange= {this.changeInput}
+            onPaste= {this.handle_paste}/>
+          <div className="memo-Editor">
+            <DraftEditor keyBindingFn={keyBindingFn.for_memo} returnState={false} handle_dispatch_newMemoSubmit={this.props.handle_dispatch_newMemoSubmit}/>
+          </div>
+          <p id="ref"></p><br/>
+          <div className="attachment-preview" style={{width: '92%', maxHeight:'50%',minHeight:'5%', marginLeft:'4%'}}>
+            <div>{this.state.attachmentPreview}</div>
+            <div>Should use 'object' Tag</div>
+          </div>
         </div>
         <ol>
           {memoRecords}

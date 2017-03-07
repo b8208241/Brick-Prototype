@@ -10,7 +10,7 @@ import {
 } from './sagas/modifier.js'
 import {
   defineTime,
-  rowDecide,
+  positionDecide,
   insertBrick,
   updateMemoRecords,
   updateTopic,
@@ -22,12 +22,14 @@ import {
 } from './sagas/topicData.js'
 
 import {
+  BRICKCONTENT_SUBMIT,
   SENDING_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
   NEWMEMO_SUBMIT,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
+  SUBMIT_BRICKCONTENT,
   SUBMIT_MEMO,
   SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
@@ -79,7 +81,7 @@ export function * newTopicSubmit(){
       select(getTopicData),
       call(defineTime)
     ]
-    let topicId = "topicBrick" + time;
+    let topicId = "topicBrick" + time.ms;
     let url = "/topic/" + topicId;
     let userName = data.userName;
     let topicText = data.inputTopic;
@@ -105,34 +107,89 @@ export function * newMemoSubmit (){
   while(true){
     let data = yield take(NEWMEMO_SUBMIT);
     console.log('saga, newMemoSubmit start')
-    const [topicThis, time] = yield [
+    const [topicThisState, time] = yield [
       select(getTopicThis, data.topicId),
       call(defineTime)
     ]
-    const row = yield call(rowDecide, topicThis)
-    const memoRecords = topicThis.memoRecords;
+    const topicThisData = yield call(updateObject, {}, topicThisState);
+    const position = yield call(positionDecide, topicThisData)
+    const memoRecords = topicThisData.memoRecords;
 
     let newRecord = {
       "memoIndex":memoRecords.length,
-      "id":"brickOriginal" + time,
+      "memoTime": time.localDate,
+      "id":"brickOriginal" + time.ms,
+      "brickTopic": data.brickTopic,
       "text":data.text,
       "ref":data.ref,
       "class":"cell",
       "index": 0,
-      "row": row
+      "row": position.row
     }
 
-    const [newMemoRecordsObj, newRowObject] = yield [
-      call(updateMemoRecords, memoRecords, newRecord),
-      call(insertBrick, topicThis[row], row, newRecord)
-    ]
+    const newMemoRecordsObj = yield call(updateMemoRecords, memoRecords, newRecord)
+    /*let newRowObject
+    if(position.insert){
+      newRowObject = yield call(insertBrick, topicThisData[position.row],  position.row, newRecord)
+    }else{
+      topicThisData[position.row][0] = newRecord;
+      newRowObject = yield call(createObject, position.row, topicThisData[position.row])
+    }
 
-    const memoRowObject = yield call(updateObject, newMemoRecordsObj, newRowObject)
-    const updatedTopicThis = yield call(updateTopic, topicThis, data.topicId, memoRowObject)
+    const memoRowObject = yield call(updateObject, newMemoRecordsObj, newRowObject)*/
+    const updatedTopicThis = yield call(updateTopic, topicThisData, data.topicId, newMemoRecordsObj)
 
     yield put({
       type: SUBMIT_MEMO,
       updatedTopicThis: updatedTopicThis
+    })
+  }
+}
+
+export function * brickContentSubmit (){
+  while(true){
+    const data = yield take(BRICKCONTENT_SUBMIT);
+    console.log('saga, brickContentSubmit start');
+
+    const time = yield call(defineTime);
+    const record = data.record;
+    let newRecord = {};
+    if(record.class === "cell"){
+      newRecord = {
+        "memoIndex":record.memoIndex,
+        "memoTime": record.memoTime,
+        "id":record.id,
+        "brickTopic": data.brickTopicData.blocks[0].text,
+        "text": data.brickTextData.blocks[0].text,
+        "ref": record.ref,
+        "class": record.class,
+        "index": record.index,
+        "row": record.row,
+        "draftBrickTopicData": data.brickTopicData,
+        "draftBrickTextData": data.brickTextData
+      }
+    }else{
+      newRecord = {
+        "memoIndex":"",
+        "memoTime": "",
+        "id":"brickOriginal" + time.ms,
+        "brickTopic": data.brickTopicData.blocks[0].text,
+        "text": data.brickTextData.blocks[0].text,
+        "ref": "",
+        "class": "cell",
+        "index": data.index,
+        "row": data.row,
+        "draftBrickTopicData": data.brickTopicData,
+        "draftBrickTextData": data.brickTextData
+      }
+    }
+
+    yield put({
+      type: SUBMIT_BRICKCONTENT,
+      newRecord: newRecord,
+      row: data.row,
+      index: data.index,
+      topicId: data.topicId
     })
   }
 }
@@ -146,7 +203,6 @@ export function * positionChangeSubmit (){
     const topicThisData = yield call(updateObject, {}, topicThisState);
     let [originRow, originIndex, targetIndex, targetRow] = [data.originRow, data.originIndex, data.newIndex, data.newRow];
     let originBrickContent = topicThisData[originRow][originIndex];
-    console.log(originBrickContent)
 
     let newbrickContent = {
       "class":"cell",
@@ -154,6 +210,7 @@ export function * positionChangeSubmit (){
       "row":targetRow,
       "id":originBrickContent.id,
       "memoIndex":originBrickContent.memoIndex,
+      "brickTopic": originBrickContent.brickTopic,
       "text":originBrickContent.text,
       "ref":originBrickContent.ref
     }
@@ -163,9 +220,11 @@ export function * positionChangeSubmit (){
       "row":originRow,
       "id":"",
       "memoIndex":"",
+      "brickTopic":"",
       "text":"",
       "ref":""
     }
+
     topicThisData[originRow][originIndex] = replaceCellDefault;
     topicThisData[targetRow][targetIndex] = newbrickContent;
 
@@ -185,4 +244,5 @@ export default function * rootSaga () {
   yield fork(newTopicSubmit)
   yield fork(positionChangeSubmit)
   yield fork(newMemoSubmit)
+  yield fork(brickContentSubmit)
 }

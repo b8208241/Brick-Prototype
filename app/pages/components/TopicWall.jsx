@@ -14,7 +14,24 @@ export class TopicWall extends React.Component {
   }
 
   handle_Click_Brick(brickIndex, brickRow){
-    this.state.isShowingContent ? this.setState({isShowingContent: false, rowShowing: null, indexShowing: null}) : this.setState({isShowingContent: true, rowShowing: brickRow, indexShowing: brickIndex});
+    let topicId = this.props.topicId;
+    let topicThis = this.props.topicData[topicId];
+    if(this.state.isShowingContent){
+      this.state.indexShowing !== brickIndex ?
+      this.setState({
+        indexShowing: brickIndex
+      }) :
+      this.setState({
+        isShowingContent: false,
+        rowShowing: null
+      })
+    }else{
+      this.setState({
+        isShowingContent: true,
+        rowShowing: brickRow,
+        indexShowing: brickIndex
+      })
+    }
   }
 
 
@@ -22,8 +39,6 @@ export class TopicWall extends React.Component {
     console.log('enter TopicWall')
     let topicId = this.props.topicId;
     let topicThis = this.props.topicData[topicId];
-    let rowShowing = this.state.rowShowing;
-    let indexShowing = this.state.indexShowing;
 
     return(
       <div className='topic-wall'>
@@ -39,8 +54,8 @@ export class TopicWall extends React.Component {
         {
           this.state.isShowingContent &&
           <div>
-            <ContentRow class="row" rowRecord = {topicThis[rowShowing]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
-            <ContentShow indexShowing = {indexShowing}  rowRecord = {topicThis[rowShowing]}/>
+            <ContentRow class="row" rowRecord = {topicThis[this.state.rowShowing]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
+            <ContentShow brickRecord = {topicThis[this.state.rowShowing][this.state.indexShowing]} rowShowing = {this.state.rowShowing} indexShowing = {this.state.indexShowing} handle_dispatch_brickContentSubmit={this.props.handle_dispatch_brickContentSubmit}/>
           </div>
         }
       </div>

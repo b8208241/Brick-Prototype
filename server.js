@@ -18,6 +18,7 @@ const ReactDOMServer = require('react-dom/server');
     const section = DOM.section;
     const div = DOM.div;
     const script = DOM.script;
+    const meta = DOM.meta;
     const link = DOM.link;
 const browserify = require('browserify');
 const babelify = require("babelify");
@@ -53,7 +54,8 @@ const container = {
       head(
         null,
         script({src: "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js", type: "text/javascript"}),
-        script({src: "https://unpkg.com/axios/dist/axios.min.js"})
+        script({src: "https://unpkg.com/axios/dist/axios.min.js"}),
+        meta({charSet: "utf-8"})
       )
     );
     var htmlBody = ReactDOMServer.renderToStaticMarkup(

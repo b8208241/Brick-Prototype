@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import { Route } from 'react-router'
-import {MainInputGroup} from './components/MainInputGroup.jsx'
+import {MainTopicGroup} from './components/MainTopicGroup.jsx'
 import {SelfNav} from './components/SelfNav.jsx'
 
 import {newTopicSubmit} from '../actions/Main.js';
@@ -26,19 +26,21 @@ class Main extends React.Component {
           userData: userData
         })
     })
+    
     return(
       <section>
         <section className='section-Main'>
+          <h2>WallScape</h2>
           <h4>{this.props.userData.userName}</h4>
-          <h1>Brick</h1>
-          <MainInputGroup contentsBucket={this.props.contentsBucket} topicData={this.props.topicData} handle_NewSubmit={this.handle_NewSubmit}/>
-        </section>
-        <section className='section-Self'>
-          <SelfNav/>
-          {children}
+          <MainTopicGroup topicData={this.props.topicData} handle_NewSubmit={this.handle_NewSubmit}/>
         </section>
       </section>
     )
+    //section not used, remain for demonstrating the usage of children, and illustrating the original design
+    /*<section className='section-Self'>
+      <SelfNav/>
+      {children}
+    </section>*/
   }
 }
 

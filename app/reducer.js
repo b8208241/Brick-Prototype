@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux'
-import {updateObject} from './sagas/modifier.js';
+import {updateObject,createObject} from './sagas/modifier.js';
 import {defineTopic, updateTopic, updateRow} from './sagas/topicData.js';
 
 import {
   SENDING_REQUEST,
   REQUEST_ERROR,
   CLEAR_ERROR,
-  SUBMIT_CONTENT,
+  SUBMIT_BRICKCONTENT,
   SUBMIT_MEMO,
   SUBMIT_POSITIONCHANGE,
   UPDATE_TOPIC
@@ -20,7 +20,14 @@ function topicData (state={}, action) {
 
     case SUBMIT_MEMO:
       console.log('SUBMIT_MEMO')
-      return updateObject(state, action.updatedTopicThis)
+      return updateObject(state, action.updatedTopicThis);
+
+    case SUBMIT_BRICKCONTENT:
+      console.log('SUBMIT_BRICKCONTENT')
+      let topicThis = state[action.topicId];
+      topicThis[action.row][action.index] = action.newRecord;
+      const updatedTopicThis = createObject(action.topicId, topicThis);
+      return updateObject(state, updatedTopicThis)
 
     case SUBMIT_POSITIONCHANGE:
       console.log('SUBMIT_POSITIONCHANGE')

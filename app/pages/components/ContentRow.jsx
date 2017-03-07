@@ -25,8 +25,10 @@ export class ContentRow extends React.Component {
   }
 
   handle_Click_Brick(event){
-    let clickedBrickIndex = Number($(event.target).parent().attr('id').charAt(0));
-    let clickedBrickRow = Number($(event.target).parent().attr('id').charAt(1));
+    event.preventDefault();
+    event.stopPropagation();
+    let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
+    let clickedBrickRow = Number($(event.target).attr('id').charAt(1));
     this.props.handle_Click_Brick(clickedBrickIndex, clickedBrickRow);
   }
 
@@ -51,11 +53,11 @@ export class ContentRow extends React.Component {
   }
 
   componentDidMount(){
-    console.log('component did mount')
+
   }
 
   componentDidUpdate(){
-    console.log('component did update')
+    
   }
 
   render(){
@@ -71,15 +73,16 @@ export class ContentRow extends React.Component {
       function(obj){
         if(obj.class == 'cell'){
           return (
-            <div key={obj.id} className={obj.class} id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id} onClick={handle_Click_Brick}>
-                <div className="brickOriginal"  id={String(obj.index) + String(obj.row) + "_" + obj.id} draggable="true" onDragStart={handle_Drag}>
-                  <div className="brick-content">{obj.text}</div>
-                  <p className="brick-ref">{obj.ref}</p>
+            <div key={obj.id} className={obj.class} id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
+                <div className="brickOriginal"  id={String(obj.index) + String(obj.row) + "_brick_" + obj.id} draggable="true" onDragStart={handle_Drag} onClick={handle_Click_Brick}>
+                  <div id={String(obj.index) + String(obj.row) + "_brickTopic_" + obj.id} className="brick-content-topic">{obj.brickTopic}</div>
+                  <div id={String(obj.index) + String(obj.row) + "_brickText_" + obj.id} className="brick-content-text">{obj.text}</div>
+                  <p id={String(obj.index) + String(obj.row) + "_brickRef_" + obj.id} className="brick-content-ref">{obj.ref}</p>
                 </div>
             </div>
           )
         }else{
-          return <div key={String(obj.index) + String(obj.row) + time} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onDragOver={preventDefault} onDrop={handle_Drop}/>;
+          return <div key={String(obj.index) + String(obj.row) + time} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onClick={handle_Click_Brick} onDragOver={preventDefault} onDrop={handle_Drop}/>;
         }
       }
     )

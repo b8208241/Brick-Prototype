@@ -19,7 +19,10 @@ export const defaultContentPage = {
 
 export function defineTime(){
   let date = new Date();
-  let time = date.getTime();
+  let time = {
+    ms: date.getTime(),
+    localDate: date.toLocaleDateString()
+  }
   return time;
 }
 
@@ -74,23 +77,27 @@ export function * insertBrick(targetRow, row, newRecord){
   return yield call(createObject, row, rowArray)
 }
 
-export function rowDecide(topicThis){
-  console.log('enter rowDecide')
-  if(topicThis["4"].length < 8){
-    return "4"
-  }else {
-    if(topicThis['3'].length < 10){
-      return "3"
-    }else {
-      if(topicThis['2'].length < 10){
-        return "2"
-      }else {
-        if(topicThis['1'].length < 10){
-          return "1"
-        }else {
-          alert("請刪減磚頭")
-        }
+export function positionDecide(topicThis){
+  console.log('enter positionDecide')
+  let position
+  let i
+  for(i = 4 ; i>0 ; i--){
+    console.log('enter positionDecide, for loop')
+    let rowRecords = topicThis[String(i)];
+    if((rowRecords.length)*2+i > 19 && rowRecords[0].class == "cell"){
+      console.log('enter positionDecide, for loop, next row')
+      continue;
+    }else{
+      console.log('enter positionDecide, for loop, row '+i)
+      if(rowRecords[0].class !== "cell"){
+        position = {row: i, insert: false};
+        break;
+      }else{
+        position = {row: i, insert: true};
+        break;
       }
     }
   }
+
+  return position;
 }

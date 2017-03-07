@@ -1,12 +1,4 @@
-.app {
-  width: 100%;
-}
-
-.container {
-  width: 100%;
-}
-
-section .section-Main{
+.section-Main{
   width: 1080px;
   height: 500px;
   position: relative;
@@ -17,7 +9,6 @@ section .section-Main{
 }
 
 .block {
-  display: none;
   width: 75%;
   height: 200px;
 }

@@ -1,66 +1,144 @@
 .topic-wall{
 	display: inline-block;
 	width: 90%;
+	height: 86%;
 	min-width: 960px;
 	margin-left: 5%;
 	font-size: 13px;
 }
 
+.topic-wall-showing{
+	width: 45%;
+	height: 60.8%;
+	position: absolute;
+	top: 26.5%;
+	margin-left: 25%;
+	box-sizing: border-box;
+	border-left: solid 1px;
+	border-color: #9C9898;
+	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	line-height: 1.4em;
+}
+
+.topic-wall-showing-topiceditor{
+	width: 80%;
+	height: 8%;
+	margin-top: 2%;
+	margin-left: 3%;
+	box-sizing: border-box;
+	border-bottom: solid 1px;
+	border-color: #9C9898;
+	font-size: 1.45em;
+}
+
+.topic-wall-showing-texteditor{
+	width: 83%;
+	height: 76%;
+	margin-top: 1%;
+	margin-left: 3%;
+	box-sizing: border-box;
+	border-color: #9C9898;
+	font-size: 1.2em;
+}
+
+.topic-wall-showing-bar {
+	width: 90%;
+	height: 9%;
+	position: absolute;
+	top: 92%;
+	margin-left: 3%;
+	box-sizing: border-box;
+	font-size: 1.5em;
+	color: #A8A8A8;
+}
+
 .topic-text {
-	width: 27%;
-	height: 135px;
+	width: 28%;
+	height: 32%;
 	display: inline-block;
 }
 
 .topic-text-header {
+	height: 60%;
 	font-size: 2em;
 	font-weight: 700;
 	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif, "微軟正黑體", "新細明體";
 }
 
+.topic-text p {
+	max-height: 38%;
+	overflow-y: hidden;
+}
+
 .topic-foundation {
-	width: 70%;
-	height: 50px;
+	width: 71.5%;
+	height: 30%;
 	display: inline-block;
 	position: absolute;
-	bottom: 5px;
-	background-color: #9C9898;
+	top: 62%;
+	margin-left: 0.5%;
+	box-sizing: border-box;
+	border-top: solid 2px;
+	border-bottom: solid 3px;
+	border-color: #9C9898;
+	background-color: transparent;
 }
 
 .button-memo {
-	width: 3%;
+	width: 5%;
 	position: absolute;
-	bottom: 15px;
+	top: 90%;
 	right: 1%;
 }
 
 .row {
 	width: 100%;
-	height: 132px;
+	height: 25%;
 	display: flex;
 }
 
 .rowFour {
-	width: 77%;
-	height: 132px;
+	width: 72%;
+	height: 25%;
 	display: flex;
 	float: right;
 }
 
 .memo {
-	width: 28%;
-	height: 300px;
+	width: 25%;
+	height: 58%;
 	position: absolute;
-	right: 9%;
-	bottom: 56px;
+	top: 29.8%;
+	right: 8%;
+	box-sizing: border-box;
 	background-color: #FFFFFF;
 	border: 1px solid;
 	border-radius: 25px;
 }
 
+.memo ol {
+	width: 85%;
+	padding: 0 0 0 5%;
+	margin: 0 4%;
+	overflow-wrap: break-word;
+	overflow-y: auto;
+	list-style-type: circle;
+	font-size: 1em;
+	font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif, "微軟正黑體", "新細明體";
+}
+
+.memo-Editor{
+	width:92%;
+	max-height: 60%;
+	margin-left: 4%;
+	border-bottom: solid 1px;
+	border-color: #9C9898;
+	overflow-y: auto;
+}
+
 .placeholder {
 	width: 10px;
-	height: 132px;
+	height: 100%;
 	display: inline-block;
 	background-color:transparent;
 	margin: 0;
@@ -83,6 +161,7 @@
 	border: 1px solid;
 	border-color: #A08C8A;
 	border-radius: 15px;
+	cursor: pointer;
 }
 
 .brickOriginal {
@@ -93,6 +172,7 @@
 	background-image:url(template_BrickOriginal.svg);
 	background-repeat:no-repeat;
 	position: relative;
+	cursor: pointer;
 }
 
 .brickOriginal-Blank{
@@ -101,26 +181,32 @@
 	background-color: #d3320d;
 }
 
-.brick-content {
-	width: 88%;
-	height: 64%;
-	margin: 0;
-	position:absolute;
-	top: 0%;
-	left: 6%;
+.brick-content-topic {
+	width: 80%;
+	height: 20%;
+	margin: 1% 3% 1% 4%;
 	line-height: 1.4em;
-	font-size: 1.3em;
+	font-size: 1.4em;
 	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.brick-ref {
+.brick-content-text {
+	width: 90%;
+	height: 55%;
+	margin-left: 4%;
+	line-height: 1.3em;
+	font-size: 1.1em;
+	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.brick-content-ref {
 	width: 80%;
 	height: 20%;
 	position: absolute;
 	top: 70%;
 	left: 8%;
 	line-height: 1.1em;
-	font-size: 1 em;
+	font-size: 1em;
 }
 
 .add-dialogbox {
