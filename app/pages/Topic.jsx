@@ -2,24 +2,24 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicText} from './components/TopicText.jsx';
-import {ButtonMemo} from './components/ButtonMemo.jsx'
-import {positionChangeSubmit, newMemoSubmit, brickContentSubmit} from '../actions/Topic.js';
+import {TopicNewEdit} from './components/TopicNewEdit.jsx';
+import {positionChangeSubmit, brickContentSubmit, newBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
   constructor(props){
     super(props);
     this.topicId = this.props.params.topicId;
-    this.handle_dispatch_newMemoSubmit = this.handle_dispatch_newMemoSubmit.bind(this);
+    this.handle_dispatch_newBrickSubmit = this.handle_dispatch_newBrickSubmit.bind(this);
     this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
     this.handle_dispatch_brickContentSubmit = this.handle_dispatch_brickContentSubmit.bind(this);
   }
 
-  handle_dispatch_newMemoSubmit(brickTopic, text, ref){
-    this.props.dispatch(newMemoSubmit(brickTopic, text, ref, this.topicId))
-  }
-
   handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
     this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId))
+  }
+
+  handle_dispatch_newBrickSubmit(newEditTopicData, newEditTextData){
+    this.props.dispatch(newBrickSubmit(newEditTopicData, newEditTextData, this.topicId))
   }
 
   handle_dispatch_brickContentSubmit(brickTopicData, brickTextData, row, index, record){
@@ -33,7 +33,7 @@ class Topic extends React.Component {
       <section style={{width: '100%', height: '100%'}}>
         <TopicWall topicData = {topicData} topicId={this.topicId} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit} handle_dispatch_brickContentSubmit={this.handle_dispatch_brickContentSubmit}/>
         <TopicText topicText={topicData[this.topicId].topic}/>
-        <ButtonMemo memoRecords={topicData[this.topicId].memoRecords} handle_dispatch_newMemoSubmit = {this.handle_dispatch_newMemoSubmit}/>
+        <TopicNewEdit handle_dispatch_newBrickSubmit = {this.handle_dispatch_newBrickSubmit}/>
       </section>
     )
   }

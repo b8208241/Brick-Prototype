@@ -3,13 +3,13 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
   LOGOUT,
-  NEWMEMO_SUBMIT,
+  NEWBRICK_SUBMIT,
   POSITIONCHANGE_SUBMIT,
   BRICKCONTENT_SUBMIT
 } from './constants.js'
 
-export function newMemoSubmit (brickTopic, text, ref, topicId) {
-  return {type: NEWMEMO_SUBMIT, brickTopic, text, ref, topicId}
+export function newBrickSubmit (newEditTopicData, newEditTextData, topicId) {
+  return {type: NEWBRICK_SUBMIT, newEditTopicData, newEditTextData, topicId}
 }
 
 export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {

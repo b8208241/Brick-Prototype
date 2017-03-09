@@ -28,7 +28,7 @@ export class DraftEditor extends React.Component {
       this.changeEditorState(newState);
       return 'handled';
     };
-    if(command === 'new memo submit'){
+    if(command === 'Enter Press in Memo'){
       let contentState = this.state.editorState.getCurrentContent();
       let firstBlock = contentState.getFirstBlock();
       let rawData = convertToRaw(contentState);
@@ -52,7 +52,6 @@ export class DraftEditor extends React.Component {
 
   render(){
     console.log('enter DraftEditor')
-    console.log(this.state.editorState)
     return(
       <Editor
         editorState={this.state.editorState}

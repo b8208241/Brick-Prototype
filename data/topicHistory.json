@@ -18,11 +18,11 @@
   ,
   "topicData":{
     "activeTopicRow":[
-      {"topicId":"topicBrick1484194606052","topic":"Louisa Coffe","url":"/topic/topicBrick1484194606052"},
+      {"topicId":"topicBrick1484194606052","topic":"2017美東","url":"/topic/topicBrick1484194606052"},
       {"topicId":"topicBrick1484212365971","topic":"日本自助旅行的各種資訊~~","url":"/topic/topicBrick1484212365971"}
     ],
     "topicBrick1484194606052":{
-      "topic":"Louisa Coffe",
+      "topic":"2017美東",
       "memoRecords":[],
       "1":[{"class":"cell-default cboxElement", "index":0, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"1", "id":"", "memoIndex":"", "text":"", "ref":""}],
       "2":[{"class":"cell-default cboxElement", "index":0, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":1, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":2, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":3, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"cell-default cboxElement", "index":4, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}, {"class":"placeholder", "index":5, "row":"2", "id":"", "memoIndex":"", "text":"", "ref":""}],

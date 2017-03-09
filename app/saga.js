@@ -1,31 +1,34 @@
 import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race, select} from 'redux-saga/effects'
-import connection from './sagas/connection.js'
-import {getTopicData, getTopicThis, getMemoRecords} from './sagas/getState.js'
+import connection from './sagas/basicForConnection.js'
+import {
+  getTopicData,
+  getTopicThis,
+  getMemoRecords
+} from './sagas/specialForState.js'
 import {
   updateObject,
   createObject,
-  spliceArray
-} from './sagas/modifier.js'
+  spliceArray,
+  defineTime
+} from './sagas/basicTool.js'
 import {
-  defineTime,
   positionDecide,
-  insertBrick,
   updateMemoRecords,
   updateTopic,
-  updateRow,
   brickCell,
   defaultCell,
   defaultPlaceHolder,
   defaultContentPage
-} from './sagas/topicData.js'
+} from './sagas/specialForTopic.js'
 
 import {
   BRICKCONTENT_SUBMIT,
   SENDING_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
+  NEWBRICK_SUBMIT,
   NEWMEMO_SUBMIT,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
@@ -128,20 +131,47 @@ export function * newMemoSubmit (){
     }
 
     const newMemoRecordsObj = yield call(updateMemoRecords, memoRecords, newRecord)
-    /*let newRowObject
-    if(position.insert){
-      newRowObject = yield call(insertBrick, topicThisData[position.row],  position.row, newRecord)
-    }else{
-      topicThisData[position.row][0] = newRecord;
-      newRowObject = yield call(createObject, position.row, topicThisData[position.row])
-    }
-
-    const memoRowObject = yield call(updateObject, newMemoRecordsObj, newRowObject)*/
     const updatedTopicThis = yield call(updateTopic, topicThisData, data.topicId, newMemoRecordsObj)
 
     yield put({
       type: SUBMIT_MEMO,
       updatedTopicThis: updatedTopicThis
+    })
+  }
+}
+
+export function * newBrickSubmit (){
+  while (true) {
+    const data = yield take(NEWBRICK_SUBMIT);
+    console.log('saga, newBrickSubmit start');
+
+    const [topicThisState, time] = yield [
+      select(getTopicThis, data.topicId),
+      call(defineTime)
+    ]
+    const position = yield call(positionDecide, topicThisState)
+
+    let newRecord = {};
+    newRecord = {
+      "memoIndex":"",
+      "memoTime": "",
+      "id":"brickOriginal" + time.ms,
+      "brickTopic": data.newEditTopicData.blocks[0].text,
+      "text": data.newEditTextData.blocks[0].text,
+      "ref": "",
+      "class": "cell",
+      "index": position.index,
+      "row": position.row,
+      "draftBrickTopicData": data.newEditTopicData,
+      "draftBrickTextData": data.newEditTextData
+    }
+
+    yield put({
+      type: SUBMIT_BRICKCONTENT,
+      newRecord: newRecord,
+      row: position.row,
+      index: position.index,
+      topicId: data.topicId
     })
   }
 }
@@ -243,6 +273,7 @@ export default function * rootSaga () {
   yield fork(logoutFlow)
   yield fork(newTopicSubmit)
   yield fork(positionChangeSubmit)
+  yield fork(newBrickSubmit)
   yield fork(newMemoSubmit)
   yield fork(brickContentSubmit)
 }

@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
-import {updateObject,createObject} from './sagas/modifier.js';
-import {defineTopic, updateTopic, updateRow} from './sagas/topicData.js';
+import {updateObject,createObject} from './sagas/basicTool.js';
+import {defineTopic, updateTopic, updateRow} from './sagas/specialForTopic.js';
 
 import {
   SENDING_REQUEST,

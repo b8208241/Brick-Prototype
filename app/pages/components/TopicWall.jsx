@@ -1,6 +1,7 @@
 import React from 'react';
 import {ContentRow} from './ContentRow.jsx'
 import {ContentShow} from './ContentShow.jsx'
+import {CellMemo} from './CellMemo.jsx'
 
 export class TopicWall extends React.Component {
   constructor(props){
@@ -11,6 +12,7 @@ export class TopicWall extends React.Component {
       indexShowing: null
     }
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
+    this.handle_Click_CellMemo = this.handle_Click_CellMemo.bind(this);
   }
 
   handle_Click_Brick(brickIndex, brickRow){
@@ -23,7 +25,8 @@ export class TopicWall extends React.Component {
       }) :
       this.setState({
         isShowingContent: false,
-        rowShowing: null
+        rowShowing: null,
+        indexShowing: null
       })
     }else{
       this.setState({
@@ -34,6 +37,9 @@ export class TopicWall extends React.Component {
     }
   }
 
+  handle_Click_CellMemo(){
+    console.log('handle_Click_CellMemo')
+  }
 
   render() {
     console.log('enter TopicWall')
@@ -46,9 +52,11 @@ export class TopicWall extends React.Component {
           !this.state.isShowingContent &&
           <div>
             <ContentRow id="rowOne" class="row" rowRecord = {topicThis[1]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
-            <ContentRow id="rowTwo" class="row" rowRecord = {topicThis[2]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
+            <ContentRow id="rowTwo" class="row" rowRecord = {topicThis[2]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}>
+              <CellMemo handle_Click_CellMemo={this.handle_Click_CellMemo}/>
+            </ContentRow>
             <ContentRow id="rowThree" class="row" rowRecord = {topicThis[3]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
-            <ContentRow id="rowFour" class="rowFour" rowRecord = {topicThis[4]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
+            <ContentRow id="rowFour" class="row-four" rowRecord = {topicThis[4]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
           </div>
         }
         {

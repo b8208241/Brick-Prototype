@@ -57,7 +57,7 @@ export class ContentRow extends React.Component {
   }
 
   componentDidUpdate(){
-    
+
   }
 
   render(){
@@ -91,6 +91,7 @@ export class ContentRow extends React.Component {
       <div className={this.props.class} id={this.props.id}>
         <div className="placeholder"></div>
         {contentBricks}
+        {this.props.children}
       </div>
     )
   }
