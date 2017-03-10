@@ -1,7 +1,6 @@
 import React from 'react';
 import {ActiveTopicRow} from './ActiveTopicRow.jsx'
 import {NewTopicCreate} from './NewTopicCreate.jsx'
-import {ContentsBucket} from './ContentsBucket.jsx'
 
 export class MainTopicGroup extends React.Component {
   constructor(props){

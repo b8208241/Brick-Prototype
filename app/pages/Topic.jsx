@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicText} from './components/TopicText.jsx';
-import {TopicNewEdit} from './components/TopicNewEdit.jsx';
 import {positionChangeSubmit, brickContentSubmit, newBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
@@ -31,9 +30,8 @@ class Topic extends React.Component {
     let topicData = this.props.topicData;
     return(
       <section style={{width: '100%', height: '100%'}}>
-        <TopicWall topicData = {topicData} topicId={this.topicId} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit} handle_dispatch_brickContentSubmit={this.handle_dispatch_brickContentSubmit}/>
+        <TopicWall topicData = {topicData} topicId={this.topicId} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit} handle_dispatch_brickContentSubmit={this.handle_dispatch_brickContentSubmit} handle_dispatch_newBrickSubmit={this.handle_dispatch_newBrickSubmit}/>
         <TopicText topicText={topicData[this.topicId].topic}/>
-        <TopicNewEdit handle_dispatch_newBrickSubmit = {this.handle_dispatch_newBrickSubmit}/>
       </section>
     )
   }

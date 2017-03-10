@@ -7,7 +7,7 @@ export class TopicText extends React.Component {
 
   render() {
     return(
-      <div style={{width: '88%', marginLeft: '4%', position: 'relative', top: '-18%', zIndex: '-1'}}>
+      <div style={{width: '88%', marginLeft: '4%', position: 'relative', top: '-19.5%', zIndex: '-1'}}>
         <div className="topic-text">
           <div className="topic-text-header">{this.props.topicText}</div>
           <div style={{width: '65%', position: 'relative', left: '10%', border: '1px solid'}}></div>

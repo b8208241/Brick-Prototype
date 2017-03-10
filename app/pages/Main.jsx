@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux'
 import { Route } from 'react-router'
 import {MainTopicGroup} from './components/MainTopicGroup.jsx'
-import {SelfNav} from './components/SelfNav.jsx'
 
 import {newTopicSubmit} from '../actions/Main.js';
 
@@ -26,7 +25,7 @@ class Main extends React.Component {
           userData: userData
         })
     })
-    
+
     return(
       <section>
         <section className='section-Main'>
@@ -37,6 +36,7 @@ class Main extends React.Component {
       </section>
     )
     //section not used, remain for demonstrating the usage of children, and illustrating the original design
+    //SelfNav was deleted in later version, find in prototype-12-16 or online commit
     /*<section className='section-Self'>
       <SelfNav/>
       {children}

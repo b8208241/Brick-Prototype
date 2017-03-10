@@ -1,6 +1,6 @@
 import React from 'react';
-import {DraftEditor} from './DraftEditor.jsx';
-import {keyBindingFn} from './DraftKeyBindingFn.js';
+import {DraftEditor} from './draft/DraftEditor.jsx';
+import {keyBindingFn} from './draft/KeyBindingFn.js';
 import {isURL, requestFromServer} from '../../../resource/js/tool.js';
 
 export class Memo extends React.Component {
