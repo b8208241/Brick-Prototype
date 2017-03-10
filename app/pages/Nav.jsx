@@ -21,7 +21,7 @@ class Nav extends React.Component {
     return(
       <div className="app">
         <ul className="nav">
-          <li><Link to='/'>Nav bar: 回Main Page</Link></li>
+          <li style={{display: 'inline-block'}}><Link to='/'>Nav bar: 回Main Page</Link></li>
         </ul>
         <div className="container">
           {children}

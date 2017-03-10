@@ -1,7 +1,7 @@
 import React from 'react';
 import {ContentRow} from './ContentRow.jsx'
 import {ContentShow} from './ContentShow.jsx'
-import {CellMemo} from './CellMemo.jsx'
+import {ContentCreate} from './ContentCreate.jsx'
 
 export class TopicWall extends React.Component {
   constructor(props){
@@ -12,7 +12,6 @@ export class TopicWall extends React.Component {
       indexShowing: null
     }
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
-    this.handle_Click_CellMemo = this.handle_Click_CellMemo.bind(this);
   }
 
   handle_Click_Brick(brickIndex, brickRow){
@@ -37,10 +36,6 @@ export class TopicWall extends React.Component {
     }
   }
 
-  handle_Click_CellMemo(){
-    console.log('handle_Click_CellMemo')
-  }
-
   render() {
     console.log('enter TopicWall')
     let topicId = this.props.topicId;
@@ -51,10 +46,10 @@ export class TopicWall extends React.Component {
         {
           !this.state.isShowingContent &&
           <div>
-            <ContentRow id="rowOne" class="row" rowRecord = {topicThis[1]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
-            <ContentRow id="rowTwo" class="row" rowRecord = {topicThis[2]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}>
-              <CellMemo handle_Click_CellMemo={this.handle_Click_CellMemo}/>
+            <ContentRow id="rowOne" class="row" rowRecord = {topicThis[1]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}>
+              <ContentCreate handle_dispatch_newBrickSubmit={this.props.handle_dispatch_newBrickSubmit}/>
             </ContentRow>
+            <ContentRow id="rowTwo" class="row" rowRecord = {topicThis[2]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
             <ContentRow id="rowThree" class="row" rowRecord = {topicThis[3]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
             <ContentRow id="rowFour" class="row-four" rowRecord = {topicThis[4]} topicId = {topicId} handle_Click_Brick = {this.handle_Click_Brick} handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}/>
           </div>
