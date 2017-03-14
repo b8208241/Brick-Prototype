@@ -24,20 +24,19 @@ export class ContentShow extends React.Component {
 
   render() {
     console.log('enter ContentShow')
-    console.log(this.props.brickRecord)
-    let [brickTopicState, brickTextState] = [false, false]
+    let [brickTopicData, brickTextData] = [false, false]
     if(this.props.brickRecord.class === "cell"){
-      brickTopicState = convertFromRaw(this.props.brickRecord.draftBrickTopicData);
-      brickTextState = convertFromRaw(this.props.brickRecord.draftBrickTextData);
+      brickTopicData = convertFromRaw(this.props.brickRecord.draftBrickTopicData);
+      brickTextData = convertFromRaw(this.props.brickRecord.draftBrickTextData);
     }
 
     return(
       <div className="topic-wall-showing">
         <div className="topic-wall-showing-topiceditor">
-          <DraftEditor contentState={brickTopicState} returnState={true} keyBindingFn={keyBindingFn.for_ContentShowing_BrickTopic} updateEditorState={this.updateBrickTopicState}/>
+          <DraftEditor contentState={brickTopicData} returnState={true} keyBindingFn={keyBindingFn.for_ContentShowing_BrickTopic} updateEditorState={this.updateBrickTopicState}/>
         </div>
         <div className="topic-wall-showing-texteditor">
-          <DraftEditor contentState={brickTextState} returnState={true} keyBindingFn={keyBindingFn.for_ContentShowing_BrickText} updateEditorState={this.updateBrickTextState}/>
+          <DraftEditor contentState={brickTextData} returnState={true} keyBindingFn={keyBindingFn.for_ContentShowing_BrickText} updateEditorState={this.updateBrickTextState}/>
         </div>
         <div className="topic-wall-showing-bar" onClick={this.handle_Click}>Save</div>
       </div>
