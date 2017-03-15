@@ -1,24 +1,29 @@
 import React from 'react';
-import {DraftEditor} from './draft/DraftEditor.jsx';
 import {keyBindingFn} from './draft/KeyBindingFn.js';
-import {convertToRaw, convertFromRaw} from 'draft-js';
+import {compositeDecorator} from './draft/CompositeDecorator.jsx';
+import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw, convertFromRaw} from 'draft-js';
 
 export class EditBrickCol extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      contentEditor: null,
-      tagEditor: null
+      tagEditorState: this.brickTagData? EditorState.createWithContent(this.brickTagData) : EditorState.createEmpty(compositeDecorator.tagEditor),
+      contentEditorState: this.brickContentData? EditorState.createWithContent(this.brickContentData) : EditorState.createEmpty()
     };
     this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
-    this.update_ContentEditor = (newState) => this.setState({contentEditor: newState});
-    this.update_TagEditor = (newState) => this.setState({tagEditor: newState});
+    this.changeTagEditorState = (newState) => this.setState({tagEditorState: newState});
+    this.changeContentEditorState = (newState) => this.setState({contentEditorState: newState});
+    this.handle_Click_ContentEditor = () => this.refs.contentEditor.focus();
+    this.handle_Click_TagEditor = () => this.refs.tagEditor.focus();
   }
 
-  handle_Click_BrickSubmit(){
-    let tagEditorData = convertToRaw(this.state.tagEditor.getCurrentContent());
-    let contentEditorData = convertToRaw(this.state.contentEditor.getCurrentContent());
-    this.props.handle_dispatch_newBrickSubmit(tagEditorData, contentEditorData);
+  handle_Click_BrickSubmit(event){
+    event.preventDefault();
+    event.stopPropagation();
+
+    let tagEditorData = convertToRaw(this.state.tagEditorState.getCurrentContent());
+    let contentEditorData = convertToRaw(this.state.contentEditorState.getCurrentContent());
+    this.props.handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData);
   }
 
   componentWillMount(){
@@ -28,32 +33,41 @@ export class EditBrickCol extends React.Component {
   }
 
   componentWillUpdate(){
-    console.log('componentWillUpdate')
-    console.log(this.props.editingBrick)
-    if(this.props.editingBrick){
-      console.log('componentWillUpdate, editing old brick')
-      this.brickTagData = convertFromRaw(this.props.editingBrick.draftBrickTopicData);
-      this.brickContentData = convertFromRaw(this.props.editingBrick.draftBrickTextData);
-    }
+    console.log('EditBrickCol will Update')
+  }
+
+  componentDidUpdate(){
+    console.log('EditBrickCol did Update')
   }
 
   render(){
     return(
       <div className="topic-edit-brickcol">
-        <div style={{width:'80%', marginLeft: '5%', borderBottom: 'solid 1px', borderColor: '#9C9898'}}>
-          <DraftEditor returnState={true} contentState={this.brickTagData} updateEditorState={this.update_TagEditor} keyBindingFn={keyBindingFn.default}/>
+        <div className="topic-edit-brickcol-tageditor" onClick={this.handle_Click_TagEditor}>
+          <Editor
+            editorState={this.state.tagEditorState}
+            onChange={this.changeTagEditorState}
+            ref="tagEditor"
+            placeholder="#..."
+            keyBindingFn={keyBindingFn.default}
+            />
         </div>
         <div style={{marginLeft: '6%'}}>
           #...推薦hashtag
         </div>
-        <div style={{width: "80%", minHeight: '30%', marginLeft: "2%", marginTop: '2%', borderLeft: 'solid 1px', borderColor: '#9C9898'}}>
-          <DraftEditor returnState={true} contentState={this.brickContentData} updateEditorState={this.update_ContentEditor} keyBindingFn={keyBindingFn.default}/>
+        <div className="topic-edit-brickcol-contentEditor" onClick={this.handle_Click_ContentEditor}>
+          <Editor
+            editorState={this.state.contentEditorState}
+            onChange={this.changeContentEditorState}
+            ref="contentEditor"
+            keyBindingFn={keyBindingFn.default}
+            />
         </div>
         <input
           type="submit"
           value="save"
           onClick={this.handle_Click_BrickSubmit}
-          style={{width: '15%', marginTop: '5%', float: 'right', borderRadius: "3px", backgroundColor: '#466656', color: '#FFFFFF'}}
+          style={{width: '15%', marginTop: '5%', float: 'right', borderRadius: "3px", backgroundColor: '#466656', fontSize: '1em', color: '#FFFFFF'}}
         />
       </div>
     )

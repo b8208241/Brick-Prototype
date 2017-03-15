@@ -1,5 +1,4 @@
 import React from 'react';
-import {Memo} from './Memo.jsx';
 import {ModalBox} from './ModalBox.jsx';
 
 export class ContentRow extends React.Component {

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicManipulate} from './components/TopicManipulate.jsx';
 import {EditBrickCol} from './components/EditBrickCol.jsx'
-import {positionChangeSubmit, brickContentSubmit, newBrickSubmit} from '../actions/Topic.js';
+import {positionChangeSubmit, brickContentSubmit, EditedBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
   constructor(props){
@@ -17,9 +17,8 @@ class Topic extends React.Component {
     this.topicId = this.props.params.topicId;
     this.handle_Click_Edit = () => this.state.isEditing ? this.setState({isEditing: false}) : this.setState({isEditing: true});
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
-    this.handle_dispatch_newBrickSubmit = this.handle_dispatch_newBrickSubmit.bind(this);
+    this.handle_dispatch_EditedBrickSubmit = this.handle_dispatch_EditedBrickSubmit.bind(this);
     this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
-    this.handle_dispatch_brickContentSubmit = this.handle_dispatch_brickContentSubmit.bind(this);
   }
 
   handle_Click_Brick(clickedBrickRow, clickedBrickIndex){
@@ -34,17 +33,18 @@ class Topic extends React.Component {
     this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId))
   }
 
-  handle_dispatch_newBrickSubmit(newEditTopicData, newEditTextData){
-    this.props.dispatch(newBrickSubmit(newEditTopicData, newEditTextData, this.topicId))
-  }
-
-  handle_dispatch_brickContentSubmit(brickTopicData, brickTextData, row, index, record){
-    this.props.dispatch(brickContentSubmit(brickTopicData, brickTextData, row, index, record, this.topicId))
+  handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData){
+    this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.topicId))
   }
 
   render(){
     console.log('enter page Topic')
     let topicData = this.props.topicData;
+    let tagList = topicData[this.topicId].hashTag.map(
+      function(obj){
+        return <li key={obj}>{obj}</li>
+      }
+    )
     return(
       <section style={{width: '100%', height: '100%'}}>
         <div className="topic-text">
@@ -54,13 +54,13 @@ class Topic extends React.Component {
         </div>
         <div className="topic-taggroup">
           <ul style={{listStyleType: 'none'}}>
-            <li><a href="#">#hashtag "1"</a></li>
+            {tagList}
           </ul>
         </div>
         {
           this.state.isEditing ?
           <div>
-            <EditBrickCol editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false} handle_dispatch_newBrickSubmit={this.handle_dispatch_newBrickSubmit}/>
+            <EditBrickCol editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false} handle_dispatch_EditedBrickSubmit={this.handle_dispatch_EditedBrickSubmit}/>
             <div style={{width:'60%', position: 'absolute', top: '28%', left:'35%'}}>
               <div style={{width: '10%', height: '71.25vh', float:'right'}}>
                 <input

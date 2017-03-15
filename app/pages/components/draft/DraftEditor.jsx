@@ -6,11 +6,12 @@ export class DraftEditor extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      editorState: this.props.contentState? EditorState.createWithContent(this.props.contentState) : EditorState.createEmpty()
+      editorState: this.props.contentState? EditorState.createWithContent(this.props.contentState) : EditorState.createEmpty(this.props.compositeDecorator)
     };
     this.changeEditorState = this.changeEditorState.bind(this);
     this.handle_KeyCommand = this.handle_KeyCommand.bind(this);
   }
+
 
   changeEditorState(newState) {
     this.setState({editorState: newState});
@@ -33,29 +34,28 @@ export class DraftEditor extends React.Component {
         this.changeEditorState(EditorState.createEmpty());
         return 'handled';
       }
-      if(command === "Enter Press in Memo"){
-        let contentState = this.state.editorState.getCurrentContent();
-        let firstBlock = contentState.getFirstBlock();
-        let rawData = convertToRaw(contentState);
-        this.props.handle_dispatch_newMemoSubmit(firstBlock.getText());
-        return 'handled';
-      }
     return 'not-handled';
   }
 
-  componentWillMount() {
+  componentDidMount() {
 
   }
 
-  componentWillUpdate() {
-
+  componentDidUpdate() {
+    if(this.props.focusState){
+      console.log('DraftEditor did Update, focusState true')
+      this.refs.editor.focus()
+    }
   }
 
   render(){
+    console.log('enter DraftEditor')
+    console.log(this.state.editorState)
     return(
       <Editor
         editorState={this.state.editorState}
         onChange={this.changeEditorState}
+        ref="editor"
         keyBindingFn={this.props.keyBindingFn}
         handleKeyCommand={this.handle_KeyCommand}
         />

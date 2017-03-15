@@ -3,21 +3,16 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
   LOGOUT,
-  NEWBRICK_SUBMIT,
+  EDITEDBRICK_SUBMIT,
   POSITIONCHANGE_SUBMIT,
-  BRICKCONTENT_SUBMIT
 } from './constants.js'
 
-export function newBrickSubmit (newEditTopicData, newEditTextData, topicId) {
-  return {type: NEWBRICK_SUBMIT, newEditTopicData, newEditTextData, topicId}
+export function EditedBrickSubmit(tagEditorData, contentEditorData, topicId) {
+  return {type: EDITEDBRICK_SUBMIT, tagEditorData, contentEditorData, topicId}
 }
 
 export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {
   return {type: POSITIONCHANGE_SUBMIT, originIndex, originRow, newIndex, newRow, topicId}
-}
-
-export function brickContentSubmit(brickTopicData, brickTextData, row, index, record, topicId) {
-  return {type: BRICKCONTENT_SUBMIT, brickTopicData, brickTextData, row, index, record, topicId}
 }
 
 export function requestError (error) {
