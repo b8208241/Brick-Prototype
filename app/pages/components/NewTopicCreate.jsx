@@ -13,16 +13,16 @@ export class NewTopicCreate extends React.Component {
 
   render() {
     return(
-      <div className="topic-New">
-      <input
-        type="text"
-        ref={(input) => this.inputTopic = input}
-      />
-      <input
-        type="submit"
-        value="新增"
-        onClick={this.handle_NewSubmit}
-      />
+      <div className="main-top-topicinputgroup">
+        <input
+          type="text"
+          ref={(input) => this.inputTopic = input}
+          className="main-top-topicinputgroup-text"
+        />
+      <span
+          className="main-top-topicinputgroup-submit"
+          onClick={this.handle_NewSubmit}
+      >建立</span>
       </div>
     )
   }

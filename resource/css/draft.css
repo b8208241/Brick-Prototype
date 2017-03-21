@@ -1,0 +1,16 @@
+.public-DraftEditorPlaceholder-root{
+  width:100%;
+  margin:0 1;
+  position:absolute;
+  text-align:left;
+  color:#9197a3;
+  z-index:0;
+}
+
+.public-DraftEditorPlaceholder-hasFocus{
+  color:#bdc1c9;
+}
+
+.DraftEditorPlaceholder-hidden{
+  display: none;
+}

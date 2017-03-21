@@ -1,18 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import { Route } from 'react-router'
-import {MainTopicGroup} from './components/MainTopicGroup.jsx'
+import {ActiveTopicRow} from './components/ActiveTopicRow.jsx'
+import {NewTopicCreate} from './components/NewTopicCreate.jsx'
 
 import {newTopicSubmit} from '../actions/Main.js';
 
 class Main extends React.Component {
   constructor(props){
     super(props);
-    this.handle_NewSubmit = this.handle_NewSubmit.bind(this);
+    this.handle_dispatch_NewTopicSubmit = this.handle_dispatch_NewTopicSubmit.bind(this);
   };
 
-  handle_NewSubmit(inputTopic){
-    this.props.dispatch(newTopicSubmit(inputTopic, this.props.userData.userName));
+  handle_dispatch_NewTopicSubmit(inputTopic){
+    this.props.dispatch(newTopicSubmit(inputTopic));
   }
 
   render() {
@@ -27,11 +28,14 @@ class Main extends React.Component {
     })
 
     return(
-      <section>
-        <section className='section-Main'>
-          <h2>WallScape</h2>
-          <h4>{this.props.userData.userName}</h4>
-          <MainTopicGroup topicData={this.props.topicData} handle_NewSubmit={this.handle_NewSubmit}/>
+      <section style={{width: '100%', height: '100%', fontSize: '18pt'}}>
+        <section className="main-top">
+          <div className="main-top-logogroup">
+            <div className="main-top-logogroup-logo">WallScape</div>
+            <div className="main-top-logogroup-username">{this.props.userData.userName}</div>
+          </div>
+          <NewTopicCreate handle_NewSubmit = {this.handle_dispatch_NewTopicSubmit}/>
+          <ActiveTopicRow activeTopicRow = {this.props.topicData.activeTopicRow}/>
         </section>
       </section>
     )
@@ -48,8 +52,7 @@ function mapStateToProps (state) {
   return {
     token: state.others.token,
     topicData: state.topicData,
-    userData: state.others.userData,
-    contentsBucket: state.others.contentsBucket
+    userData: state.others.userData
   }
 }
 

@@ -5,56 +5,12 @@
 	margin-left: 5%;
 }
 
-.topic-wall-showing{
-	width: 45%;
-	height: 60.8%;
-	position: absolute;
-	top: 26.5%;
-	margin-left: 25%;
-	box-sizing: border-box;
-	border-left: solid 1px;
-	border-color: #9C9898;
-	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	line-height: 1.4em;
-}
-
-.topic-wall-showing-topiceditor{
-	width: 80%;
-	height: 8%;
-	margin-top: 2%;
-	margin-left: 3%;
-	box-sizing: border-box;
-	border-bottom: solid 1px;
-	border-color: #9C9898;
-	font-size: 1.45em;
-}
-
-.topic-wall-showing-texteditor{
-	width: 83%;
-	height: 76%;
-	margin-top: 1%;
-	margin-left: 3%;
-	box-sizing: border-box;
-	border-color: #9C9898;
-	font-size: 1.2em;
-}
-
-.topic-wall-showing-bar {
-	width: 90%;
-	height: 9%;
-	position: absolute;
-	top: 92%;
-	margin-left: 3%;
-	box-sizing: border-box;
-	font-size: 1.5em;
-	color: #A8A8A8;
-}
-
 .topic-text {
 	width: 30%;
 	height: 22.5%;
 	position: absolute;
 	left: 63%;
+	font-size: 16px;
 	z-index: 1;
 }
 
@@ -62,7 +18,6 @@
 	height: 60%;
 	font-size: 2em;
 	font-weight: 700;
-	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif, "微軟正黑體", "新細明體";
 }
 
 .topic-text p {
@@ -75,7 +30,14 @@
 	height: 22.5%;
 	position: absolute;
 	left: 51%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	font-size: 18px;
 	z-index: 1;
+}
+
+.topic-taggroup ul {
+	list-style: none;
 }
 
 .topic-foundation {
@@ -92,22 +54,95 @@
 	background-color: transparent;
 }
 
-.topic-edit-brickcol{
-	width: 30%;
-	margin-left: 5%;
-	box-sizing: border-box;
+.topic-ref {
+	 width: 60%;
+	 position: absolute;
+	 top: 28%;
+	 left:32%;
+	 font-size:8px;
 }
 
-.topic-newedit{
-	width: 27%;
-	min-height: 12%;
-	position: absolute;
-	top: 6%;
-	margin-left: 65%;
+.topic-ref-scroll {
+	width: 90%;
+	height: 71.25vh;
+	float: right;
+}
+
+.topic-ref-side {
+	width: 10%;
+	height: 71.25vh;
+	float:right;
+}
+
+.topic-ref-side-input-close {
+	width: 100%;
+	height: 15%;
+	margin-top: 3%;
+	border: none;
 	background-color: #FFFFFF;
+	box-shadow: 0.5px 0.5px 1px;
+	text-align: center;
+	font-size: 3em;
+	color: #9C9898;
+	cursor: pointer;
+}
+
+
+.topic-edit-brickcol{
+	width: 27%;
+	height: 86%;
 	box-sizing: border-box;
-	border: solid 2px;
-	z-index: 1;
+	position: absolute;
+	top: 10%;
+	left: 5%;
+	box-shadow: 2px 1px 1.5px;
+	font-size: 14px;
+}
+
+.topic-edit-brickcol-tageditor{
+	width: 80%;
+	height: 6%;
+	margin-left: 5%;
+	padding: 1.5%;
+	border-bottom: solid 1px;
+	border-color: #9C9898;
+	font-size: 1.2em;
+}
+
+.topic-edit-brickcol-contentEditor {
+	width: 80%;
+	height: 70%;
+	margin-left: 5%;
+	margin-top: 5%;
+	padding: 0 2%;
+	border-left: solid 1px;
+	border-color: #9C9898;
+	font-size: 1.2em;
+}
+
+.topic-edit-brickcol-contentEditor-stylegroup{
+	width: 95%;
+	margin-bottom: 2%;
+	border-bottom: solid 1px;
+	border-color: #9C9898;
+	font-size: 1em;
+	cursor: pointer;
+}
+
+.topic-edit-brickcol-input-save{
+	width: 25%;
+	margin-right: 5%;
+	padding: 0.5%;
+	float: right;
+	border-color: transparent;
+	border-radius: 3px;
+	border-style: none;
+	border-image: none;
+	background-color: #466656;
+	text-align: center;
+	font-size: 1.8em;
+	color: #FFFFFF;
+	cursor: pointer;
 }
 
 .row {
@@ -127,38 +162,6 @@
 	border-color: #9C9898;
 }
 
-.memo {
-	width: 25%;
-	height: 58%;
-	position: absolute;
-	top: 29.8%;
-	right: 8%;
-	box-sizing: border-box;
-	background-color: #FFFFFF;
-	border: 1px solid;
-	border-radius: 25px;
-}
-
-.memo ol {
-	width: 85%;
-	padding: 0 0 0 5%;
-	margin: 0 4%;
-	overflow-wrap: break-word;
-	overflow-y: auto;
-	list-style-type: circle;
-	font-size: 1em;
-	font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif, "微軟正黑體", "新細明體";
-}
-
-.memo-Editor{
-	width:92%;
-	max-height: 60%;
-	margin-left: 4%;
-	border-bottom: solid 1px;
-	border-color: #9C9898;
-	overflow-y: auto;
-}
-
 .placeholder {
 	height: 100%;
 	flex-basis: 2%;
@@ -172,64 +175,29 @@
 	height: 97%;
 	flex-basis: 100%;
 	background-color: #FFFFFF;
+	box-sizing: border-box;
 }
 
 .cell-default {
 	height: 97%;
 	flex-basis: 100%;
 	background-color: #FFFFFF;
+	box-sizing: border-box;
 	border: 1px solid;
 	border-color: #9C9898;
 	border-radius: 15px;
 	cursor: pointer;
 }
 
-.cell-create{
-	height: 98%;
-	flex-basis: 50%;
-	background-color: transparent;
-	box-sizing: border-box;
-	border: 3px solid;
-	border-color: #000000;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.cell-create-edit{
-	width: 48%;
-	height: 42.5%;
-	position: absolute;
-	top: 5.2%;
-	left: 47%;
-	padding: 2% 2% 1% 2%;
+.cell-editing {
+	height: 97%;
+	flex-basis: 100%;
 	background-color: #FFFFFF;
 	box-sizing: border-box;
-	border-radius: 5px;
-	z-index: 1;
-	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	line-height: 1.4em;
-}
-
-.cell-create-edit-topic{
-	display: inline-block;
-	width: 80%;
-	height: 15%;
-	box-sizing: border-box;
-	border-bottom: solid 2px;
-	border-color: #9C9898;
-	font-size: 1.4em;
-}
-
-.cell-create-edit-text{
-	display: inline-block;
-	width: 80%;
-	height: 76%;
-	margin-top: 2%;
-	box-sizing: border-box;
-	border-top: solid 1px;
-	border-bottom: solid 1px;
-	border-color: #9C9898;
-	font-size: 1.2em;
+	border: 2px solid;
+	border-color: #EFB600;
+	border-radius: 15px;
+	box-shadow: 1px 1px 2px 3px #EFB600;
 }
 
 .brickOriginal {
@@ -237,29 +205,32 @@
   height: 100%;
 	margin:0;
 	padding:0;
-	background-image:url(template_BrickOriginal.svg);
-	background-repeat:no-repeat;
+	background-color: #FFFFFF;
 	position: relative;
-	cursor: pointer;
 	border: 1px solid;
 	border-color: #EA2F11;
 	border-radius: 15px;
+	box-shadow: 0.5px 1px 2.5px;
+	background-image:url(template_BrickOriginal.svg);
+	background-repeat:no-repeat;
+	cursor: pointer;
 }
 
 .brickOriginal-showing{
-	width:160%;
-	height: 220%;
+	width:35vw;
+	height: 250%;
 	margin:0;
 	padding:0;
+	position: relative;
+	top: -120%;
 	background-color: #FFFFFF;
 	background-image:url(template_BrickOriginal.svg);
 	background-repeat:no-repeat;
-	position: relative;
-	top: -120%;
-	z-index: 2;
 	border: 1px solid;
 	border-color: #EA2F11;
 	border-radius: 15px;
+	box-shadow: 1px 2px 3px;
+	z-index: 2;
 }
 
 .brick-content-taggroup {
@@ -270,7 +241,6 @@
 	overflow-y: hidden;
 	line-height: 1.1em;
 	font-size: 1.1em;
-	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .brick-content-text {
@@ -281,34 +251,6 @@
 	overflow-y: hidden;
 	line-height: 1.3em;
 	font-size: 1.2em;
-	font-family: "微軟正黑體", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.add-dialogbox {
-	width:500px;
-  height: 200px;
-	display: none;
-}
-
-.input-new {
-	width: 80%;
-}
-
-.pasteHolder {
-	position: absolute;
-	left: -9999px;
-}
-
-#paste {
-    padding: 1%;
-    border: 3px ridge;
-    /*width: 300px;*/
-}
-
-#paste label{
-    display: inline-block;
-    width: 20%;
-    min-width: 100px;
 }
 
 .dragover {

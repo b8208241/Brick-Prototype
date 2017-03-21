@@ -1,6 +1,7 @@
 import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race, select} from 'redux-saga/effects'
+import update from 'immutability-helper';
 import connection from './sagas/basicForConnection.js'
 import {
   getTopicData,
@@ -30,7 +31,7 @@ import {
   POSITIONCHANGE_SUBMIT,
   SUBMIT_BRICKCONTENT,
   SUBMIT_POSITIONCHANGE,
-  UPDATE_TOPIC
+  SUBMIT_TOPIC
 } from './actions/constants.js'
 
 /**
@@ -73,30 +74,25 @@ Main page, fired when user submit a new topic.
 */
 export function * newTopicSubmit(){
   while(true){
-    let data = yield take(NEWTOPIC_SUBMIT);
+    const data = yield take(NEWTOPIC_SUBMIT);
     console.log('saga, newTopicSubmit start')
-    const [topicData, time] = yield [
-      select(getTopicData),
-      call(defineTime)
-    ]
-    let topicId = "topicBrick" + time.ms;
-    let url = "/topic/" + topicId;
-    let userName = data.userName;
-    let topicText = data.inputTopic;
+    const time = yield call(defineTime)
+    const topicId = "topicBrick" + time.ms;
 
-    topicData.activeTopicRow.push({topicId: topicId, topic: topicText, url: url})
-    defaultContentPage.topic=topicText;
-    const [updatedActiveTopicRow, newContentPage] = yield [
-      call(createObject, "activeTopicRow", topicData.activeTopicRow),
-      call(createObject, topicId, defaultContentPage)
-    ]
-    const updatedComponent = yield call(updateObject, updatedActiveTopicRow, newContentPage)
+    let newRecord = {};
+    newRecord = {
+      topicId: topicId,
+      topic: data.inputTopic,
+      url: "/topic/" + topicId
+    }
+    let newPage = yield call(updateObject, defaultContentPage, {"topic": data.inputTopic})
+    let pageObject = yield call(createObject, topicId, newPage)
     //connection.post_NewTopic(topicId, topicText, url, userName)
 
-    console.log('ready to put UPDATE_TOPIC')
     yield put({
-      type: UPDATE_TOPIC,
-      updatedComponent: updatedComponent
+      type: SUBMIT_TOPIC,
+      newRecord: newRecord,
+      pageObject: pageObject
     });
   }
 }
@@ -110,7 +106,7 @@ export function * editedBrickSubmit (){
       select(getTopicThis, data.topicId),
       call(defineTime)
     ]
-    const position = yield call(positionDecide, topicThisState)
+    const position = yield call(positionDecide, topicThisState, data.editingBrickRow, data.editingBrickIndex)
 
     let newRecord = {};
     newRecord = {
@@ -121,16 +117,13 @@ export function * editedBrickSubmit (){
       "class": "cell",
       "index": position.index,
       "row": position.row,
-      "draftBrickTopicData": data.tagEditorData,
-      "draftBrickTextData": data.contentEditorData
+      "draftData_Tag": data.tagEditorData,
+      "draftData_Content": data.contentEditorData
     }
-    let newTagArray = [];
-    newTagArray.push(data.tagEditorData.blocks[0].text)
 
     yield put({
       type: SUBMIT_BRICKCONTENT,
       newRecord: newRecord,
-      newTagArray: newTagArray,
       row: position.row,
       index: position.index,
       topicId: data.topicId
@@ -143,40 +136,15 @@ export function * positionChangeSubmit (){
     const data = yield take(POSITIONCHANGE_SUBMIT);
     console.log('saga, positionChangeSubmit start');
 
-    const topicThisState = yield select(getTopicThis, data.topicId);
-    const topicThisData = yield call(updateObject, {}, topicThisState);
     let [originRow, originIndex, targetIndex, targetRow] = [data.originRow, data.originIndex, data.newIndex, data.newRow];
-    let originBrickContent = topicThisData[originRow][originIndex];
-
-    let newbrickContent = {
-      "class":"cell",
-      "index":targetIndex,
-      "row":targetRow,
-      "id":originBrickContent.id,
-      "brickTopic": originBrickContent.brickTopic,
-      "text":originBrickContent.text,
-      "ref":originBrickContent.ref,
-      "draftBrickTopicData": originBrickContent.draftBrickTopicData,
-      "draftBrickTextData": originBrickContent.draftBrickTextData
-    }
-    let replaceCellDefault = {
-      "class":"cell-default cboxElement",
-      "index":originIndex,
-      "row":originRow,
-      "id":"",
-      "brickTopic":"",
-      "text":"",
-      "ref":"",
-      "draftBrickTopicData":"",
-      "draftBrickTextData": ""
-    }
-
-    topicThisData[originRow][originIndex] = replaceCellDefault;
-    topicThisData[targetRow][targetIndex] = newbrickContent;
 
     yield put({
       type: SUBMIT_POSITIONCHANGE,
-      updatedTopicThis: topicThisData
+      originRow: originRow,
+      originIndex: originIndex,
+      targetRow: targetRow,
+      targetIndex: targetIndex,
+      topicId: data.topicId
     })
   }
 }

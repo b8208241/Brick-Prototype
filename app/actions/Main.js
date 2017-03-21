@@ -49,6 +49,6 @@ export function clearError () {
 }
 
 
-export function newTopicSubmit (inputTopic, userName) {
-  return {type: NEWTOPIC_SUBMIT, inputTopic, userName}
+export function newTopicSubmit (inputTopic) {
+  return {type: NEWTOPIC_SUBMIT, inputTopic}
 }

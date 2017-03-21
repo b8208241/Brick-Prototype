@@ -23,11 +23,7 @@ function findWithRegex(regex, contentBlock, callback) {
   const text = contentBlock.getText();
   let matchArr, start;
   while ((matchArr = regex.exec(text)) !== null) {
-    console.log('findWithRegex, while')
-    console.log(callback)
     start = matchArr.index;
-    console.log(start)
-    console.log(start + matchArr[0].length)
     callback(start, start + matchArr[0].length);
   }
 }

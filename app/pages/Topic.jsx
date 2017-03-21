@@ -15,8 +15,10 @@ class Topic extends React.Component {
       editingBrickIndex: false
     };
     this.topicId = this.props.params.topicId;
-    this.handle_Click_Edit = () => this.state.isEditing ? this.setState({isEditing: false}) : this.setState({isEditing: true});
+    this.handle_Click_Edit = () => this.setState({isEditing: true, editingBrickRow: false, editingBrickIndex: false});
+    this.handle_Click_EditClose = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false})
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
+    this.handle_Click_CellDefault = this.handle_Click_CellDefault.bind(this);
     this.handle_dispatch_EditedBrickSubmit = this.handle_dispatch_EditedBrickSubmit.bind(this);
     this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
   }
@@ -29,12 +31,20 @@ class Topic extends React.Component {
     }
   }
 
+  handle_Click_CellDefault(clickedBrickRow, clickedBrickIndex){
+    if(this.state.isEditing){
+      this.setState({isEditingOld: false, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
+    }else{
+      this.setState({isEditing: true, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
+    }
+  }
+
   handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
     this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId))
   }
 
   handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData){
-    this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.topicId))
+    this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId))
   }
 
   render(){
@@ -53,28 +63,43 @@ class Topic extends React.Component {
           <p style={{float: 'right'}}>一小段主題的說明文字，需要有兩行</p>
         </div>
         <div className="topic-taggroup">
-          <ul style={{listStyleType: 'none'}}>
+          <ul>
             {tagList}
           </ul>
         </div>
         {
           this.state.isEditing ?
           <div>
-            <EditBrickCol editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false} handle_dispatch_EditedBrickSubmit={this.handle_dispatch_EditedBrickSubmit}/>
-            <div style={{width:'60%', position: 'absolute', top: '28%', left:'35%'}}>
-              <div style={{width: '10%', height: '71.25vh', float:'right'}}>
+            <EditBrickCol
+              isEditingOld={this.state.isEditingOld}
+              editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false}
+              handle_dispatch_EditedBrickSubmit={this.handle_dispatch_EditedBrickSubmit}/>
+            <div className="topic-ref">
+              <div className="topic-ref-side">
                 <input
-                  type="button"
-                  value="finish"
-                  onClick={this.handle_Click_Edit}/>
+                  value="X"
+                  className="topic-ref-side-input-close"
+                  onClick={this.handle_Click_EditClose}/>
               </div>
-              <div style={{width: '90%', height: '71.25vh', float:'right', fontSize:'8px'}}>
-                <TopicWall topicData = {topicData} topicId={this.topicId} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit} handle_Click_Brick = {this.handle_Click_Brick} handle_Click_CellDefault={this.handle_Click_Edit}/>
+              <div className="topic-ref-scroll">
+                <TopicWall
+                  topicData = {topicData}
+                  topicId={this.topicId}
+                  editingBrickRow={this.state.editingBrickRow}
+                  editingBrickIndex={this.state.editingBrickIndex}
+                  handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
+                  handle_Click_Brick = {this.handle_Click_Brick}
+                  handle_Click_CellDefault={this.handle_Click_CellDefault}/>
               </div>
             </div>
           </div>  :
           <div style={{fontSize: '14px'}}>
-            <TopicWall topicData = {topicData} topicId={this.topicId} handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit} handle_Click_Brick = {this.handle_Click_Brick} handle_Click_CellDefault={this.handle_Click_Edit}/>
+            <TopicWall
+              topicData = {topicData}
+              topicId={this.topicId}
+              handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
+              handle_Click_Brick = {this.handle_Click_Brick}
+              handle_Click_CellDefault={this.handle_Click_CellDefault}/>
             <TopicManipulate handle_Click_Edit={this.handle_Click_Edit}/>
           </div>
         }

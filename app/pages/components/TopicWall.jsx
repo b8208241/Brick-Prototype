@@ -8,6 +8,20 @@ export class TopicWall extends React.Component {
     }
   }
 
+  componentDidMount(){
+    if(this.props.editingBrickRow){
+      let editingRow = document.getElementsByClassName('topic-wall')[0].children[(this.props.editingBrickRow-1)];
+      editingRow.children[(this.props.editingBrickIndex+1)].setAttribute("class", "cell-editing");
+    }
+  }
+
+  componentDidUpdate(){
+    if(this.props.editingBrickRow){
+      let editingRow = document.getElementsByClassName('topic-wall')[0].children[(this.props.editingBrickRow-1)];
+      editingRow.children[(this.props.editingBrickIndex+1)].setAttribute("class", "cell-editing");
+    }
+  }
+
   render() {
     console.log('enter TopicWall')
     let topicId = this.props.topicId;

@@ -3,7 +3,8 @@
 let link = [
   {"href": "/resource/css/nav.css", rel: "stylesheet"},
   {"href": "/resource/css/main.css", rel: "stylesheet"},
-  {"href": "/resource/css/topic.css", rel: "stylesheet"}
+  {"href": "/resource/css/topic.css", rel: "stylesheet"},
+  {"href": "/resource/css/draft.css", rel: "stylesheet"}
 ]
 link.forEach(function(ele){
   let newLink = document.createElement('link');

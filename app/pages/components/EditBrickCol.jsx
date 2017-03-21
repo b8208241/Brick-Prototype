@@ -1,20 +1,24 @@
 import React from 'react';
+import {StyleGroup} from './draft/StyleGroup.jsx'
 import {keyBindingFn} from './draft/KeyBindingFn.js';
+import {handleKeyCommand} from './draft/handleKeyCommand.js'
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw, convertFromRaw} from 'draft-js';
+import {Editor, EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
 
 export class EditBrickCol extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      tagEditorState: this.brickTagData? EditorState.createWithContent(this.brickTagData) : EditorState.createEmpty(compositeDecorator.tagEditor),
-      contentEditorState: this.brickContentData? EditorState.createWithContent(this.brickContentData) : EditorState.createEmpty()
+      tagEditorState: this.props.isEditingOld? EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Tag)) : EditorState.createEmpty(),
+      contentEditorState: this.props.isEditingOld? EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Content)) : EditorState.createEmpty()
     };
-    this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
     this.changeTagEditorState = (newState) => this.setState({tagEditorState: newState});
     this.changeContentEditorState = (newState) => this.setState({contentEditorState: newState});
+    this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
+    this.handle_Click_TagEditor = this.handle_Click_TagEditor.bind(this);
     this.handle_Click_ContentEditor = () => this.refs.contentEditor.focus();
-    this.handle_Click_TagEditor = () => this.refs.tagEditor.focus();
+    this.handle_KeyCommand_TagEditor = (command) => handleKeyCommand(command, this.state.tagEditorState, this.changeTagEditorState);
+    this.handle_KeyCommand_ContentEditor = (command) => handleKeyCommand(command, this.state.contentEditorState, this.changeContentEditorState);
   }
 
   handle_Click_BrickSubmit(event){
@@ -26,10 +30,43 @@ export class EditBrickCol extends React.Component {
     this.props.handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData);
   }
 
+  handle_Click_TagEditor(event){
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.refs.tagEditor.focus();
+    const currentContentState = this.state.tagEditorState.getCurrentContent();
+    const selection = this.state.tagEditorState.getSelection();
+    const modifiedContentState = Modifier.insertText(currentContentState, selection, "#");
+    this.changeTagEditorState(
+      EditorState.moveFocusToEnd(
+        EditorState.push(
+          this.state.tagEditorState,
+          modifiedContentState,
+          'insert-text'
+        )
+      )
+    );
+  }
+
   componentWillMount(){
     console.log('componentWillMount')
-    this.brickTagData = false;
-    this.brickContentData = false;
+  }
+
+  componentDidMount(){
+    this.refs.contentEditor.focus();
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log('EditBrickCol will Receive Props')
+    this.props.isEditingOld ?　
+    this.setState({
+      tagEditorState: EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Tag)),
+      contentEditorState: EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Content))
+    }) : this.setState({
+      tagEditorState: EditorState.createEmpty(),
+      contentEditorState: EditorState.createEmpty()
+    })
   }
 
   componentWillUpdate(){
@@ -49,25 +86,29 @@ export class EditBrickCol extends React.Component {
             onChange={this.changeTagEditorState}
             ref="tagEditor"
             placeholder="#..."
-            keyBindingFn={keyBindingFn.default}
+            keyBindingFn={keyBindingFn.for_Topic_TagEditor}
+            handleKeyCommand={this.handle_KeyCommand_TagEditor}
             />
         </div>
         <div style={{marginLeft: '6%'}}>
-          #...推薦hashtag
+          "#推薦tag 1 #推薦tag 2 #推薦tag 3"
         </div>
         <div className="topic-edit-brickcol-contentEditor" onClick={this.handle_Click_ContentEditor}>
+          <StyleGroup
+            editorState={this.state.contentEditorState}
+            onChange={this.changeContentEditorState}/>
           <Editor
             editorState={this.state.contentEditorState}
             onChange={this.changeContentEditorState}
             ref="contentEditor"
             keyBindingFn={keyBindingFn.default}
+            handleKeyCommand={this.handle_KeyCommand_ContentEditor}
             />
         </div>
         <input
-          type="submit"
           value="save"
+          className="topic-edit-brickcol-input-save"
           onClick={this.handle_Click_BrickSubmit}
-          style={{width: '15%', marginTop: '5%', float: 'right', borderRadius: "3px", backgroundColor: '#466656', fontSize: '1em', color: '#FFFFFF'}}
         />
       </div>
     )

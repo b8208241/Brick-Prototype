@@ -7,8 +7,8 @@ import {
   POSITIONCHANGE_SUBMIT,
 } from './constants.js'
 
-export function EditedBrickSubmit(tagEditorData, contentEditorData, topicId) {
-  return {type: EDITEDBRICK_SUBMIT, tagEditorData, contentEditorData, topicId}
+export function EditedBrickSubmit(tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId) {
+  return {type: EDITEDBRICK_SUBMIT, tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId}
 }
 
 export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {

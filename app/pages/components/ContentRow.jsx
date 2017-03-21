@@ -1,5 +1,6 @@
 import React from 'react';
-import {ModalBox} from './ModalBox.jsx';
+import {Brick} from './Brick.jsx';
+import {convertToRaw, convertFromRaw} from 'draft-js';
 
 export class ContentRow extends React.Component {
   constructor(props){
@@ -78,6 +79,9 @@ export class ContentRow extends React.Component {
 
   render(){
     console.log('enter ContentRow')
+    let brickClass
+    let ifdraggable
+    let ifhandle_Click_Brick
     let preventDefault = this.preventDefault
     let handle_Drop = this.handle_Drop
     let handle_Drag = this.handle_Drag
@@ -88,12 +92,10 @@ export class ContentRow extends React.Component {
     let date = new Date();
     let time = date.getTime();
 
-    let contentBricks = this.props.rowRecord.map(
+    const contentBricks = this.props.rowRecord.map(
       function(obj){
         if(obj.class == 'cell'){
-          let brickClass
-          let ifdraggable
-          let ifhandle_Click_Brick
+          let editorState_Content = convertFromRaw(obj.draftData_Content)
           if(showingState.isShowing && showingState.showingIndex === obj.index){
              brickClass = "brickOriginal-showing";
              ifdraggable = false;
@@ -104,16 +106,30 @@ export class ContentRow extends React.Component {
             ifhandle_Click_Brick = handle_Click_Brick;
           };
             return (
-              <div key={obj.id} className={obj.class} id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
-                <div className={brickClass}  id={String(obj.index) + String(obj.row) + "_brick_" + obj.id} draggable={ifdraggable} onDragStart={handle_Drag} onClick={ifhandle_Click_Brick}>
-                  {showingState.isShowing && <input type="button" value="close" onClick={handle_Click_BrickClose}/>}
-                  <div id={String(obj.index) + String(obj.row) + "_brickText_" + obj.id} className="brick-content-text">{obj.text}</div>
-                  <div id={String(obj.index) + String(obj.row) + "_brickTopic_" + obj.id} className="brick-content-taggroup">#{obj.brickTopic}</div>
-                </div>
+              <div
+                key={obj.id}
+                className={obj.class}
+                id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
+                  <Brick
+                    brickData = {obj}
+                    brickClass = {brickClass}
+                    editorState_Content = {editorState_Content}
+                    ifdraggable = {ifdraggable}
+                    handle_Drag = {handle_Drag}
+                    handle_Click_Brick = {ifhandle_Click_Brick}
+                    handle_Click_BrickClose = {handle_Click_BrickClose}
+                    isShowing = {showingState.isShowing}/>
               </div>
             );
         }else{
-          return <div key={String(obj.index) + String(obj.row) + time} className={obj.class} id={String(obj.index) + String(obj.row) + obj.class} onClick={handle_Click_CellDefault} onDragOver={preventDefault} onDrop={handle_Drop}/>;
+          return (
+            <div
+              key={String(obj.index) + String(obj.row) + time}
+              className={obj.class}
+              id={String(obj.index) + String(obj.row) + obj.class} onClick={handle_Click_CellDefault}
+              onDragOver={preventDefault}
+              onDrop={handle_Drop}/>
+          );
         }
       }
     )
