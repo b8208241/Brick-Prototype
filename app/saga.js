@@ -24,13 +24,15 @@ import {
 
 import {
   EDITEDBRICK_SUBMIT,
-  SENDING_REQUEST,
+  AXIOS_POSTING,
   LOGOUT,
   REQUEST_ERROR,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
+  RECYCLEBRICK_SUBMIT,
   SUBMIT_BRICKCONTENT,
   SUBMIT_POSITIONCHANGE,
+  SUBMIT_RECYCLEBRICK,
   SUBMIT_TOPIC
 } from './actions/constants.js'
 
@@ -87,7 +89,8 @@ export function * newTopicSubmit(){
     }
     let newPage = yield call(updateObject, defaultContentPage, {"topic": data.inputTopic})
     let pageObject = yield call(createObject, topicId, newPage)
-    //connection.post_NewTopic(topicId, topicText, url, userName)
+
+    connection.post_NewTopic(newRecord, data.userName, pageObject)
 
     yield put({
       type: SUBMIT_TOPIC,
@@ -120,6 +123,7 @@ export function * editedBrickSubmit (){
       "draftData_Tag": data.tagEditorData,
       "draftData_Content": data.contentEditorData
     }
+    connection.post_EditedBrick(newRecord, position.row, position.index, data.topicId, data.userName)
 
     yield put({
       type: SUBMIT_BRICKCONTENT,
@@ -131,6 +135,22 @@ export function * editedBrickSubmit (){
   }
 }
 
+export function * recycleBrickSubmit(){
+  while (true) {
+    const data = yield take(RECYCLEBRICK_SUBMIT);
+    console.log('sage, recycleBrickSubmit start');
+
+    connection.delete_Brick(defaultCell, data.clickedBrickRow, data.clickedBrickIndex, data.topicId, data.userName)
+
+    yield put({
+      type: SUBMIT_RECYCLEBRICK,
+      newRecord: defaultCell,
+      row: data.clickedBrickRow,
+      index: data.clickedBrickIndex,
+      topicId: data.topicId
+    })
+  }
+}
 export function * positionChangeSubmit (){
   while(true){
     const data = yield take(POSITIONCHANGE_SUBMIT);
@@ -158,4 +178,5 @@ export default function * rootSaga () {
   yield fork(newTopicSubmit)
   yield fork(positionChangeSubmit)
   yield fork(editedBrickSubmit)
+  yield fork(recycleBrickSubmit)
 }

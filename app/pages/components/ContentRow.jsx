@@ -9,18 +9,15 @@ export class ContentRow extends React.Component {
       isShowing: false,
       showingIndex: null
     }
-    this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
     this.handle_Drag = this.handle_Drag.bind(this);
     this.handle_Drop = this.handle_Drop.bind(this);
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
     this.handle_Click_BrickClose = this.handle_Click_BrickClose.bind(this);
     this.handle_Click_CellDefault = this.handle_Click_CellDefault.bind(this);
+    this.handle_Click_BrickEdit = (clickedBrickRow, clickedBrickIndex) => this.props.handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex);
+    this.handle_Click_BrickRecycle = (clickedBrickRow, clickedBrickIndex) => this.props.handle_dispatch_RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex);
+    this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow);
     this.preventDefault = (event) => event.preventDefault();
-  }
-
-  handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
-    console.log('handle_dispatch_positionChangeSubmit in ContentRow')
-    this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
   handle_Click_Brick(event){
@@ -46,7 +43,7 @@ export class ContentRow extends React.Component {
     let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
     let clickedBrickRow = Number($(event.target).attr('id').charAt(1));
 
-    this.props.handle_Click_CellDefault(clickedBrickRow, clickedBrickIndex)
+    this.handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex)
   }
 
   handle_Drag(event){
@@ -83,41 +80,51 @@ export class ContentRow extends React.Component {
     let ifdraggable
     let ifhandle_Click_Brick
     let preventDefault = this.preventDefault
+    let editingBrickIndex = this.props.editingBrickIndex
     let handle_Drop = this.handle_Drop
     let handle_Drag = this.handle_Drag
     let handle_Click_Brick = this.handle_Click_Brick
     let handle_Click_BrickClose = this.handle_Click_BrickClose
     let handle_Click_CellDefault = this.handle_Click_CellDefault
+    let handle_Click_BrickEdit = this.handle_Click_BrickEdit
+    let handle_Click_BrickRecycle = this.handle_Click_BrickRecycle
     let showingState = this.state
     let date = new Date();
     let time = date.getTime();
 
     const contentBricks = this.props.rowRecord.map(
       function(obj){
+        //due to the number would be considered as "false"
+        //the props "editingBrickIndex" was plus 1 in purpose during upper level
+        let cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
         if(obj.class == 'cell'){
           let editorState_Content = convertFromRaw(obj.draftData_Content)
           if(showingState.isShowing && showingState.showingIndex === obj.index){
-             brickClass = "brickOriginal-showing";
+             brickClass = "brick-showing";
              ifdraggable = false;
              ifhandle_Click_Brick = false;
           }else{
-            brickClass = "brickOriginal";
+            brickClass = "brick";
             ifdraggable = "true";
             ifhandle_Click_Brick = handle_Click_Brick;
           };
             return (
               <div
                 key={obj.id}
-                className={obj.class}
+                className={cellClass}
                 id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
                   <Brick
                     brickData = {obj}
                     brickClass = {brickClass}
+                    brickRow = {obj.row}
+                    brickIndex = {obj.index}
                     editorState_Content = {editorState_Content}
                     ifdraggable = {ifdraggable}
                     handle_Drag = {handle_Drag}
                     handle_Click_Brick = {ifhandle_Click_Brick}
                     handle_Click_BrickClose = {handle_Click_BrickClose}
+                    handle_Click_BrickEdit = {handle_Click_BrickEdit}
+                    handle_Click_BrickRecycle = {handle_Click_BrickRecycle}
                     isShowing = {showingState.isShowing}/>
               </div>
             );
@@ -125,7 +132,7 @@ export class ContentRow extends React.Component {
           return (
             <div
               key={String(obj.index) + String(obj.row) + time}
-              className={obj.class}
+              className={cellClass}
               id={String(obj.index) + String(obj.row) + obj.class} onClick={handle_Click_CellDefault}
               onDragOver={preventDefault}
               onDrop={handle_Drop}/>

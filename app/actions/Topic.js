@@ -5,14 +5,19 @@ import {
   LOGOUT,
   EDITEDBRICK_SUBMIT,
   POSITIONCHANGE_SUBMIT,
+  RECYCLEBRICK_SUBMIT
 } from './constants.js'
 
-export function EditedBrickSubmit(tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId) {
-  return {type: EDITEDBRICK_SUBMIT, tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId}
+export function EditedBrickSubmit(tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName) {
+  return {type: EDITEDBRICK_SUBMIT, tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName}
 }
 
 export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {
   return {type: POSITIONCHANGE_SUBMIT, originIndex, originRow, newIndex, newRow, topicId}
+}
+
+export function RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex,topicId, userName) {
+  return {type: RECYCLEBRICK_SUBMIT, clickedBrickRow, clickedBrickIndex, topicId, userName}
 }
 
 export function requestError (error) {

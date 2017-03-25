@@ -1,1 +1,4 @@
-{"berlin": {"password": "asdf"}}
+{
+  "berlin": {"password": "asdf"},
+  "test": {"password": "qwer"}
+}

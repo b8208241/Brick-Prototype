@@ -4,11 +4,12 @@ import {updateObject,createObject} from './sagas/basicTool.js';
 import {defineTopic, updateTopic, updateRow, defaultCell} from './sagas/specialForTopic.js';
 
 import {
-  SENDING_REQUEST,
+  AXIOS_POSTING,
   REQUEST_ERROR,
   CLEAR_ERROR,
   SUBMIT_BRICKCONTENT,
   SUBMIT_POSITIONCHANGE,
+  SUBMIT_RECYCLEBRICK,
   SUBMIT_TOPIC
 } from './actions/constants.js'
 
@@ -55,20 +56,38 @@ function topicData (state={}, action) {
         }
       })
       break;
+    case SUBMIT_RECYCLEBRICK:
+      console.log('SUBMIT_RECYCLEBRICK')
+      return update(state, {
+        [action.topicId]: {
+          [action.row]: {
+            [action.index]: {$set: action.newRecord}
+          }
+        }
+      })
+      break;
     default:
       return state
   }
 }
 
-// Takes care of changing the application state
-function others (state={}, action) {
+function status (state={}, action) {
   switch (action.type) {
-    case SENDING_REQUEST:
+    case AXIOS_POSTING:
       return {...state, currentlySending: action.sending}
     case REQUEST_ERROR:
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
+
+      break;
+    default:
+      return state
+  }
+}
+
+function others (state={}, action) {
+  switch (action.type) {
     default:
       return state
   }
@@ -76,5 +95,6 @@ function others (state={}, action) {
 
 export default combineReducers({
   topicData,
+  status,
   others
 })

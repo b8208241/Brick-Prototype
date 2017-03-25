@@ -1,12 +1,21 @@
 import React from 'react';
-import {Editor, EditorState} from 'draft-js';
+import {EditorState} from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+const linkifyPlugin = createLinkifyPlugin({
+  target: '_blank'
+});
+const plugins = [linkifyPlugin]
 
 export class Brick extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      contentEditorState: EditorState.createWithContent(this.props.editorState_Content)
+      contentEditorState: EditorState.createWithContent(this.props.editorState_Content, plugins)
     }
+    this.handle_Click_BrickEdit = (event) => this.props.handle_Click_BrickEdit(this.props.brickRow, this.props.brickIndex);
+    this.handle_Click_BrickRecycle = (event) => this.props.handle_Click_BrickRecycle(this.props.brickRow, this.props.brickIndex);
+    this.changeContentEditorState = () => {};
   }
 
   render(){
@@ -23,15 +32,19 @@ export class Brick extends React.Component {
           this.props.isShowing &&
           <input
             type="button"
-            value="close"
-            onClick={this.props.handle_Click_BrickClose}/>
+            value="X"
+            className="brick-showing-input-close"
+            onClick={this.props.handle_Click_BrickClose}
+            readOnly/>
         }
         <div
           id={String(brickData.index) + String(brickData.row) + "_brickText_" + brickData.id}
           className="brick-content-text">
           <Editor
             editorState={this.state.contentEditorState}
-            ref="contentEditor"
+            onChange={this.changeContentEditorState}
+            ref={(element) => {this.contentEditor = element;}}
+            plugins={plugins}
             readOnly
             />
         </div>
@@ -40,6 +53,21 @@ export class Brick extends React.Component {
           className="brick-content-taggroup">
           {brickData.brickTopic}
         </div>
+        {
+          this.props.isShowing &&
+          <div>
+            <input
+              type="button"
+              value="edit"
+              onClick={this.handle_Click_BrickEdit}
+              readOnly/>
+            <input
+              type="button"
+              value="recycle"
+              onClick={this.handle_Click_BrickRecycle}
+              readOnly/>
+          </div>
+        }
       </div>
     )
   }

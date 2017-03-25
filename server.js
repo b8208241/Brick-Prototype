@@ -7,6 +7,7 @@ const jsonfile = require('jsonfile');
 const jwt = require('jsonwebtoken');
 const createStore = require('redux').createStore;
 const match = require('react-router').match;
+const update = require('immutability-helper');
 //const RouterContext = require('react-router').RouterContext
 
 const React = require('react');
@@ -44,7 +45,7 @@ const Brick_server = require('./app/Brick_server.jsx');
   const reducer = require('./app/reducer.js');
   const Routes = require('./app/pages/Routes.jsx');
 const verify = require('./verify.js');
-var wallHistory = path.join(__dirname+'/data/wallHistory.json');
+var database_forServer = path.join(__dirname+'/data/database_forServer.json');
 var topicHistory = path.join(__dirname+'/data/topicHistory.json');
 var accountData = path.join(__dirname+'/data/accountData.json');
 
@@ -227,7 +228,7 @@ const server_Main = {
       )
     })
     */
-    jsonfile.readFile(topicHistory, function(err, data){
+    jsonfile.readFile(database_forServer, function(err, data){
       if(err) throw err;
       let userName = req.decoded.userName;
       let preloadedState = data[userName];
@@ -420,29 +421,76 @@ app.use('/resource', function(req, res){
 })
 
 
-app.post('/topic/newtopic/:username', function(req, res){
-  console.log('post NewTopic to the database')
-  let userName = req.params.username;
-  jsonfile.readFile(topicHistory, function(err, data){
-    let userData = data[userName];
-    let topicSaved = userData.brickData.topicSaved;
-    let topicContent = userData.brickData.topicContent;
-    topicSaved.push(req.body.newtopic);
-    topicContent[req.body.newtopic.topicId] = {
-      "rowOne":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowTwo":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowThree":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}],
-      "rowFour":[{"class":"cell-default cboxElement", "index": "0"}, {"class":"placeholder", "index": "1"}, {"class":"cell-default cboxElement", "index": "2"}, {"class":"placeholder", "index": "3"}, {"class":"cell-default cboxElement", "index": "4"}, {"class":"placeholder", "index": "5"}]
-    };
-    userData.brickData.topicSaved = topicSaved;
-    userData.brickData.topicContent = topicContent;
-    data[userName] = userData;
-    jsonfile.writeFile(topicHistory, data, function(err){
-      if(err) throw err;
+app.post('/post/:type/:username', function(req, res){
+  switch (req.params.type) {
+    case "newtopic":
+    console.log('post NewTopic to the database')
+    let userName = req.params.username;
+    jsonfile.readFile(database_forServer, function(err, data){
+      let updatedData = update(data, {
+        [userName]: {
+          "topicData": {
+            $merge: req.body.pageObject,
+            "activeTopicRow": {$push: [req.body.newRecord]}
+          }
+        }
+      })
+
+      jsonfile.writeFile(database_forServer, updatedData, function(err){
+        if(err) throw err;
+      })
+      res.json(updatedData);
     })
-    res.json(topicSaved);
-  })
+      break;
+    case "editedbrick":
+      console.log('post EditedBrick to the database')
+      jsonfile.readFile(database_forServer, function(err, data){
+        let updatedData = update(data, {
+          [req.params.username]: {
+            "topicData": {
+              [req.body.topicId]: {
+                [req.body.row]: {
+                  [req.body.index]: {$set: req.body.newRecord}
+                },
+                "hashTag": {$push: [req.body.newRecord.brickTopic]}
+              }
+            }
+          }
+        })
+
+        jsonfile.writeFile(database_forServer, updatedData, function(err){
+          if(err) throw err;
+        })
+        res.json(updatedData);
+      })
+      break;
+    default:
+      res.json('no matched type')
+  }
 })
 
+app.delete('/recycle/brick/:username', function(req, res){
+  console.log('recycle brick from database')
+  let userName = req.params.username;
+  jsonfile.readFile(database_forServer, function(err, data){
+    if(err) throw err;
+    let updatedData = update(data, {
+      [userName]: {
+        "topicData": {
+          [req.body.topicId]: {
+            [req.body.row]: {
+              [req.body.index]: {$set: req.body.newRecord}
+            }
+          }
+        }
+      }
+    })
+
+    jsonfile.writeFile(database_forServer, updatedData, function(err){
+      if(err) throw err;
+    })
+    res.json(updatedData);
+  })
+})
 app.listen(3000);
 console.log("Running at Port 3000~");

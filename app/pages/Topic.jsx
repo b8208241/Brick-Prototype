@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicManipulate} from './components/TopicManipulate.jsx';
 import {EditBrickCol} from './components/EditBrickCol.jsx'
-import {positionChangeSubmit, brickContentSubmit, EditedBrickSubmit} from '../actions/Topic.js';
+import {positionChangeSubmit, EditedBrickSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
   constructor(props){
@@ -15,12 +15,14 @@ class Topic extends React.Component {
       editingBrickIndex: false
     };
     this.topicId = this.props.params.topicId;
+    this.keyCount = 0;
     this.handle_Click_Edit = () => this.setState({isEditing: true, editingBrickRow: false, editingBrickIndex: false});
     this.handle_Click_EditClose = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false})
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
-    this.handle_Click_CellDefault = this.handle_Click_CellDefault.bind(this);
-    this.handle_dispatch_EditedBrickSubmit = this.handle_dispatch_EditedBrickSubmit.bind(this);
-    this.handle_dispatch_positionChangeSubmit = this.handle_dispatch_positionChangeSubmit.bind(this);
+    this.handle_Click_BrickEdit = this.handle_Click_BrickEdit.bind(this);
+    this.handle_dispatch_EditedBrickSubmit = (tagEditorData, contentEditorData) => this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
+    this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId));
+    this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
   }
 
   handle_Click_Brick(clickedBrickRow, clickedBrickIndex){
@@ -31,7 +33,7 @@ class Topic extends React.Component {
     }
   }
 
-  handle_Click_CellDefault(clickedBrickRow, clickedBrickIndex){
+  handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex){
     if(this.state.isEditing){
       this.setState({isEditingOld: false, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
     }else{
@@ -39,20 +41,14 @@ class Topic extends React.Component {
     }
   }
 
-  handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow){
-    this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId))
-  }
-
-  handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData){
-    this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId))
-  }
-
   render(){
     console.log('enter page Topic')
     let topicData = this.props.topicData;
+    let keyCount = this.keyCount;
     let tagList = topicData[this.topicId].hashTag.map(
       function(obj){
-        return <li key={obj}>{obj}</li>
+        keyCount = keyCount+1;
+        return <li key={obj+"_"+keyCount}>{obj}</li>
       }
     )
     return(
@@ -79,7 +75,8 @@ class Topic extends React.Component {
                 <input
                   value="X"
                   className="topic-ref-side-input-close"
-                  onClick={this.handle_Click_EditClose}/>
+                  onClick={this.handle_Click_EditClose}
+                  readOnly/>
               </div>
               <div className="topic-ref-scroll">
                 <TopicWall
@@ -89,7 +86,7 @@ class Topic extends React.Component {
                   editingBrickIndex={this.state.editingBrickIndex}
                   handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
                   handle_Click_Brick = {this.handle_Click_Brick}
-                  handle_Click_CellDefault={this.handle_Click_CellDefault}/>
+                  handle_Click_BrickEdit={this.handle_Click_BrickEdit}/>
               </div>
             </div>
           </div>  :
@@ -98,8 +95,10 @@ class Topic extends React.Component {
               topicData = {topicData}
               topicId={this.topicId}
               handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
+              handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
               handle_Click_Brick = {this.handle_Click_Brick}
-              handle_Click_CellDefault={this.handle_Click_CellDefault}/>
+              handle_Click_BrickEdit={this.handle_Click_BrickEdit}
+              />
             <TopicManipulate handle_Click_Edit={this.handle_Click_Edit}/>
           </div>
         }

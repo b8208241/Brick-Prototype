@@ -3,7 +3,12 @@ import {StyleGroup} from './draft/StyleGroup.jsx'
 import {keyBindingFn} from './draft/KeyBindingFn.js';
 import {handleKeyCommand} from './draft/handleKeyCommand.js'
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {Editor, EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
+import {EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+const linkifyPlugin = createLinkifyPlugin({
+  target: '_blank'
+});
 
 export class EditBrickCol extends React.Component {
   constructor(props){
@@ -16,7 +21,7 @@ export class EditBrickCol extends React.Component {
     this.changeContentEditorState = (newState) => this.setState({contentEditorState: newState});
     this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
     this.handle_Click_TagEditor = this.handle_Click_TagEditor.bind(this);
-    this.handle_Click_ContentEditor = () => this.refs.contentEditor.focus();
+    this.handle_Click_ContentEditor = () => this.contentEditor.focus();
     this.handle_KeyCommand_TagEditor = (command) => handleKeyCommand(command, this.state.tagEditorState, this.changeTagEditorState);
     this.handle_KeyCommand_ContentEditor = (command) => handleKeyCommand(command, this.state.contentEditorState, this.changeContentEditorState);
   }
@@ -54,15 +59,16 @@ export class EditBrickCol extends React.Component {
   }
 
   componentDidMount(){
-    this.refs.contentEditor.focus();
+    //focus on contentEditor after componentDidMount will block the linkifyPlugin function
+    //this.contentEditor.focus();
   }
 
   componentWillReceiveProps(nextProps){
     console.log('EditBrickCol will Receive Props')
-    this.props.isEditingOld ?　
+    nextProps.isEditingOld ?　
     this.setState({
-      tagEditorState: EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Tag)),
-      contentEditorState: EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Content))
+      tagEditorState: EditorState.createWithContent(convertFromRaw(nextProps.editingBrick.draftData_Tag)),
+      contentEditorState: EditorState.createWithContent(convertFromRaw(nextProps.editingBrick.draftData_Content))
     }) : this.setState({
       tagEditorState: EditorState.createEmpty(),
       contentEditorState: EditorState.createEmpty()
@@ -100,7 +106,8 @@ export class EditBrickCol extends React.Component {
           <Editor
             editorState={this.state.contentEditorState}
             onChange={this.changeContentEditorState}
-            ref="contentEditor"
+            ref={(element) => {this.contentEditor = element;}}
+            plugins={[linkifyPlugin]}
             keyBindingFn={keyBindingFn.default}
             handleKeyCommand={this.handle_KeyCommand_ContentEditor}
             />
@@ -109,6 +116,7 @@ export class EditBrickCol extends React.Component {
           value="save"
           className="topic-edit-brickcol-input-save"
           onClick={this.handle_Click_BrickSubmit}
+          readOnly
         />
       </div>
     )

@@ -9,12 +9,8 @@ import {newTopicSubmit} from '../actions/Main.js';
 class Main extends React.Component {
   constructor(props){
     super(props);
-    this.handle_dispatch_NewTopicSubmit = this.handle_dispatch_NewTopicSubmit.bind(this);
+    this.handle_dispatch_NewTopicSubmit = (inputTopic) => this.props.dispatch(newTopicSubmit(inputTopic, this.props.userData.userName));
   };
-
-  handle_dispatch_NewTopicSubmit(inputTopic){
-    this.props.dispatch(newTopicSubmit(inputTopic));
-  }
 
   render() {
     console.log('enter component in Main')
