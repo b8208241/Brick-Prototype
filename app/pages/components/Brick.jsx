@@ -1,5 +1,6 @@
 import React from 'react';
-import {EditorState} from 'draft-js';
+import {compositeDecorator} from './draft/CompositeDecorator.jsx';
+import {EditorState, convertFromRaw} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 const linkifyPlugin = createLinkifyPlugin({
@@ -11,7 +12,7 @@ export class Brick extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      contentEditorState: EditorState.createWithContent(this.props.editorState_Content, plugins)
+      contentEditorState: EditorState.createWithContent(this.props.editorState_Content, compositeDecorator.plugins(plugins))
     }
     this.handle_Click_BrickEdit = (event) => this.props.handle_Click_BrickEdit(this.props.brickRow, this.props.brickIndex);
     this.handle_Click_BrickRecycle = (event) => this.props.handle_Click_BrickRecycle(this.props.brickRow, this.props.brickIndex);
@@ -44,7 +45,6 @@ export class Brick extends React.Component {
             editorState={this.state.contentEditorState}
             onChange={this.changeContentEditorState}
             ref={(element) => {this.contentEditor = element;}}
-            plugins={plugins}
             readOnly
             />
         </div>

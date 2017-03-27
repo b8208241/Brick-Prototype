@@ -5,6 +5,7 @@ import {handleKeyCommand} from './draft/handleKeyCommand.js'
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
 import {EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
+import {stateToHTML} from 'draft-js-export-html';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 const linkifyPlugin = createLinkifyPlugin({
   target: '_blank'
@@ -29,9 +30,12 @@ export class EditBrickCol extends React.Component {
   handle_Click_BrickSubmit(event){
     event.preventDefault();
     event.stopPropagation();
-
+    let tagEditorToHTML = stateToHTML(this.state.tagEditorState.getCurrentContent());
     let tagEditorData = convertToRaw(this.state.tagEditorState.getCurrentContent());
+    let contentEditorToHTML = stateToHTML(this.state.contentEditorState.getCurrentContent());
     let contentEditorData = convertToRaw(this.state.contentEditorState.getCurrentContent());
+    console.log(contentEditorToHTML)
+    console.log(contentEditorData)
     this.props.handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData);
   }
 

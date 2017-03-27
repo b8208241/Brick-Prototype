@@ -8,7 +8,13 @@ export const compositeDecorator = {
       strategy: hashtagStrategy,
       component: HashtagSpan,
     }
-  ])
+  ]),
+  plugins: (plugins) => {
+    const decorators = plugins
+      .filter((plugin) => plugin.decorators !== undefined)
+      .map((plugin) => {return plugin.decorators[0]});
+    return new CompositeDecorator(decorators);
+  }
 }
 
 const regex_HashTag = /\#[\w\u0590-\u05ff]+/g;
