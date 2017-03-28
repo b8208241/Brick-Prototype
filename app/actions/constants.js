@@ -1,6 +1,6 @@
 //Auth actions
 export const CLEAR_ERROR = 'CLEAR_ERROR'
-export const EDITEDBRICK_SUBMIT = 'EDITEDBRICK_SUBMIT'
+export const EDITEDCONTENT_SUBMIT = 'EDITEDCONTENT_SUBMIT'
 export const AXIOS_POSTING = 'AXIOS_POSTING'
 export const REQUEST_ERROR = 'REQUEST_ERROR'
 export const LOGOUT = 'LOGOUT'

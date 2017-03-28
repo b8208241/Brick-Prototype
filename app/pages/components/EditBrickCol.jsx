@@ -1,11 +1,10 @@
 import React from 'react';
 import {StyleGroup} from './draft/StyleGroup.jsx'
 import {keyBindingFn} from './draft/KeyBindingFn.js';
-import {handleKeyCommand} from './draft/handleKeyCommand.js'
+import {handleKeyCommand_TagEditor, handleKeyCommand_ContentEditor} from './draft/handleKeyCommand.js'
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
 import {EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
-import {stateToHTML} from 'draft-js-export-html';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 const linkifyPlugin = createLinkifyPlugin({
   target: '_blank'
@@ -23,20 +22,17 @@ export class EditBrickCol extends React.Component {
     this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
     this.handle_Click_TagEditor = this.handle_Click_TagEditor.bind(this);
     this.handle_Click_ContentEditor = () => this.contentEditor.focus();
-    this.handle_KeyCommand_TagEditor = (command) => handleKeyCommand(command, this.state.tagEditorState, this.changeTagEditorState);
-    this.handle_KeyCommand_ContentEditor = (command) => handleKeyCommand(command, this.state.contentEditorState, this.changeContentEditorState);
+    this.handle_KeyCommand_TagEditor = (command) => handleKeyCommand_TagEditor(command, this.state.tagEditorState, this.changeTagEditorState);
+    this.handle_KeyCommand_ContentEditor = (command) => handleKeyCommand_ContentEditor(command, this.state.contentEditorState, this.changeTagEditorState);
   }
 
   handle_Click_BrickSubmit(event){
     event.preventDefault();
     event.stopPropagation();
-    let tagEditorToHTML = stateToHTML(this.state.tagEditorState.getCurrentContent());
     let tagEditorData = convertToRaw(this.state.tagEditorState.getCurrentContent());
-    let contentEditorToHTML = stateToHTML(this.state.contentEditorState.getCurrentContent());
     let contentEditorData = convertToRaw(this.state.contentEditorState.getCurrentContent());
-    console.log(contentEditorToHTML)
-    console.log(contentEditorData)
-    this.props.handle_dispatch_EditedBrickSubmit(tagEditorData, contentEditorData);
+
+    this.props.handle_dispatch_EditedContentSubmit(tagEditorData, contentEditorData);
   }
 
   handle_Click_TagEditor(event){
@@ -96,7 +92,7 @@ export class EditBrickCol extends React.Component {
             onChange={this.changeTagEditorState}
             ref="tagEditor"
             placeholder="#..."
-            keyBindingFn={keyBindingFn.for_Topic_TagEditor}
+            keyBindingFn={keyBindingFn.for_Topic_Editing_TagEditor}
             handleKeyCommand={this.handle_KeyCommand_TagEditor}
             />
         </div>
@@ -112,7 +108,7 @@ export class EditBrickCol extends React.Component {
             onChange={this.changeContentEditorState}
             ref={(element) => {this.contentEditor = element;}}
             plugins={[linkifyPlugin]}
-            keyBindingFn={keyBindingFn.default}
+            keyBindingFn={keyBindingFn.for_Topic_Editing_ContentEditor}
             handleKeyCommand={this.handle_KeyCommand_ContentEditor}
             />
         </div>

@@ -477,11 +477,18 @@ app.delete('/recycle/brick/:username', function(req, res){
     let updatedData = update(data, {
       [userName]: {
         "topicData": {
-          [req.body.topicId]: {
-            [req.body.row]: {
-              [req.body.index]: {$set: req.body.newRecord}
+            [req.body.topicId]: {
+              $apply: function(obj){
+                let cellDefault = update(req.body.newRecord, {
+                  $merge: {"index": req.body.index, "row": req.body.row}
+                });
+                return update(obj, {
+                  [req.body.row]: {
+                    [req.body.index]: {$set: cellDefault}
+                  }
+                })
+              }
             }
-          }
         }
       }
     })

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicManipulate} from './components/TopicManipulate.jsx';
 import {EditBrickCol} from './components/EditBrickCol.jsx'
-import {positionChangeSubmit, EditedBrickSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
+import {positionChangeSubmit, EditedContentSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
   constructor(props){
@@ -20,7 +20,7 @@ class Topic extends React.Component {
     this.handle_Click_EditClose = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false})
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
     this.handle_Click_BrickEdit = this.handle_Click_BrickEdit.bind(this);
-    this.handle_dispatch_EditedBrickSubmit = (tagEditorData, contentEditorData) => this.props.dispatch(EditedBrickSubmit(tagEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
+    this.handle_dispatch_EditedContentSubmit = (tagEditorData, contentEditorData) => this.props.dispatch(EditedContentSubmit(tagEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
     this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId));
     this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
   }
@@ -69,7 +69,7 @@ class Topic extends React.Component {
             <EditBrickCol
               isEditingOld={this.state.isEditingOld}
               editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false}
-              handle_dispatch_EditedBrickSubmit={this.handle_dispatch_EditedBrickSubmit}/>
+              handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}/>
             <div className="topic-ref">
               <div className="topic-ref-side">
                 <input

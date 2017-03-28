@@ -60,8 +60,15 @@ function topicData (state={}, action) {
       console.log('SUBMIT_RECYCLEBRICK')
       return update(state, {
         [action.topicId]: {
-          [action.row]: {
-            [action.index]: {$set: action.newRecord}
+          $apply: function(obj){
+            let cellDefault = update(defaultCell, {
+              $merge: {"index": action.index, "row": action.row}
+            });
+            return update(obj, {
+              [action.row]: {
+                [action.index]: {$set: cellDefault}
+              }
+            })
           }
         }
       })

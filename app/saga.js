@@ -23,7 +23,7 @@ import {
 } from './sagas/specialForTopic.js'
 
 import {
-  EDITEDBRICK_SUBMIT,
+  EDITEDCONTENT_SUBMIT,
   AXIOS_POSTING,
   LOGOUT,
   REQUEST_ERROR,
@@ -100,10 +100,10 @@ export function * newTopicSubmit(){
   }
 }
 
-export function * editedBrickSubmit (){
+export function * editedContentSubmit (){
   while (true) {
-    const data = yield take(EDITEDBRICK_SUBMIT);
-    console.log('saga, editedBrickSubmit start');
+    const data = yield take(EDITEDCONTENT_SUBMIT);
+    console.log('saga, editedContentSubmit start');
 
     const [topicThisState, time] = yield [
       select(getTopicThis, data.topicId),
@@ -144,7 +144,6 @@ export function * recycleBrickSubmit(){
 
     yield put({
       type: SUBMIT_RECYCLEBRICK,
-      newRecord: defaultCell,
       row: data.clickedBrickRow,
       index: data.clickedBrickIndex,
       topicId: data.topicId
@@ -177,6 +176,6 @@ export default function * rootSaga () {
   yield fork(logoutFlow)
   yield fork(newTopicSubmit)
   yield fork(positionChangeSubmit)
-  yield fork(editedBrickSubmit)
+  yield fork(editedContentSubmit)
   yield fork(recycleBrickSubmit)
 }
