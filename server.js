@@ -451,8 +451,7 @@ app.post('/post/:type/:username', function(req, res){
               [req.body.topicId]: {
                 [req.body.row]: {
                   [req.body.index]: {$set: req.body.newRecord}
-                },
-                "hashTag": {$push: [req.body.newRecord.brickTopic]}
+                }
               }
             }
           }

@@ -15,7 +15,7 @@ export class StyleGroup extends React.Component {
 
   render(){
     return(
-      <div className="topic-edit-brickcol-contentEditor-stylegroup">
+      <div className="topic-editbrick-col-editorgroup-stylegroup">
         <span onClick={this.on_BoldClicked} style={{marginLeft: '5%', fontWeight: 'bold', color: '#9C9898'}}>B</span>
         <span onClick={this.on_ItalicClicked} style={{marginLeft: '5%', fontStyle: 'italic', color: '#9C9898'}}>I</span>
         <span onClick={this.on_UnderlineClicked} style={{marginLeft: '5%', textDecoration: 'underline', color: '#9C9898'}}>U</span>

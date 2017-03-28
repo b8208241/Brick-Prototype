@@ -8,8 +8,8 @@ import {
   RECYCLEBRICK_SUBMIT
 } from './constants.js'
 
-export function EditedContentSubmit(tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName) {
-  return {type: EDITEDCONTENT_SUBMIT, tagEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName}
+export function EditedContentSubmit(subEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName) {
+  return {type: EDITEDCONTENT_SUBMIT, subEditorData, contentEditorData, editingBrickRow, editingBrickIndex, topicId, userName}
 }
 
 export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {

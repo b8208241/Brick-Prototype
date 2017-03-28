@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleGroup} from './draft/StyleGroup.jsx'
 import {keyBindingFn} from './draft/KeyBindingFn.js';
-import {handleKeyCommand_TagEditor, handleKeyCommand_ContentEditor} from './draft/handleKeyCommand.js'
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
+import {EditorState, convertToRaw, convertFromRaw, Modifier, RichUtils} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 const linkifyPlugin = createLinkifyPlugin({
@@ -14,44 +13,45 @@ export class EditBrickCol extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      tagEditorState: this.props.isEditingOld? EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Tag)) : EditorState.createEmpty(),
-      contentEditorState: this.props.isEditingOld? EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Content)) : EditorState.createEmpty()
+      subEditorState: EditorState.createEmpty(),
+      contentEditorState: this.props.isEditingOld? EditorState.createWithContent(convertFromRaw(this.props.editingBrick.draftData_Content)) : EditorState.createEmpty(),
+      contentEditorClass: "topic-editbrick-col-editorgroup-contentEditor",
+      firstEditorExist: false
     };
-    this.changeTagEditorState = (newState) => this.setState({tagEditorState: newState});
     this.changeContentEditorState = (newState) => this.setState({contentEditorState: newState});
-    this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
-    this.handle_Click_TagEditor = this.handle_Click_TagEditor.bind(this);
+    this.changeSubEditorState = (newState) => this.setState({subEditorState: newState});
     this.handle_Click_ContentEditor = () => this.contentEditor.focus();
-    this.handle_KeyCommand_TagEditor = (command) => handleKeyCommand_TagEditor(command, this.state.tagEditorState, this.changeTagEditorState);
-    this.handle_KeyCommand_ContentEditor = (command) => handleKeyCommand_ContentEditor(command, this.state.contentEditorState, this.changeTagEditorState);
+    this.handle_Click_BrickSubmit = this.handle_Click_BrickSubmit.bind(this);
+    this.handle_KeyCommand_ContentEditor = this.handle_KeyCommand_ContentEditor.bind(this);
   }
 
   handle_Click_BrickSubmit(event){
     event.preventDefault();
     event.stopPropagation();
-    let tagEditorData = convertToRaw(this.state.tagEditorState.getCurrentContent());
+    let subEditorData = convertToRaw(this.state.subEditorState.getCurrentContent());
     let contentEditorData = convertToRaw(this.state.contentEditorState.getCurrentContent());
 
-    this.props.handle_dispatch_EditedContentSubmit(tagEditorData, contentEditorData);
+    this.props.handle_dispatch_EditedContentSubmit(subEditorData, contentEditorData);
   }
 
-  handle_Click_TagEditor(event){
-    event.preventDefault();
-    event.stopPropagation();
+  handle_KeyCommand_ContentEditor(command){
+    console.log('handleKeyCommand, ContentEditor')
+    //RichUtils is like a library, handling most of default command used in editor, like Ctrl + B
+    //It will modified the editorState naturally, and return a new editorState
+    const newState = RichUtils.handleKeyCommand(this.state.contentEditorState, command);
+    if(newState) {
+      changeState(newState);
+      return 'handled';
+    };
+    if(command === 'Enter Pressed in Topic Editing contentEditor'){
+      this.setState({
+        contentEditorClass: "topic-editbrick-col-editorgroup-contentEditor topic-editbrick-col-editorgroup-contentEditor-active",
+        firstEditorExist: true
+      })
+      return 'handled';
+    }
 
-    this.refs.tagEditor.focus();
-    const currentContentState = this.state.tagEditorState.getCurrentContent();
-    const selection = this.state.tagEditorState.getSelection();
-    const modifiedContentState = Modifier.insertText(currentContentState, selection, "#");
-    this.changeTagEditorState(
-      EditorState.moveFocusToEnd(
-        EditorState.push(
-          this.state.tagEditorState,
-          modifiedContentState,
-          'insert-text'
-        )
-      )
-    );
+    return 'not-handled';
   }
 
   componentWillMount(){
@@ -67,10 +67,8 @@ export class EditBrickCol extends React.Component {
     console.log('EditBrickCol will Receive Props')
     nextProps.isEditingOld ?　
     this.setState({
-      tagEditorState: EditorState.createWithContent(convertFromRaw(nextProps.editingBrick.draftData_Tag)),
       contentEditorState: EditorState.createWithContent(convertFromRaw(nextProps.editingBrick.draftData_Content))
     }) : this.setState({
-      tagEditorState: EditorState.createEmpty(),
       contentEditorState: EditorState.createEmpty()
     })
   }
@@ -81,40 +79,43 @@ export class EditBrickCol extends React.Component {
 
   componentDidUpdate(){
     console.log('EditBrickCol did Update')
+    if(this.state.firstEditorExist){
+      this.subEditor.focus();
+    }
   }
 
   render(){
     return(
-      <div className="topic-edit-brickcol">
-        <div className="topic-edit-brickcol-tageditor" onClick={this.handle_Click_TagEditor}>
-          <Editor
-            editorState={this.state.tagEditorState}
-            onChange={this.changeTagEditorState}
-            ref="tagEditor"
-            placeholder="#..."
-            keyBindingFn={keyBindingFn.for_Topic_Editing_TagEditor}
-            handleKeyCommand={this.handle_KeyCommand_TagEditor}
-            />
-        </div>
-        <div style={{marginLeft: '6%'}}>
-          "#推薦tag 1 #推薦tag 2 #推薦tag 3"
-        </div>
-        <div className="topic-edit-brickcol-contentEditor" onClick={this.handle_Click_ContentEditor}>
+      <div className="topic-editbrick-col">
+        <div className="topic-editbrick-col-editorgroup" onClick={this.handle_Click_ContentEditor}>
+          <div className={this.state.contentEditorClass}>
+            <Editor
+              editorState={this.state.contentEditorState}
+              onChange={this.changeContentEditorState}
+              ref={(element) => {this.contentEditor = element;}}
+              plugins={[linkifyPlugin]}
+              keyBindingFn={keyBindingFn.for_Topic_Editing_ContentEditor}
+              handleKeyCommand={this.handle_KeyCommand_ContentEditor}
+              />
+          </div>
+          {
+            this.state.firstEditorExist &&
+            <div className="topic-editbrick-col-editorgroup-subEditor">
+              <Editor
+                editorState={this.state.subEditorState}
+                onChange={this.changeSubEditorState}
+                ref={(element) => {this.subEditor = element;}}
+                plugins={[linkifyPlugin]}
+                />
+            </div>
+          }
           <StyleGroup
             editorState={this.state.contentEditorState}
             onChange={this.changeContentEditorState}/>
-          <Editor
-            editorState={this.state.contentEditorState}
-            onChange={this.changeContentEditorState}
-            ref={(element) => {this.contentEditor = element;}}
-            plugins={[linkifyPlugin]}
-            keyBindingFn={keyBindingFn.for_Topic_Editing_ContentEditor}
-            handleKeyCommand={this.handle_KeyCommand_ContentEditor}
-            />
         </div>
         <input
           value="save"
-          className="topic-edit-brickcol-input-save"
+          className="topic-editbrick-col-input-save"
           onClick={this.handle_Click_BrickSubmit}
           readOnly
         />

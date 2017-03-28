@@ -51,7 +51,7 @@ export class Brick extends React.Component {
         <div
           id={String(brickData.index) + String(brickData.row) + "_brickTopic_" + brickData.id}
           className="brick-content-taggroup">
-          {brickData.brickTopic}
+          
         </div>
         {
           this.props.isShowing &&

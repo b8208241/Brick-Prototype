@@ -88,48 +88,59 @@
 }
 
 
-.topic-edit-brickcol{
+.topic-editbrick-col{
 	width: 27%;
 	height: 86%;
 	box-sizing: border-box;
 	position: absolute;
 	top: 10%;
 	left: 5%;
-	box-shadow: 2px 1px 1.5px;
 	font-size: 14px;
 }
 
-.topic-edit-brickcol-tageditor{
-	width: 80%;
-	height: 6%;
-	margin-left: 5%;
-	padding: 1.5%;
-	border-bottom: solid 1px;
-	border-color: #9C9898;
-	font-size: 1.2em;
-}
-
-.topic-edit-brickcol-contentEditor {
-	width: 80%;
+.topic-editbrick-col-editorgroup {
+	width: 85%;
 	height: 70%;
 	margin-left: 5%;
 	margin-top: 5%;
 	padding: 0 2%;
-	border-left: solid 1px;
+	border-color: #9C9898;
+}
+
+.topic-editbrick-col-editorgroup-contentEditor{
+	width: 90%;
+	margin-left: 5%;
+	box-sizing: border-box;
+	border-bottom: solid 1px;
 	border-color: #9C9898;
 	font-size: 1.2em;
 }
 
-.topic-edit-brickcol-contentEditor-stylegroup{
+.topic-editbrick-col-editorgroup-contentEditor-active{
+	margin-bottom: 3%;
+	box-shadow: 0px 2px 0.5px;
+}
+
+.topic-editbrick-col-editorgroup-subEditor{
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 2%;
+	padding: 0 1%;
+	box-sizing: border-box;
+	border-left: solid 1px;
+	border-color: #9C9898;
+	font-size: 1em;
+}
+
+.topic-editbrick-col-editorgroup-stylegroup{
 	width: 95%;
 	margin-bottom: 2%;
-	border-bottom: solid 1px;
 	border-color: #9C9898;
 	font-size: 1em;
 	cursor: pointer;
 }
 
-.topic-edit-brickcol-input-save{
+.topic-editbrick-col-input-save{
 	width: 25%;
 	margin-right: 5%;
 	padding: 0.5%;

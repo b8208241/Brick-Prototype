@@ -114,13 +114,10 @@ export function * editedContentSubmit (){
     let newRecord = {};
     newRecord = {
       "id":"brickOriginal" + time.ms,
-      "brickTopic": data.tagEditorData.blocks[0].text,
-      "text": data.contentEditorData.blocks[0].text,
-      "ref": "",
       "class": "cell",
       "index": position.index,
       "row": position.row,
-      "draftData_Tag": data.tagEditorData,
+      "draftData_Sub": data.subEditorData,
       "draftData_Content": data.contentEditorData
     }
     connection.post_EditedBrick(newRecord, position.row, position.index, data.topicId, data.userName)

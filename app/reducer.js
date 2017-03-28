@@ -28,8 +28,7 @@ function topicData (state={}, action) {
         [action.topicId]: {
           [action.row]: {
             [action.index]: {$set: action.newRecord}
-          },
-          "hashTag": {$push: [action.newRecord.brickTopic]}
+          }
         }
       });
       break;
