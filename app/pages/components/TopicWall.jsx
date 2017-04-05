@@ -36,6 +36,7 @@ export class TopicWall extends React.Component {
           rowRecord = {topicThis[i]}
           topicId = {topicId}
           editingBrickIndex = { i===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
+          tagSearchResult = {this.props.tagSearchResult ? this.props.tagSearchResult[i-1] : false}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_Click_Brick = {this.props.handle_Click_Brick}
           handle_Click_BrickEdit={this.props.handle_Click_BrickEdit}

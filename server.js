@@ -413,7 +413,7 @@ app.use('/resource', function(req, res){
   let location = req.query.location;
   switch (location) {
     case "/":
-      res.sendFile(path.join(__dirname+"/resource/resource_Main.js"));
+      res.sendFile(path.join(__dirname+"/resource/resource.js"));
       break;
     default:
       res.json({message: "path err", location: location});
@@ -451,7 +451,8 @@ app.post('/post/:type/:username', function(req, res){
               [req.body.topicId]: {
                 [req.body.row]: {
                   [req.body.index]: {$set: req.body.newRecord}
-                }
+                },
+                "hashTag": {$merge: req.body.newRecord.hashTagObj}
               }
             }
           }

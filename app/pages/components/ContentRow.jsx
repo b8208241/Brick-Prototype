@@ -1,5 +1,6 @@
 import React from 'react';
 import {Brick} from './Brick.jsx';
+import {BrickDisplay} from './BrickDisplay.jsx';
 import {convertToRaw, convertFromRaw} from 'draft-js';
 
 export class ContentRow extends React.Component {
@@ -76,11 +77,9 @@ export class ContentRow extends React.Component {
 
   render(){
     console.log('enter ContentRow')
-    let brickClass
-    let ifdraggable
-    let ifhandle_Click_Brick
     let preventDefault = this.preventDefault
     let editingBrickIndex = this.props.editingBrickIndex
+    let tagSearchResult = this.props.tagSearchResult
     let handle_Drop = this.handle_Drop
     let handle_Drag = this.handle_Drag
     let handle_Click_Brick = this.handle_Click_Brick
@@ -96,39 +95,43 @@ export class ContentRow extends React.Component {
       function(obj){
         //due to the number would be considered as "false"
         //the props "editingBrickIndex" was plus 1 in purpose during upper level
-        let cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
         if(obj.class == 'cell'){
-          let editorState_Content = convertFromRaw(obj.draftData_Content)
-          if(showingState.isShowing && showingState.showingIndex === obj.index){
-             brickClass = "brick-showing";
-             ifdraggable = false;
-             ifhandle_Click_Brick = false;
+          let cellClass
+          if(tagSearchResult){
+            cellClass = tagSearchResult[obj.index] ? "cell-editing" : obj.class;
           }else{
-            brickClass = "brick";
-            ifdraggable = "true";
-            ifhandle_Click_Brick = handle_Click_Brick;
-          };
-            return (
-              <div
-                key={obj.id}
-                className={cellClass}
-                id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
-                  <Brick
-                    brickData = {obj}
-                    brickClass = {brickClass}
-                    brickRow = {obj.row}
-                    brickIndex = {obj.index}
-                    editorState_Content = {editorState_Content}
-                    ifdraggable = {ifdraggable}
-                    handle_Drag = {handle_Drag}
-                    handle_Click_Brick = {ifhandle_Click_Brick}
-                    handle_Click_BrickClose = {handle_Click_BrickClose}
-                    handle_Click_BrickEdit = {handle_Click_BrickEdit}
-                    handle_Click_BrickRecycle = {handle_Click_BrickRecycle}
-                    isShowing = {showingState.isShowing}/>
-              </div>
-            );
+            cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
+          }
+
+          return (
+            <div
+              key={obj.id}
+              className={cellClass}
+              id={"cell_" + String(obj.index) + String(obj.row) + "_" + obj.id}>
+              {
+                showingState.isShowing ?
+                showingState.showingIndex === obj.index ?
+                <BrickDisplay
+                  brickData={obj}
+                  handle_Click_BrickEdit={handle_Click_BrickEdit}
+                  handle_Click_BrickRecycle={handle_Click_BrickRecycle}
+                  handle_Click_BrickClose={handle_Click_BrickClose}
+                  /> :
+                <Brick
+                  brickData={obj}
+                  handle_Drag={handle_Drag}
+                  handle_Click_Brick={handle_Click_Brick}
+                  /> :
+                <Brick
+                  brickData={obj}
+                  handle_Drag={handle_Drag}
+                  handle_Click_Brick={handle_Click_Brick}
+                  />
+              }
+            </div>
+          );
         }else{
+          let cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
           return (
             <div
               key={String(obj.index) + String(obj.row) + time}

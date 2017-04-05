@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {TopicWall} from './components/TopicWall.jsx';
 import {TopicManipulate} from './components/TopicManipulate.jsx';
+import {TagList} from './components/TagList.jsx';
 import {EditBrickCol} from './components/EditBrickCol.jsx'
 import {positionChangeSubmit, EditedContentSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
 
@@ -12,15 +13,17 @@ class Topic extends React.Component {
       isEditing: false,
       isEditingOld: false,
       editingBrickRow: false,
-      editingBrickIndex: false
+      editingBrickIndex: false,
+      tagSearchResult: false
     };
     this.topicId = this.props.params.topicId;
     this.keyCount = 0;
     this.handle_Click_Edit = () => this.setState({isEditing: true, editingBrickRow: false, editingBrickIndex: false});
     this.handle_Click_EditClose = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false})
+    this.handle_Click_Tag = (searchResult) => this.setState({tagSearchResult: searchResult});
     this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
     this.handle_Click_BrickEdit = this.handle_Click_BrickEdit.bind(this);
-    this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
+    this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData, hashTagObj) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, hashTagObj, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
     this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId));
     this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
   }
@@ -44,13 +47,7 @@ class Topic extends React.Component {
   render(){
     console.log('enter page Topic')
     let topicData = this.props.topicData;
-    let keyCount = this.keyCount;
-    let tagList = topicData[this.topicId].hashTag.map(
-      function(obj){
-        keyCount = keyCount+1;
-        return <li key={obj+"_"+keyCount}>{obj}</li>
-      }
-    )
+
     return(
       <section style={{width: '100%', height: '100%'}}>
         <div className="topic-text">
@@ -58,11 +55,9 @@ class Topic extends React.Component {
           <div style={{width: '65%', position: 'relative', left: '10%', border: '1px solid'}}></div>
           <p style={{float: 'right'}}>一小段主題的說明文字，需要有兩行</p>
         </div>
-        <div className="topic-taggroup">
-          <ul>
-            {tagList}
-          </ul>
-        </div>
+        <TagList
+          topicThis={topicData[this.topicId]}
+          handle_Click_Tag={this.handle_Click_Tag}/>
         {
           this.state.isEditing ?
           <div style={{'height': '100%'}}>
@@ -84,6 +79,7 @@ class Topic extends React.Component {
                   topicId={this.topicId}
                   editingBrickRow={this.state.editingBrickRow}
                   editingBrickIndex={this.state.editingBrickIndex}
+                  tagSearchResult={this.state.tagSearchResult}
                   handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
                   handle_Click_Brick = {this.handle_Click_Brick}
                   handle_Click_BrickEdit={this.handle_Click_BrickEdit}/>
@@ -94,6 +90,7 @@ class Topic extends React.Component {
             <TopicWall
               topicData = {topicData}
               topicId={this.topicId}
+              tagSearchResult={this.state.tagSearchResult}
               handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
               handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
               handle_Click_Brick = {this.handle_Click_Brick}

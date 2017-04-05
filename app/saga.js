@@ -118,7 +118,8 @@ export function * editedContentSubmit (){
       "index": position.index,
       "row": position.row,
       "draftData_Sub": data.subEditorData,
-      "draftData_Content": data.contentEditorData
+      "draftData_Content": data.contentEditorData,
+      "hashTagObj": data.hashTagObj
     }
     connection.post_EditedBrick(newRecord, position.row, position.index, data.topicId, data.userName)
 
