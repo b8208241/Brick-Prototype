@@ -14,7 +14,6 @@ link.forEach(function(ele){
   document.getElementsByTagName('head')[0].appendChild(newLink)
 })
 let script = [
-  {"src": "/resource/js/opp_main.js", type:"text/javascript"},
   {"src": "/resource/js/opp_topic.js", type:"text/javascript"}
 ];
 script.forEach(function(ele){

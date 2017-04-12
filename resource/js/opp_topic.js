@@ -36,23 +36,3 @@ function add_Title(event){
 	var title = string.slice(positionStart+7,positionEnd);
 	document.getElementById('ref').innerHTML = title;
 }
-
-function cellDelete_colorbox(event){
-	//for IE environment
-	var ev = event || window.event;
-	var target = ev.target || ev.srcElement;
-	var brickId = target.parentElement.getAttribute('id')
-	//starting locking the one should be replaced
-	cellDelete_replace(brickId);
-}
-
-function cellDelete_replace(brickId){
-	let targetCell = document.getElementById(brickId).parentElement.parentElement;
-	let cellDefault = document.createElement('div');
-	cellDefault.classList.add('cell-default');
-	$(targetCell).replaceWith(cellDefault);
-	set_Colorbox_celldefault(cellDefault);
-	let cellDefaultParent = cellDefault.parentElement;
-	let cellDefaultParentId = cellDefaultParent.getAttribute('id');
-	rowSubmit(cellDefaultParentId, cellDefaultParent.innerHTML);
-}

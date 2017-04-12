@@ -29,7 +29,9 @@ function topicData (state={}, action) {
           [action.row]: {
             [action.index]: {$set: action.newRecord}
           },
-          "hashTag": {$merge: action.newRecord.hashTagObj}
+          "hashTag": {$merge: action.newRecord.hashTagObj},
+          "questions": {$merge: action.newRecord.questionMarkobj},
+          "hyphens": {$merge: action.newRecord.hyphenObj}
         }
       });
       break;

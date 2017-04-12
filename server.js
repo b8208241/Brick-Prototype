@@ -78,7 +78,7 @@ const container = {
               +"document.getElementsByTagName('body')[0].appendChild(script_render);"
               +"script_Bundle.setAttribute('src', '/bundle?token='+token+'&location="+location+"');"
               +"document.getElementsByTagName('body')[0].appendChild(script_Bundle);"
-              +"script_Resource.setAttribute('src', '/resource?token='+token+'&location="+location+"');"
+              +"script_Resource.setAttribute('src', '/resource?location="+location+"');"
               +"document.getElementsByTagName('body')[0].appendChild(script_Resource);"
             +"}"
             +'serverCheck();'
@@ -284,6 +284,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/authorize'));
 app.use(express.static(__dirname + '/resource/css/img'));
 
+//attach resource controller by location
+app.get('/resource', function(req, res){
+  console.log('require resource controller')
+  let location = req.query.location;
+  switch (location) {
+    case "/":
+      res.sendFile(path.join(__dirname+"/resource/resource.js"));
+      break;
+    default:
+      res.json({message: "path err", location: location});
+  }
+})
+
 //attach required resource to the html
 app.use('/resource/:filetype/:filename', function(req, res){
   let filetype = req.params.filetype;
@@ -335,9 +348,6 @@ app.use(function (req, res, next) {
           case "/bundle":
             process_LogIn.bundle(req, res);
             break;
-          case "/resource":
-            res.status(200).json({message: "please log in first"});
-            break;
           case "/render":
             process_LogIn.server_Render(req, res);
             break;
@@ -358,9 +368,6 @@ app.use(function (req, res, next) {
       case "/bundle":
         process_LogIn.bundle(req, res);
         break;
-      case "/resource":
-      res.status(200).json({message: "please log in first"});
-        break;
       case "/render":
         process_LogIn.server_Render(req, res);
         break;
@@ -377,9 +384,6 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname + '/data'));
 app.use(express.static(__dirname + '/app/actions'));
 app.use(express.static(__dirname + '/app/pages'));
-app.use(express.static(__dirname + '/app/js'));
-app.use(express.static(__dirname + '/app/css'));
-app.use(express.static(__dirname + '/app/img'));
 app.use(express.static(__dirname + '/app/pages/components'))
 
 //bundle those pages needed to be authorized
@@ -401,19 +405,6 @@ app.use('/render', function(req, res){
   switch (location) {
     case "/":
       server_Main.server_Render(req, res);
-      break;
-    default:
-      res.json({message: "path err", location: location});
-  }
-})
-
-//attach resource controller by location
-app.use('/resource', function(req, res){
-  console.log('require resource controller')
-  let location = req.query.location;
-  switch (location) {
-    case "/":
-      res.sendFile(path.join(__dirname+"/resource/resource.js"));
       break;
     default:
       res.json({message: "path err", location: location});
@@ -452,7 +443,9 @@ app.post('/post/:type/:username', function(req, res){
                 [req.body.row]: {
                   [req.body.index]: {$set: req.body.newRecord}
                 },
-                "hashTag": {$merge: req.body.newRecord.hashTagObj}
+                "hashTag": {$merge: req.body.newRecord.hashTagObj},
+                "questions": {$merge: req.body.newRecord.questionMarkobj},
+                "hyphens": {$merge: req.body.newRecord.hyphenObj}
               }
             }
           }

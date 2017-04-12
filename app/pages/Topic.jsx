@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {TopicWall} from './components/TopicWall.jsx';
-import {TopicManipulate} from './components/TopicManipulate.jsx';
-import {TagList} from './components/TagList.jsx';
-import {EditBrickCol} from './components/EditBrickCol.jsx'
+import {ModalBox} from './components_General/ModalBox.jsx';
+import {TopicWall} from './components_Topic/TopicWall.jsx';
+import {EditCol} from './components_Topic/EditCol.jsx';
 import {positionChangeSubmit, EditedContentSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
@@ -14,34 +13,20 @@ class Topic extends React.Component {
       isEditingOld: false,
       editingBrickRow: false,
       editingBrickIndex: false,
-      tagSearchResult: false
+      searchResult: false
     };
     this.topicId = this.props.params.topicId;
-    this.keyCount = 0;
-    this.handle_Click_Edit = () => this.setState({isEditing: true, editingBrickRow: false, editingBrickIndex: false});
-    this.handle_Click_EditClose = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false})
-    this.handle_Click_Tag = (searchResult) => this.setState({tagSearchResult: searchResult});
-    this.handle_Click_Brick = this.handle_Click_Brick.bind(this);
-    this.handle_Click_BrickEdit = this.handle_Click_BrickEdit.bind(this);
-    this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData, hashTagObj) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, hashTagObj, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
+    this.open_EditCol = this.open_EditCol.bind(this);
+    this.close_EditCol = () => this.setState({isEditing: false, isEditingOld: false, editingBrickRow: false, editingBrickIndex: false});
+    this.search_SubTopic = (searchResult) => this.setState({searchResult: searchResult});
+    this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj, this.state.editingBrickRow, this.state.editingBrickIndex, this.topicId, this.props.userData.userName));
     this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId));
     this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
   }
 
-  handle_Click_Brick(clickedBrickRow, clickedBrickIndex){
-    if(this.state.isEditing){
-      this.setState({isEditingOld: true, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
-    }else{
-      return true;
-    }
-  }
-
-  handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex){
-    if(this.state.isEditing){
-      this.setState({isEditingOld: false, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
-    }else{
-      this.setState({isEditing: true, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex})
-    }
+  open_EditCol(clickedBrickRow, clickedBrickIndex, source) {
+    let editingOld = source === "newBrick" ? false : true ;
+    this.setState({isEditing: true, isEditingOld: editingOld, editingBrickRow: clickedBrickRow, editingBrickIndex: clickedBrickIndex, searchResult: false})
   }
 
   render(){
@@ -50,55 +35,28 @@ class Topic extends React.Component {
 
     return(
       <section style={{width: '100%', height: '100%'}}>
-        <div className="topic-text">
-          <div className="topic-text-header">{topicData[this.topicId].topic}</div>
-          <div style={{width: '65%', position: 'relative', left: '10%', border: '1px solid'}}></div>
-          <p style={{float: 'right'}}>一小段主題的說明文字，需要有兩行</p>
-        </div>
-        <TagList
-          topicThis={topicData[this.topicId]}
-          handle_Click_Tag={this.handle_Click_Tag}/>
-        {
-          this.state.isEditing ?
-          <div style={{'height': '100%'}}>
-            <EditBrickCol
-              isEditingOld={this.state.isEditingOld}
-              editingBrick={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false}
-              handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}/>
-            <div className="topic-ref">
-              <div className="topic-ref-side">
-                <input
-                  value="X"
-                  className="topic-ref-side-input-close"
-                  onClick={this.handle_Click_EditClose}
-                  readOnly/>
-              </div>
-              <div className="topic-ref-scroll">
-                <TopicWall
-                  topicData = {topicData}
-                  topicId={this.topicId}
-                  editingBrickRow={this.state.editingBrickRow}
-                  editingBrickIndex={this.state.editingBrickIndex}
-                  tagSearchResult={this.state.tagSearchResult}
-                  handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
-                  handle_Click_Brick = {this.handle_Click_Brick}
-                  handle_Click_BrickEdit={this.handle_Click_BrickEdit}/>
-              </div>
-            </div>
-          </div>  :
           <div style={{fontSize: '14px'}}>
             <TopicWall
               topicData = {topicData}
               topicId={this.topicId}
-              tagSearchResult={this.state.tagSearchResult}
+              editingStatus={this.state.isEditing}
+              searchResult={this.state.searchResult}
+              open_EditCol = {this.open_EditCol}
+              search_SubTopic={this.search_SubTopic}
               handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
               handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
-              handle_Click_Brick = {this.handle_Click_Brick}
-              handle_Click_BrickEdit={this.handle_Click_BrickEdit}
               />
-            <TopicManipulate handle_Click_Edit={this.handle_Click_Edit}/>
           </div>
-        }
+          {
+            this.state.isEditing &&
+            <ModalBox>
+              <EditCol
+                editingOld={this.state.isEditingOld ? topicData[this.topicId][this.state.editingBrickRow][this.state.editingBrickIndex]: false}
+                editingPosition = {String(this.state.editingBrickRow)+ String(this.state.editingBrickIndex)}
+                handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}
+                close_EditCol={this.close_EditCol}/>
+            </ModalBox>
+          }
       </section>
     )
   }

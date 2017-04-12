@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import { Route } from 'react-router'
-import {ActiveTopicRow} from './components/ActiveTopicRow.jsx'
-import {NewTopicCreate} from './components/NewTopicCreate.jsx'
+import {ActiveTopicRow} from './components_Main/ActiveTopicRow.jsx'
+import {NewTopicCreate} from './components_Main/NewTopicCreate.jsx'
 
 import {newTopicSubmit} from '../actions/Main.js';
 
