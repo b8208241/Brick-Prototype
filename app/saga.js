@@ -14,7 +14,6 @@ import {
   defineTime
 } from './sagas/basicTool.js'
 import {
-  positionDecide,
   updateTopic,
   brickCell,
   defaultCell,
@@ -109,27 +108,26 @@ export function * editedContentSubmit (){
       select(getTopicThis, data.topicId),
       call(defineTime)
     ]
-    const position = yield call(positionDecide, topicThisState, data.editingBrickRow, data.editingBrickIndex)
 
     let newRecord = {};
     newRecord = {
       "id":"brickOriginal" + time.ms,
       "class": "cell",
-      "index": position.index,
-      "row": position.row,
+      "index": data.editingBrickIndex,
+      "row": data.editingBrickRow,
       "draftData_Sub": data.subEditorData,
       "draftData_Content": data.contentEditorData,
       "hashTagObj": data.hashTagObj,
       "hyphenObj": data.hyphenObj,
       "questionMarkobj": data.questionMarkobj
     }
-    connection.post_EditedBrick(newRecord, position.row, position.index, data.topicId, data.userName)
+    connection.post_EditedBrick(newRecord, data.editingBrickRow, data.editingBrickIndex, data.topicId, data.userName)
 
     yield put({
       type: SUBMIT_BRICKCONTENT,
       newRecord: newRecord,
-      row: position.row,
-      index: position.index,
+      row:  data.editingBrickRow,
+      index: data.editingBrickIndex,
       topicId: data.topicId
     })
   }

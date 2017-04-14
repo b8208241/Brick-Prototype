@@ -38,36 +38,67 @@ export function * updateMemoRecords(memoRecords, newRecord){
   return yield call(createObject, "memoRecords", memoRecords);
 }
 
-export function positionDecide(topicThis, editingBrickRow, editingBrickIndex){
-  console.log('enter positionDecide')
-  let position = {}
-  if(editingBrickRow){
-    position = {row: editingBrickRow, index: editingBrickIndex}
-  }else if(!editingBrickRow){
-    let i
-    for(i = 4 ; i>0 ; i--){
-      let rowRecords = topicThis[String(i)];
-      let j
-      let max
-      let stop
-      if(i = 4 || 1){
-        max = 8
-      }else{
-        max = 10
-      }
-      for(j = 0; j<max ; j++){
-        if(rowRecords[j].class == "cell-default"){
-          position = {row: i, index: j}
+export function initialPosition(topicThis, currentRow, currentIndex){
+  let result = {row: currentRow?currentRow:2, index: currentIndex?currentIndex:4}
+  if(topicThis[2][4].class!=='cell-default'){
+    let i;
+    let j;
+    let n = 1;
+    let m = 1;
+    let stop =false;
+    for(i=2 ; i<5 ; i+n){
+      let limit = topicThis[i].length;
+      for(j=Math.floor(limit/2) ; j<limit ; j= j+(Math.pow(-1, m-1)*m)){
+        if(topicThis[i][j].class!=='cell-default'){
+          m+=1;
+          continue;
+        }else{
+          result={row: i, index: j};
           stop = true;
           break;
-        }else{
-          continue;
+        }
+      }
+      if(stop){
+        break;
+      }
+      n = -1-(Math.pow(n, 2));
+    }
+  }
+  return result;
+}
+
+/*
+Not good enough, bug exist!
+export function suggestPosition(topicThis, currentRow, currentIndex){
+  let result = {row: currentRow, index: currentIndex}
+    let i;
+    let j;
+    let m;
+    let stop =false;
+    for(i=0 ; i<4 ; i++){
+      let checkRow = currentRow+(Math.pow(-1, i)*i);
+      if(checkRow<5 && checkRow>0){
+        let arr = [];
+        let limit = topicThis[checkRow].length;
+        for(m=1 ; m<limit ; m++){
+          arr.push(Math.pow(-1, m)*m);
+        }
+        for(j=0 ; j<arr.length ; j++){
+          let checkIndex = currentIndex+arr[j];
+          if(checkIndex<limit && checkIndex>-1){
+            if(topicthis[i][checkIndex].class==='cell-default'){
+              result={row: i, index: checkIndex};
+              stop=true;
+              break;
+            }
+          }else{
+            continue;
+          }
         }
       }
       if(stop){
         break;
       }
     }
-  }
-  return position;
-}
+  return result;
+}*/

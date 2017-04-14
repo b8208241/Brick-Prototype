@@ -92,7 +92,18 @@
 	cursor: pointer;
 }
 
-.cell-editing {
+.cell-focus {
+	height: 97%;
+	flex-basis: 100%;
+	background-color: #FFFFFF;
+	opacity: 0.7;
+	box-sizing: border-box;
+	box-shadow: 2px 1px 8px 2px #9C9898;
+	border-radius: 15px;
+	cursor: pointer;
+}
+
+.cell-searching {
 	height: 97%;
 	flex-basis: 100%;
 	background-color: #FFFFFF;

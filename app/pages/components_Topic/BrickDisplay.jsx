@@ -19,11 +19,24 @@ export class BrickDisplay extends React.Component {
       contentEditorState: EditorState.createWithContent(convertFromRaw(this.props.brickData.draftData_Content), compositeDecorator(pluginsContent)),
       subEditorState: EditorState.createWithContent(convertFromRaw(this.props.brickData.draftData_Sub), compositeDecorator(pluginsSub))
     }
-    this.handle_Click_BrickEdit = (event) => this.props.handle_Click_BrickEdit(this.props.brickData.row, this.props.brickData.index);
-    this.handle_Click_BrickRecycle = (event) => this.props.handle_Click_BrickRecycle(this.props.brickData.row, this.props.brickData.index);
+    this.handle_Click_BrickEdit = this.handle_Click_BrickEdit.bind(this);
+    this.handle_Click_BrickRecycle = this.handle_Click_BrickRecycle.bind(this);
     this.changeContentEditorState = () => {};
     this.changeSubEditorState = () => {};
   }
+
+  handle_Click_BrickEdit(event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.handle_Click_BrickEdit(this.props.brickData.row, this.props.brickData.index);
+  }
+
+  handle_Click_BrickRecycle(event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.handle_Click_BrickRecycle(this.props.brickData.row, this.props.brickData.index);
+  }
+
   render(){
     let brickData = this.props.brickData;
     let taggroup = [];

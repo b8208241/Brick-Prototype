@@ -21,11 +21,7 @@ export class ContentRowTwo extends React.Component {
     this.preventDefault = (event) => event.preventDefault();
   }
 
-  handle_Click_BrickEdit(event){
-    event.preventDefault();
-    event.stopPropagation();
-    let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
-    let clickedBrickRow = Number($(event.target).attr('id').charAt(1));
+  handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex){
     this.props.open_EditCol(clickedBrickRow, clickedBrickIndex, "oldBrick");
     this.setState({isDisplaying: false, displayingIndex: null});
   }
@@ -56,23 +52,26 @@ export class ContentRowTwo extends React.Component {
   }
 
   handle_Drag(event){
-      //target the "brickOriginal" <div>
     event.dataTransfer.setData("dragging", event.target.id);
   }
 
   handle_Drop(event){
-    console.log('handle_Drop in ContentRow')
     event.preventDefault();
     event.stopPropagation();
     const brickId = event.dataTransfer.getData("dragging");
     const newContainer = event.target;
-
     let newIndex = Number($(newContainer).attr("id").charAt(0));
     let newRow = Number($(newContainer).attr("id").charAt(1));
+
+    if($('#'+brickId).attr('class')==='cell-focus'){
+      this.props.handle_Drop_CellFocus(newIndex, newRow)
+      return;
+    }
+
     let originIndex = Number($('#'+brickId).attr('id').charAt(0));
     let originRow = Number($('#'+brickId).attr('id').charAt(1));
 
-    this.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
+    this.props.handle_dispatch_positionChangeSubmit(originIndex, originRow, newIndex, newRow)
   }
 
   componentDidMount(){
@@ -86,6 +85,7 @@ export class ContentRowTwo extends React.Component {
   render(){
     console.log('enter ContentRow')
     let preventDefault = this.preventDefault
+    let editingPosition = this.props.editingPosition
     let editingBrickIndex = this.props.editingBrickIndex
     let searchResult = this.props.searchResult
     let handle_Drop = this.handle_Drop
@@ -109,16 +109,14 @@ export class ContentRowTwo extends React.Component {
         continue;
       }
 
-      let cellClass
       let item = function(obj){
+        let cellClass = obj.class
         switch (obj.class) {
           case 'cell':
           if(searchResult){
-            cellClass = searchResult[obj.index] ? "cell-editing" : obj.class;
-          }else{
-            //due to the number would be considered as "false"
-            //the props "editingBrickIndex" was plus 1 in purpose during upper level
-            cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
+            cellClass = searchResult[obj.index] ? "cell-searching" : obj.class;
+          }else if(editingPosition){
+            cellClass = obj.index===(editingPosition[1]) ? "cell-searching" : obj.class;
           }
           return (
             <div
@@ -149,27 +147,36 @@ export class ContentRowTwo extends React.Component {
         );
           break;
           case 'cell-default':
-          cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-editing" : obj.class : obj.class;
-          return (
-            <div
-              key={String(obj.index) + String(obj.row) + time}
-              className={cellClass}
-              id={String(obj.index) + String(obj.row) + obj.class}
-              onClick={handle_Click_CellBlank}
-              onDragOver={preventDefault}
-              onDrop={handle_Drop}/>
-          );
+            let ifDraggable = false;
+            if(editingPosition){
+              cellClass = obj.index===(editingPosition[1]) ? "cell-searching" : editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-focus" : cellClass : cellClass;
+            }else{
+              cellClass = editingBrickIndex ? obj.index===(editingBrickIndex-1) ? "cell-focus" : cellClass : cellClass;
+            }
+            if(cellClass==="cell-focus"){ifDraggable = true;};
+            return (
+              <div
+                key={String(obj.index) + String(obj.row) + time}
+                className={cellClass}
+                id={String(obj.index) + String(obj.row) + obj.class}
+                onClick={handle_Click_CellBlank}
+                onDragOver={preventDefault}
+                onDrop={handle_Drop}
+                onDragStart={handle_Drag}
+                draggable={ifDraggable}/>
+            );
             break;
-        default:
-        return (
-          <div
-            key={String(obj.index) + String(obj.row) + time}
-            className={obj.class}
-            id={String(obj.index) + String(obj.row) + obj.class}
-            onDragOver={preventDefault}
-            onDrop={handle_Drop}/>
-        );
-      }
+          default:
+            return (
+              <div
+                key={String(obj.index) + String(obj.row) + time}
+                className={obj.class}
+                id={String(obj.index) + String(obj.row) + obj.class}
+                onDragOver={preventDefault}
+                onDrop={handle_Drop}/>
+            );
+            break;
+        }
       }
 
       if(left){

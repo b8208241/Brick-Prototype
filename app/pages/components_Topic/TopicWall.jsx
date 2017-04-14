@@ -37,9 +37,11 @@ export class TopicWall extends React.Component {
           rowRecord = {topicThis[1]}
           topicId = {topicId}
           editingStatus={this.props.editingStatus}
+          editingPosition={ 1===this.props.editingPosition[0] ? this.props.editingPosition : false}
           editingBrickIndex = { 1===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[0] : false}
           open_EditCol = {this.props.open_EditCol}
+          handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
         <ContentRowTwo
@@ -48,9 +50,11 @@ export class TopicWall extends React.Component {
           topicId = {topicId}
           topicText = {topicText}
           editingStatus={this.props.editingStatus}
+          editingPosition={ 2===this.props.editingPosition[0] ? this.props.editingPosition : false}
           editingBrickIndex = { 2===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[1] : false}
           open_EditCol = {this.props.open_EditCol}
+          handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
         <ContentRowThree
@@ -59,10 +63,12 @@ export class TopicWall extends React.Component {
           rowRecord = {topicThis[3]}
           topicId = {topicId}
           editingStatus={this.props.editingStatus}
+          editingPosition={ 3===this.props.editingPosition[0] ? this.props.editingPosition : false}
           editingBrickIndex = { 3===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[2] : false}
           open_EditCol = {this.props.open_EditCol}
           search_SubTopic={this.props.search_SubTopic}
+          handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
         <ContentRow
@@ -70,9 +76,11 @@ export class TopicWall extends React.Component {
           rowRecord = {topicThis[4]}
           topicId = {topicId}
           editingStatus={this.props.editingStatus}
+          editingPosition={ 4===this.props.editingPosition[0] ? this.props.editingPosition : false}
           editingBrickIndex = { 4===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[3] : false}
           open_EditCol = {this.props.open_EditCol}
+          handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
       </div>

@@ -70,11 +70,12 @@
 }
 
 .topic-editbrick-col{
-	width: 27%;
+	width: 42%;
+	height: 80%;
 	box-sizing: border-box;
 	position: absolute;
-	bottom: 20%;
-	left: 36%;
+	bottom: 10%;
+	left: 30%;
 	background-color: #FFFFFF;
 	font-size: 14px;
 }
