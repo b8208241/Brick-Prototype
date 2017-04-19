@@ -1,7 +1,6 @@
 import React from 'react';
 import {ContentRow} from './ContentRow.jsx'
 import {ContentRowTwo} from './ContentRowTwo.jsx'
-import {ContentRowThree} from './ContentRowThree.jsx'
 
 export class TopicWall extends React.Component {
   constructor(props){
@@ -9,7 +8,6 @@ export class TopicWall extends React.Component {
     this.state = {
 
     }
-    this.keyCount = 0;
   }
 
   componentDidMount(){
@@ -46,6 +44,7 @@ export class TopicWall extends React.Component {
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
         <ContentRowTwo
           class="topic-wall-row"
+          topicThis = {topicThis}
           rowRecord = {topicThis[2]}
           topicId = {topicId}
           topicText = {topicText}
@@ -54,12 +53,12 @@ export class TopicWall extends React.Component {
           editingBrickIndex = { 2===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[1] : false}
           open_EditCol = {this.props.open_EditCol}
+          search_SubTopic={this.props.search_SubTopic}
           handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>
-        <ContentRowThree
+        <ContentRow
           class="topic-wall-row"
-          topicThis = {topicThis}
           rowRecord = {topicThis[3]}
           topicId = {topicId}
           editingStatus={this.props.editingStatus}
@@ -67,7 +66,6 @@ export class TopicWall extends React.Component {
           editingBrickIndex = { 3===this.props.editingBrickRow ? this.props.editingBrickIndex+1 : false}
           searchResult = {this.props.searchResult ? this.props.searchResult[2] : false}
           open_EditCol = {this.props.open_EditCol}
-          search_SubTopic={this.props.search_SubTopic}
           handle_Drop_CellFocus = {this.props.handle_Drop_CellFocus}
           handle_dispatch_positionChangeSubmit = {this.props.handle_dispatch_positionChangeSubmit}
           handle_dispatch_RecycleBrickSubmit={this.props.handle_dispatch_RecycleBrickSubmit}/>

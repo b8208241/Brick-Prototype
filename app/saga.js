@@ -154,6 +154,7 @@ export function * positionChangeSubmit (){
     console.log('saga, positionChangeSubmit start');
 
     let [originRow, originIndex, targetIndex, targetRow] = [data.originRow, data.originIndex, data.newIndex, data.newRow];
+    connection.patch_PositionChange(defaultCell, originRow, originIndex, targetRow, targetIndex, data.topicId, data.userName)
 
     yield put({
       type: SUBMIT_POSITIONCHANGE,

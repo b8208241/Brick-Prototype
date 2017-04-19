@@ -15,8 +15,8 @@ export const defaultContentPage = {
   "questions": {},
   "hyphens": {},
   "1":[{"class":"cell-default","index":0, "row":"1", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"1", "id":""}, {"class":"cell-default","index":2, "row":"1", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"3", "row":"1", "id":""}, {"class":"cell-default","index":4, "row":"1", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"5", "row":"1", "id":""}],
-  "2":[{"class":"cell-default","index":0, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"2", "id":""}, {"class":"","index":2, "row":"2", "id":"_cell_topic"}, {"class":"placeholder","index":"3", "row":"2", "id":""}, {"class":"cell-default","index":4, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"5", "row":"2", "id":""}, {"class":"cell-default","index":6, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"7", "row":"2", "id":""}],
-  "3":[{"class":"cell-default","index":0, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"3", "id":""}, {"class":"cell-default","index":2, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"","index":3, "row":"2", "id":"_cell_subTopic"},  {"class":"placeholder","index":"4", "row":"3", "id":""}, {"class":"cell-default","index":5, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"6", "row":"3", "id":""}],
+  "2":[{"class":"cell-default","index":0, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"2", "id":""}, {"class":"cell-default","index":2, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"3", "row":"2", "id":""}, {"class":"","index":4, "row":"2", "id":"_cell_topic"},  {"class":"cell-default","index":5, "row":"2", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}],
+  "3":[{"class":"cell-default","index":0, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"3", "id":""}, {"class":"cell-default","index":2, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"3", "row":"3", "id":""}, {"class":"cell-default","index":4, "row":"3", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"5", "row":"3", "id":""}],
   "4":[{"class":"cell-default","index":0, "row":"4", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"1", "row":"4", "id":""}, {"class":"cell-default","index":2, "row":"4", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"3", "row":"4", "id":""}, {"class":"cell-default","index":4, "row":"4", "id":"", "draftData_Sub":"", "draftData_Content": "", "hashTagObj": "", "hyphenObj": "", "questionMarkobj": ""}, {"class":"placeholder","index":"5", "row":"4", "id":""}]
 }
 
@@ -39,14 +39,14 @@ export function * updateMemoRecords(memoRecords, newRecord){
 }
 
 export function initialPosition(topicThis, currentRow, currentIndex){
-  let result = {row: currentRow?currentRow:2, index: currentIndex?currentIndex:4}
-  if(topicThis[2][4].class!=='cell-default'){
+  let result = {row: currentRow?currentRow:3, index: currentIndex?currentIndex:2}
+  if(topicThis[result.row][result.index].class!=='cell-default'){
     let i;
     let j;
-    let n = 1;
+    let n = 0;
     let m = 1;
     let stop =false;
-    for(i=2 ; i<5 ; i+n){
+    for(i=3 ; i<5 ; i = i + (Math.pow(-1, i)*(n))){
       let limit = topicThis[i].length;
       for(j=Math.floor(limit/2) ; j<limit ; j= j+(Math.pow(-1, m-1)*m)){
         if(topicThis[i][j].class!=='cell-default'){
@@ -61,7 +61,7 @@ export function initialPosition(topicThis, currentRow, currentIndex){
       if(stop){
         break;
       }
-      n = -1-(Math.pow(n, 2));
+      n++;
     }
   }
   return result;

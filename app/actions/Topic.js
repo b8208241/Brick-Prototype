@@ -12,8 +12,8 @@ export function EditedContentSubmit(subEditorData, contentEditorData, hashTagObj
   return {type: EDITEDCONTENT_SUBMIT, subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj, editingBrickRow, editingBrickIndex, topicId, userName}
 }
 
-export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId) {
-  return {type: POSITIONCHANGE_SUBMIT, originIndex, originRow, newIndex, newRow, topicId}
+export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, topicId, userName) {
+  return {type: POSITIONCHANGE_SUBMIT, originIndex, originRow, newIndex, newRow, topicId, userName}
 }
 
 export function RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex,topicId, userName) {

@@ -28,6 +28,23 @@ let connection = {
       }
     );
   },
+  patch_PositionChange(defaultCell, originRow, originIndex, targetRow, targetIndex, topicId, userName){
+    console.log('ready to patch PositionChange')
+    axios.patch('/patch/positionchange/'+ userName, {
+      "token": token,
+      "defaultCell": defaultCell,
+      "originRow": originRow,
+      "originIndex": originIndex,
+      "targetRow": targetRow,
+      "targetIndex": targetIndex,
+      "topicId": topicId
+    }).then(
+      function(res){
+        console.log(res.data);
+        console.log('axios close, patched PositionChange')
+      }
+    )
+  },
   delete_Brick(newRecord, row, index,topicId, userName){
     console.log('ready to delete Brick')
     axios.delete('/recycle/brick/'+ userName, {

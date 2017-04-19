@@ -332,6 +332,18 @@ app.use('/resource/:filetype/:filename', function(req, res){
         console.log('Sent:', filename);
       }
     });
+  }else if(filetype ==='img'){
+    let options = {
+      root: __dirname + '/resource/img/'
+    };
+    res.sendFile(filename, options, function (err) {
+      if (err) {
+        console.log(err);
+        res.status(err.status).end();
+      }else {
+        console.log('Sent:', filename);
+      }
+    });
   }
 })
 
@@ -459,6 +471,44 @@ app.post('/post/:type/:username', function(req, res){
       break;
     default:
       res.json('no matched type')
+  }
+})
+
+app.patch('/patch/:type/:username', function(req, res){
+  if(req.params.type==='positionchange'){
+    console.log('patch positionchange to the database')
+    jsonfile.readFile(database_forServer, function(err, data){
+      let updatedData = update(data, {
+        [req.params.username]: {
+          "topicData": {
+            [req.body.topicId]: {
+              $apply: function(obj){
+                let originBrick = update(obj[req.body.originRow][req.body.originIndex], {
+                  $merge: {"index": req.body.targetIndex, "row": req.body.targetRow}
+                });
+                let cellDefault = update(req.body.defaultCell, {
+                  $merge: {"index": req.body.originIndex, "row": req.body.originRow}
+                });
+                const newObj = update(obj, {
+                  [req.body.targetRow]: {
+                    [req.body.targetIndex]: {$set: originBrick}
+                  }
+                });
+                return update(newObj, {
+                  [req.body.originRow]: {
+                    [req.body.originIndex]: {$set: cellDefault}
+                  }
+                })
+              }
+            }
+          }
+        }
+      })
+      jsonfile.writeFile(database_forServer, updatedData, function(err){
+        if(err) throw err;
+      })
+      res.json(req.params.type + ' successfully patch');
+    })
   }
 })
 

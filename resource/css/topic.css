@@ -1,3 +1,15 @@
+.topic-conclusion {
+	width: 22.2%;
+	height: 45%;
+	position: absolute;
+	top: 52.5%;
+	left: 55.5%;
+	box-sizing: border-box;
+	background-image: url(../img/漸層_TopicConclusion.svg);
+	background-repeat:no-repeat;
+	z-index: 6;
+}
+
 .topic-wall-row-block-subtopic-controlbar{
 	width: 10%;
 	height: 80%;
@@ -69,13 +81,23 @@
 	cursor: pointer;
 }
 
+.topic-editbrick-modalbackground{
+	width: 95%;
+	height: 90%;
+	position: fixed;
+	top: 5%;
+	left: 2.5%;
+	background-color: rgba(156, 152, 152, 0.9);
+	z-Index: 5;
+}
+
 .topic-editbrick-col{
-	width: 42%;
-	height: 80%;
+	width: 44.2%;
+	height: 49.61%;
 	box-sizing: border-box;
 	position: absolute;
-	bottom: 10%;
-	left: 30%;
+	bottom: 6%;
+	left: 39.548%;
 	background-color: #FFFFFF;
 	font-size: 14px;
 }

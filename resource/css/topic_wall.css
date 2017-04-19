@@ -9,19 +9,19 @@
 	width: 100%;
 	height: 25%;
 	display: flex;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	border-color: #9C9898;
 }
 
 .topic-wall-row-block-topicLeft {
-	width: 37%;
+	width: 40.7%;
 	height: 100%;
 	display: flex;
 	box-sizing: border-box;
 }
 
 .topic-wall-row-block-topicRight {
-	width: 40.7%;
+	width: 22.3%;
 	height: 100%;
 	display: flex;
 	box-sizing: border-box;
@@ -30,8 +30,9 @@
 .topic-wall-row-block-topic {
 	width: 22.2%;
 	height: 100%;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	text-align: left;
+	z-index: 6;
 }
 
 .topic-wall-row-block-topic-text {
@@ -45,26 +46,13 @@
 	letter-spacing: 1;
 }
 
-.topic-wall-row-block-subtopicLeft {
-	width: 44.4%;
-	height: 100%;
-	display: flex;
-	box-sizing: border-box;
-}
-
-.topic-wall-row-block-subtopicRight {
-	width: 40.7%;
-	height: 100%;
-	display: flex;
-	box-sizing: border-box;
-}
-
 .topic-wall-row-block-subtopic {
 	width: 14.8%;
 	height: 100%;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	box-sizing: border-box;
 	border-color: #9C9898;
+	z-index: 6;
 }
 
 .placeholder {
@@ -79,14 +67,14 @@
 .cell {
 	height: 97%;
 	flex-basis: 100%;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	box-sizing: border-box;
 }
 
 .cell-default {
 	height: 97%;
 	flex-basis: 100%;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	box-sizing: border-box;
 	border-radius: 15px;
 	cursor: pointer;
@@ -95,7 +83,7 @@
 .cell-focus {
 	height: 97%;
 	flex-basis: 100%;
-	background-color: #FFFFFF;
+	background-color: transparent;
 	opacity: 0.7;
 	box-sizing: border-box;
 	box-shadow: 2px 1px 8px 2px #9C9898;
@@ -124,9 +112,6 @@
 	border: 1px solid;
 	border-color: #EA2F11;
 	border-radius: 15px;
-	box-shadow: 0.5px 1px 2.5px;
-	background-image:url(template_BrickOriginal.svg);
-	background-repeat:no-repeat;
 	cursor: pointer;
 }
 
@@ -138,8 +123,6 @@
 	position: relative;
 	top: -120%;
 	background-color: #FFFFFF;
-	background-image:url(template_BrickOriginal.svg);
-	background-repeat:no-repeat;
 	border: 1px solid;
 	border-color: #EA2F11;
 	border-radius: 15px;

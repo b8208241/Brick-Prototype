@@ -1,6 +1,7 @@
 import React from 'react';
 import {Brick} from './Brick.jsx';
 import {BrickDisplay} from './BrickDisplay.jsx';
+import {SubTopic} from './SubTopic.jsx';
 import {convertToRaw, convertFromRaw} from 'draft-js';
 
 export class ContentRowTwo extends React.Component {
@@ -192,6 +193,9 @@ export class ContentRowTwo extends React.Component {
           <div className="placeholder"></div>
           {blocks[0]}
         </div>
+        <SubTopic
+          topicThis={this.props.topicThis}
+          search_SubTopic={this.props.search_SubTopic}/>
         <div className="topic-wall-row-block-topic">
           <div className="topic-wall-row-block-topic-text">{this.props.topicText}</div>
         </div>

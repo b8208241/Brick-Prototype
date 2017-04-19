@@ -24,7 +24,7 @@ class Topic extends React.Component {
     this.search_SubTopic = (searchResult) => this.state.searchResult ? this.setState({searchResult: false}) : this.setState({searchResult: searchResult});
     this.handle_Drop_CellFocus = (newIndex, newRow) => this.setState({editingBrickRow: newRow, editingBrickIndex: newIndex});
     this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj, this.state.editingPosition[0], this.state.editingPosition[1], this.topicId, this.props.userData.userName));
-    this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId));
+    this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId, this.props.userData.userName));
     this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
   }
 
@@ -54,36 +54,40 @@ class Topic extends React.Component {
     let topicData = this.props.topicData;
 
     return(
-      <section style={{width: '100%', height: '100%'}}>
-          <div style={{fontSize: '14px'}}>
-            <TopicWall
-              topicData = {topicData}
-              topicId={this.topicId}
-              editingStatus={this.state.isEditing}
-              editingPosition={this.state.editingPosition}
-              editingBrickRow={this.state.editingBrickRow}
-              editingBrickIndex={this.state.editingBrickIndex}
-              searchResult={this.state.searchResult}
-              open_EditCol = {this.open_EditCol}
-              search_SubTopic={this.search_SubTopic}
-              handle_Drop_CellFocus = {this.handle_Drop_CellFocus}
-              handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
-              handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
-              />
-          </div>
-          {
-            this.state.isEditing &&
-            <ModalBox>
-              <ModalBackground onClose={this.close_EditCol}>
-                <EditCol
-                  editingOld={this.state.isEditingOld ? topicData[this.topicId][this.state.editingPosition[0]][this.state.editingPosition[1]]: false}
-                  editingPosition = {String(this.state.editingPosition[0])+String(this.state.editingPosition[1])}
-                  handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}
-                  close_EditCol={this.close_EditCol}/>
-              </ModalBackground>
-            </ModalBox>
-          }
-      </section>
+        <section style={{width: '100%', height: '100%'}}>
+            <div style={{fontSize: '14px', backgroundColor: '#F4F4F4'}}>
+              <TopicWall
+                topicData = {topicData}
+                topicId={this.topicId}
+                editingStatus={this.state.isEditing}
+                editingPosition={this.state.editingPosition}
+                editingBrickRow={this.state.editingBrickRow}
+                editingBrickIndex={this.state.editingBrickIndex}
+                searchResult={this.state.searchResult}
+                open_EditCol = {this.open_EditCol}
+                search_SubTopic={this.search_SubTopic}
+                handle_Drop_CellFocus = {this.handle_Drop_CellFocus}
+                handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
+                handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
+                />
+            </div>
+            {
+              this.state.isEditing &&
+              <ModalBox>
+                <ModalBackground className="topic-editbrick-modalbackground" onClose={this.close_EditCol}>
+                  <EditCol
+                    editingOld={this.state.isEditingOld ? topicData[this.topicId][this.state.editingPosition[0]][this.state.editingPosition[1]]: false}
+                    editingPosition = {String(this.state.editingPosition[0])+String(this.state.editingPosition[1])}
+                    handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}
+                    close_EditCol={this.close_EditCol}/>
+                </ModalBackground>
+              </ModalBox>
+            }
+            <div>
+              <span> (發文)分享 </span>
+              <span> 紀錄 </span>
+            </div>
+        </section>
     )
   }
 }

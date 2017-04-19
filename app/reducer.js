@@ -46,10 +46,12 @@ function topicData (state={}, action) {
             let cellDefault = update(defaultCell, {
               $merge: {"index": action.originIndex, "row": action.originRow}
             });
-            return update(obj, {
+            const newObj = update(obj, {
               [action.targetRow]: {
                 [action.targetIndex]: {$set: originBrick}
-              },
+              }
+            });
+            return update(newObj, {
               [action.originRow]: {
                 [action.originIndex]: {$set: cellDefault}
               }
