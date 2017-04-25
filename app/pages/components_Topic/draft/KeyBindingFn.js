@@ -1,5 +1,5 @@
 import {getDefaultKeyBinding} from 'draft-js';
-//let getDefaultKeyBinding
+// let getDefaultKeyBinding
 
 export const keyBindingFn = {
   default: function(ev) {

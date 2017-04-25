@@ -1,7 +1,8 @@
 import React from 'react';
 import {Brick} from './Brick.jsx';
 import {BrickDisplay} from './BrickDisplay.jsx';
-import {SubTopic} from './SubTopic.jsx';
+import {BlockTopic} from './BlockTopic.jsx';
+import {BlockSubTopic} from './BlockSubTopic.jsx';
 import {convertToRaw, convertFromRaw} from 'draft-js';
 
 export class ContentRowTwo extends React.Component {
@@ -23,7 +24,7 @@ export class ContentRowTwo extends React.Component {
   }
 
   handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex){
-    this.props.open_EditCol(clickedBrickRow, clickedBrickIndex, "oldBrick");
+    this.props.open_EditBrickCol(clickedBrickRow, clickedBrickIndex, "oldBrick");
     this.setState({isDisplaying: false, displayingIndex: null});
   }
 
@@ -31,7 +32,7 @@ export class ContentRowTwo extends React.Component {
     event.preventDefault();
     event.stopPropagation();
     let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
-    if(this.props.editingStatus){
+    if(this.props.topicStatus){
 
     }else{
       this.setState({isDisplaying: true, displayingIndex: clickedBrickIndex});
@@ -49,7 +50,7 @@ export class ContentRowTwo extends React.Component {
     event.stopPropagation();
     let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
     let clickedBrickRow = Number($(event.target).attr('id').charAt(1));
-    this.props.open_EditCol(clickedBrickRow, clickedBrickIndex, "newBrick");
+    this.props.open_EditBrickCol(clickedBrickRow, clickedBrickIndex, "newBrick");
   }
 
   handle_Drag(event){
@@ -193,12 +194,17 @@ export class ContentRowTwo extends React.Component {
           <div className="placeholder"></div>
           {blocks[0]}
         </div>
-        <SubTopic
+        <BlockSubTopic
           topicThis={this.props.topicThis}
+          topicStatus = {this.props.topicStatus}
           search_SubTopic={this.props.search_SubTopic}/>
-        <div className="topic-wall-row-block-topic">
-          <div className="topic-wall-row-block-topic-text">{this.props.topicText}</div>
-        </div>
+        <BlockTopic
+          topicText = {this.props.topicThis["topic"]}
+          logData = {this.props.topicThis["log"]}
+          topicStatus = {this.props.topicStatus}
+          back_Top = {this.props.back_Top}
+          close_TopView = {this.props.close_TopView}
+          handle_dispatch_LogSubmit={this.props.handle_dispatch_LogSubmit}/>
         <div className="topic-wall-row-block-topicRight">
           {blocks[1]}
         </div>

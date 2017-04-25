@@ -1,13 +1,14 @@
 import {combineReducers} from 'redux';
 import update from 'immutability-helper';
-import {updateObject,createObject} from './sagas/basicTool.js';
-import {defineTopic, updateTopic, updateRow, defaultCell} from './sagas/specialForTopic.js';
+import {updateObject,createObject} from './tools/basicTool.js';
+import {defineTopic, updateTopic, updateRow, defaultCell} from './tools/specialForTopic.js';
 
 import {
   AXIOS_POSTING,
   REQUEST_ERROR,
   CLEAR_ERROR,
   SUBMIT_BRICKCONTENT,
+  SUBMIT_LOG,
   SUBMIT_POSITIONCHANGE,
   SUBMIT_RECYCLEBRICK,
   SUBMIT_TOPIC
@@ -34,6 +35,14 @@ function topicData (state={}, action) {
           "hyphens": {$merge: action.newRecord.hyphenObj}
         }
       });
+      break;
+    case SUBMIT_LOG:
+      console.log('SUBMIT_LOG')
+      return update(state, {
+        [action.topicId]: {
+          "log": {$unshift: [action.newRecord]}
+        }
+      })
       break;
     case SUBMIT_POSITIONCHANGE:
       console.log('SUBMIT_POSITIONCHANGE')

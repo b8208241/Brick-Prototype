@@ -1,3 +1,10 @@
+.topic {
+	width: 100%;
+	height: 100%;
+	background-image: ;
+	background-repeat: no-repeat;
+}
+
 .topic-conclusion {
 	width: 22.2%;
 	height: 45%;
@@ -10,12 +17,33 @@
 	z-index: 6;
 }
 
+.topic-topview-modalbackground {
+	width: 97%;
+	height: 90%;
+	position: fixed;
+	top: 5%;
+	left: 3%;
+	background-color: rgb(53, 39, 0, 0.7);
+	z-Index: 5;
+}
+
+.topic-topview-topiclog {
+	width: 22.2%;
+	height: 50%;
+	position: absolute;
+	top: 48%;
+	left: 55%;
+	list-style: none;
+	color: #FFFFFF;
+}
+
 .topic-wall-row-block-subtopic-controlbar{
+	display: inline-block;
 	width: 10%;
 	height: 80%;
 	margin-top: 10%;
 	box-sizing: border-box;
-	float: right;
+	float: left;
 }
 
 .topic-wall-row-block-subtopic-controlbar span {
@@ -32,7 +60,24 @@
 	cursor: pointer;
 }
 
+.topic-wall-row-block-subtopic-listsdisplay {
+	display: flex;
+	width: 90%;
+	height: 100%;
+	position: relative;
+	box-sizing: border-box;
+	align-items: center;
+}
+
+.topic-wall-row-block-subtopic-listsdisplay span {
+	overflow: auto;
+	text-align: center;
+	font-size: 1.4em;
+}
+
 .topic-wall-row-block-subtopic-taglist {
+	position: absolute;
+	top: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
 	text-align: left;
@@ -50,6 +95,8 @@
 }
 
 .topic-wall-row-block-subtopic-questionlist{
+	position: absolute;
+	top: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
 	font-size: 1.3em;
@@ -66,6 +113,8 @@
 }
 
 .topic-wall-row-block-subtopic-hyphenlist{
+	position: absolute;
+	top: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
 	font-size: 1.3em;
@@ -82,22 +131,23 @@
 }
 
 .topic-editbrick-modalbackground{
-	width: 95%;
-	height: 90%;
+	width: 92%;
+	height: 92%;
 	position: fixed;
 	top: 5%;
-	left: 2.5%;
+	left: 4%;
 	background-color: rgba(156, 152, 152, 0.9);
+	border-radius: 8px;
 	z-Index: 5;
 }
 
 .topic-editbrick-col{
-	width: 44.2%;
-	height: 49.61%;
+	width: 40%;
+	height: 75%;
 	box-sizing: border-box;
 	position: absolute;
-	bottom: 6%;
-	left: 39.548%;
+	bottom: 10%;
+	left: 32%;
 	background-color: #FFFFFF;
 	font-size: 14px;
 }
@@ -168,4 +218,24 @@
 	font-size: 3em;
 	color: #9C9898;
 	cursor: pointer;
+}
+
+.topic-modal-editlogcol {
+	width: 20%;
+	height: 40%;
+	position: absolute;
+	top: 48%;
+	left: 55%;
+	background-color: #FFFFFF;
+	box-shadow: 1px 1px 3px 1px;
+	z-index: 3;
+}
+
+.topic-modal-editlogcol span {
+	cursor: pointer;
+}
+
+.topic-modal-editlogcol-topiclog {
+	width: 100%;
+	list-style: none;
 }

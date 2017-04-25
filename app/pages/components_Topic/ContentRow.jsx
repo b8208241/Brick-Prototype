@@ -22,7 +22,7 @@ export class ContentRow extends React.Component {
   }
 
   handle_Click_BrickEdit(clickedBrickRow, clickedBrickIndex){
-    this.props.open_EditCol(clickedBrickRow, clickedBrickIndex, "oldBrick");
+    this.props.open_EditBrickCol(clickedBrickRow, clickedBrickIndex, "oldBrick");
     this.setState({isDisplaying: false, displayingIndex: null});
   }
 
@@ -48,7 +48,7 @@ export class ContentRow extends React.Component {
     event.stopPropagation();
     let clickedBrickIndex = Number($(event.target).attr('id').charAt(0));
     let clickedBrickRow = Number($(event.target).attr('id').charAt(1));
-    this.props.open_EditCol(clickedBrickRow, clickedBrickIndex, "newBrick");
+    this.props.open_EditBrickCol(clickedBrickRow, clickedBrickIndex, "newBrick");
   }
 
   handle_Drag(event){

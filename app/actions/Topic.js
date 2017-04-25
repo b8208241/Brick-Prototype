@@ -4,6 +4,7 @@ import {
   CLEAR_ERROR,
   LOGOUT,
   EDITEDCONTENT_SUBMIT,
+  LOG_SUBMIT,
   POSITIONCHANGE_SUBMIT,
   RECYCLEBRICK_SUBMIT
 } from './constants.js'
@@ -18,6 +19,10 @@ export function positionChangeSubmit(originIndex, originRow, newIndex, newRow, t
 
 export function RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex,topicId, userName) {
   return {type: RECYCLEBRICK_SUBMIT, clickedBrickRow, clickedBrickIndex, topicId, userName}
+}
+
+export function LogSubmit(logDraftData, topicId, userName){
+  return{type: LOG_SUBMIT, logDraftData, topicId, userName}
 }
 
 export function requestError (error) {

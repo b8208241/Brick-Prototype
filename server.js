@@ -27,8 +27,8 @@ const babelify = require("babelify");
 const mysqlPool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password:'0000',
-  database:'brick'
+  password:'qwer',
+  database:'wallscape'
 //  connectionLimit:
 });
 
@@ -120,7 +120,34 @@ const process_LogIn =  {
         throw err;
       }else{
         let user = req.body.username;
-        let userData = data.berlin;
+        let userData = data[user];
+        mysqlPool.getConnection(function(err, connection){
+          console.log("enter mysqlPool")
+          if (err) {
+             console.log("Error in connection database");
+             console.log(err);
+             return;
+          };
+          connection.query({
+              sql: 'SELECT*FROM `User` WHERE `User name` = ?'
+            },
+            [user],
+            function(err, result){
+              console.log("enter connection_query")
+              if(err) throw err;
+              if(!result){
+                console.log('Authenticate failed. User not found');
+              }else if(result){
+                console.log(result);
+                console.log("test success")
+              }
+            }
+          )
+        })
+        console.log(user)
+        console.log(userData)
+        console.log(req.body.password)
+        console.log(userData.password)
         if(userData){
           if(req.body.password = userData.password){
             console.log('start jwt sign')
@@ -130,7 +157,7 @@ const process_LogIn =  {
               },
               app.get('secret'),
               {
-                expiresIn: 60*60*10
+                expiresIn: 60*60*12
               }
             );
             res.json({
@@ -467,6 +494,24 @@ app.post('/post/:type/:username', function(req, res){
           if(err) throw err;
         })
         res.json(updatedData);
+      })
+      break;
+    case "log":
+      console.log('post log to the database')
+      jsonfile.readFile(database_forServer, function(err, data){
+        let updatedData = update(data, {
+          [req.params.username]: {
+            "topicData": {
+              [req.body.topicId]: {
+                "log": {$unshift: [req.body.newRecord]}
+              }
+            }
+          }
+        })
+        jsonfile.writeFile(database_forServer, updatedData, function(err){
+          if(err) throw err;
+        })
+        res.json(req.params.type + ' successfully post');
       })
       break;
     default:

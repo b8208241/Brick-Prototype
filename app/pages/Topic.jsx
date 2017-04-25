@@ -3,32 +3,38 @@ import {connect} from 'react-redux'
 import {ModalBox} from './components_General/ModalBox.jsx';
 import {ModalBackground} from './components_General/ModalBackground.jsx';
 import {TopicWall} from './components_Topic/TopicWall.jsx';
-import {EditCol} from './components_Topic/EditCol.jsx';
-import {initialPosition} from '../sagas/specialForTopic.js';
-import {positionChangeSubmit, EditedContentSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
+import {TopicLog} from './components_Topic/TopicLog.jsx';
+import {EditBrickCol} from './components_Topic/EditBrickCol.jsx';
+import {initialPosition} from '../tools/specialForTopic.js';
+import {LogSubmit, positionChangeSubmit, EditedContentSubmit, RecycleBrickSubmit} from '../actions/Topic.js';
 
 class Topic extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
+    const defaultState = {
+      isTop: true,
       isEditing: false,
       isEditingOld: false,
       editingPosition: [],
-      editingBrickRow: initialPosition(this.props.topicData[this.props.params.topicId]).row,
-      editingBrickIndex: initialPosition(this.props.topicData[this.props.params.topicId]).index,
+      editingBrickRow: false,
+      editingBrickIndex: false,
       searchResult: false
     };
+    this.state = defaultState;
     this.topicId = this.props.params.topicId;
-    this.open_EditCol = this.open_EditCol.bind(this);
-    this.close_EditCol = () => this.setState({isEditing: false, isEditingOld: false, editingPosition: []});
+    this.open_EditBrickCol = this.open_EditBrickCol.bind(this);
+    this.close_TopView = () => this.setState({isTop: false, editingBrickRow: initialPosition(this.props.topicData[this.props.params.topicId]).row, editingBrickIndex: initialPosition(this.props.topicData[this.props.params.topicId]).index});
+    this.close_EditBrickCol = () => this.setState({isEditing: false, isEditingOld: false, editingPosition: []});
     this.search_SubTopic = (searchResult) => this.state.searchResult ? this.setState({searchResult: false}) : this.setState({searchResult: searchResult});
+    this.back_Top = () => this.setState(defaultState);
     this.handle_Drop_CellFocus = (newIndex, newRow) => this.setState({editingBrickRow: newRow, editingBrickIndex: newIndex});
     this.handle_dispatch_EditedContentSubmit = (subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj) => this.props.dispatch(EditedContentSubmit(subEditorData, contentEditorData, hashTagObj, hyphenObj, questionMarkobj, this.state.editingPosition[0], this.state.editingPosition[1], this.topicId, this.props.userData.userName));
     this.handle_dispatch_positionChangeSubmit = (originIndex, originRow, newIndex, newRow) => this.props.dispatch(positionChangeSubmit(originIndex, originRow, newIndex, newRow, this.topicId, this.props.userData.userName));
     this.handle_dispatch_RecycleBrickSubmit = (clickedBrickRow, clickedBrickIndex) => this.props.dispatch(RecycleBrickSubmit(clickedBrickRow, clickedBrickIndex, this.topicId, this.props.userData.userName));
+    this.handle_dispatch_LogSubmit = (logDraftData) => this.props.dispatch(LogSubmit(logDraftData, this.topicId, this.props.userData.userName));
   }
 
-  open_EditCol(clickedBrickRow, clickedBrickIndex, source) {
+  open_EditBrickCol(clickedBrickRow, clickedBrickIndex, source) {
     let editingOld = source === "newBrick" ? false : true ;
     if(editingOld){
       this.setState({isEditing: true, isEditingOld: editingOld, editingPosition: [clickedBrickRow, clickedBrickIndex], searchResult: false})
@@ -51,22 +57,33 @@ class Topic extends React.Component {
 
   render(){
     console.log('enter page Topic')
-    let topicData = this.props.topicData;
+    let topicThis = this.props.topicData[this.topicId];
 
     return(
-        <section style={{width: '100%', height: '100%'}}>
-            <div style={{fontSize: '14px', backgroundColor: '#F4F4F4'}}>
+        <section className="topic">
+            {
+              this.state.isTop &&
+              <ModalBackground  className="topic-topview-modalbackground" onClose={this.close_TopView}>
+                <TopicLog
+                  logData = {topicThis.log}
+                  ></TopicLog>
+              </ModalBackground>
+            }
+            <div className='topic-wall-container'>
               <TopicWall
-                topicData = {topicData}
+                topicThis = {topicThis}
                 topicId={this.topicId}
-                editingStatus={this.state.isEditing}
+                topicStatus={this.state.isTop? "isTop" : this.state.isEditing ? "isEditing" : false}
                 editingPosition={this.state.editingPosition}
                 editingBrickRow={this.state.editingBrickRow}
                 editingBrickIndex={this.state.editingBrickIndex}
                 searchResult={this.state.searchResult}
-                open_EditCol = {this.open_EditCol}
+                open_EditBrickCol = {this.open_EditBrickCol}
                 search_SubTopic={this.search_SubTopic}
+                back_Top = {this.back_Top}
+                close_TopView = {this.close_TopView}
                 handle_Drop_CellFocus = {this.handle_Drop_CellFocus}
+                handle_dispatch_LogSubmit = {this.handle_dispatch_LogSubmit}
                 handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
                 handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
                 />
@@ -74,19 +91,15 @@ class Topic extends React.Component {
             {
               this.state.isEditing &&
               <ModalBox>
-                <ModalBackground className="topic-editbrick-modalbackground" onClose={this.close_EditCol}>
-                  <EditCol
-                    editingOld={this.state.isEditingOld ? topicData[this.topicId][this.state.editingPosition[0]][this.state.editingPosition[1]]: false}
+                <ModalBackground className={"topic-editbrick-modalbackground"} onClose={this.close_EditBrickCol}>
+                  <EditBrickCol
+                    editingOld={this.state.isEditingOld ? topicThis[this.state.editingPosition[0]][this.state.editingPosition[1]]: false}
                     editingPosition = {String(this.state.editingPosition[0])+String(this.state.editingPosition[1])}
                     handle_dispatch_EditedContentSubmit={this.handle_dispatch_EditedContentSubmit}
-                    close_EditCol={this.close_EditCol}/>
+                    close_EditBrickCol={this.close_EditBrickCol}/>
                 </ModalBackground>
               </ModalBox>
             }
-            <div>
-              <span> (發文)分享 </span>
-              <span> 紀錄 </span>
-            </div>
         </section>
     )
   }

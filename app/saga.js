@@ -2,34 +2,36 @@ import {hashSync} from 'bcryptjs'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race, select} from 'redux-saga/effects'
 import update from 'immutability-helper';
-import connection from './sagas/basicForConnection.js'
+import connection from './tools/basicForConnection.js'
 import {
   getTopicData,
   getTopicThis
-} from './sagas/specialForState.js'
+} from './tools/specialForState.js'
 import {
   updateObject,
   createObject,
   spliceArray,
   defineTime
-} from './sagas/basicTool.js'
+} from './tools/basicTool.js'
 import {
   updateTopic,
   brickCell,
   defaultCell,
   defaultPlaceHolder,
   defaultContentPage
-} from './sagas/specialForTopic.js'
+} from './tools/specialForTopic.js'
 
 import {
   EDITEDCONTENT_SUBMIT,
   AXIOS_POSTING,
+  LOG_SUBMIT,
   LOGOUT,
   REQUEST_ERROR,
   NEWTOPIC_SUBMIT,
   POSITIONCHANGE_SUBMIT,
   RECYCLEBRICK_SUBMIT,
   SUBMIT_BRICKCONTENT,
+  SUBMIT_LOG,
   SUBMIT_POSITIONCHANGE,
   SUBMIT_RECYCLEBRICK,
   SUBMIT_TOPIC
@@ -99,6 +101,28 @@ export function * newTopicSubmit(){
   }
 }
 
+export function * logSubmit (){
+  while(true) {
+    const data = yield take(LOG_SUBMIT);
+    console.log('saga, logSubmit start');
+
+    let date = new Date();
+    let creatingTime = date.toDateString();
+    const newRecord = {
+      draftData: data.logDraftData,
+      creatingTime: creatingTime
+    }
+
+    connection.post_Log(newRecord, data.topicId, data.userName)
+
+    yield put({
+      type: SUBMIT_LOG,
+      newRecord: newRecord,
+      topicId: data.topicId
+    })
+  }
+}
+
 export function * editedContentSubmit (){
   while (true) {
     const data = yield take(EDITEDCONTENT_SUBMIT);
@@ -132,6 +156,7 @@ export function * editedContentSubmit (){
     })
   }
 }
+
 
 export function * recycleBrickSubmit(){
   while (true) {
@@ -177,4 +202,5 @@ export default function * rootSaga () {
   yield fork(positionChangeSubmit)
   yield fork(editedContentSubmit)
   yield fork(recycleBrickSubmit)
+  yield fork(logSubmit)
 }
