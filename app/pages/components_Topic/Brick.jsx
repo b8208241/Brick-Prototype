@@ -1,6 +1,6 @@
 import React from 'react';
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {EditorState, convertFromRaw} from 'draft-js';
+/*import {EditorState, convertFromRaw} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
@@ -8,7 +8,7 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 const linkifyPluginContent = createLinkifyPlugin({target: '_blank'});
 const hashtagPluginContent = createHashtagPlugin();
 const pluginsContent = [linkifyPluginContent, hashtagPluginContent];
-
+*/
 export class Brick extends React.Component {
   constructor(props){
     super(props);

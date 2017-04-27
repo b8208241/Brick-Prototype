@@ -3,6 +3,7 @@
 	height: 100%;
 	background-image: ;
 	background-repeat: no-repeat;
+	font-size: 14px;
 }
 
 .topic-conclusion {
@@ -15,16 +16,6 @@
 	background-image: url(../img/漸層_TopicConclusion.svg);
 	background-repeat:no-repeat;
 	z-index: 6;
-}
-
-.topic-topview-modalbackground {
-	width: 97%;
-	height: 90%;
-	position: fixed;
-	top: 5%;
-	left: 3%;
-	background-color: rgb(53, 39, 0, 0.7);
-	z-Index: 5;
 }
 
 .topic-topview-topiclog {

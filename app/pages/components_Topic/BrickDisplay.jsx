@@ -1,6 +1,6 @@
 import React from 'react';
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {EditorState, convertFromRaw} from 'draft-js';
+/*import {EditorState, convertFromRaw} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
@@ -11,7 +11,7 @@ const hashtagPluginContent = createHashtagPlugin();
 const hashtagPluginSub = createHashtagPlugin();
 const pluginsContent = [linkifyPluginContent, hashtagPluginContent];
 const pluginsSub = [linkifyPluginSub, hashtagPluginSub];
-
+*/
 export class BrickDisplay extends React.Component {
   constructor(props){
     super(props);
@@ -81,12 +81,12 @@ export class BrickDisplay extends React.Component {
               </div>
               <div className="brick-display-bottomgroup-spans">
                 <span
-                  onClick={this.handle_Click_BrickEdit}>
-                  Edit
-                </span>
-                <span
                   onClick={this.handle_Click_BrickRecycle}>
                   Recycle
+                </span>
+                <span
+                  onClick={this.handle_Click_BrickEdit}>
+                  Edit
                 </span>
               </div>
             </div>

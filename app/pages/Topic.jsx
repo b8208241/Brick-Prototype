@@ -63,31 +63,27 @@ class Topic extends React.Component {
         <section className="topic">
             {
               this.state.isTop &&
-              <ModalBackground  className="topic-topview-modalbackground" onClose={this.close_TopView}>
-                <TopicLog
-                  logData = {topicThis.log}
-                  ></TopicLog>
-              </ModalBackground>
+              <TopicLog
+                logData = {topicThis.log}
+              ></TopicLog>
             }
-            <div className='topic-wall-container'>
-              <TopicWall
-                topicThis = {topicThis}
-                topicId={this.topicId}
-                topicStatus={this.state.isTop? "isTop" : this.state.isEditing ? "isEditing" : false}
-                editingPosition={this.state.editingPosition}
-                editingBrickRow={this.state.editingBrickRow}
-                editingBrickIndex={this.state.editingBrickIndex}
-                searchResult={this.state.searchResult}
-                open_EditBrickCol = {this.open_EditBrickCol}
-                search_SubTopic={this.search_SubTopic}
-                back_Top = {this.back_Top}
-                close_TopView = {this.close_TopView}
-                handle_Drop_CellFocus = {this.handle_Drop_CellFocus}
-                handle_dispatch_LogSubmit = {this.handle_dispatch_LogSubmit}
-                handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
-                handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
-                />
-            </div>
+            <TopicWall
+              topicThis = {topicThis}
+              topicId={this.topicId}
+              topicStatus={this.state.isTop? "isTop" : this.state.isEditing ? "isEditing" : false}
+              editingPosition={this.state.editingPosition}
+              editingBrickRow={this.state.editingBrickRow}
+              editingBrickIndex={this.state.editingBrickIndex}
+              searchResult={this.state.searchResult}
+              open_EditBrickCol = {this.open_EditBrickCol}
+              search_SubTopic={this.search_SubTopic}
+              back_Top = {this.back_Top}
+              close_TopView = {this.close_TopView}
+              handle_Drop_CellFocus = {this.handle_Drop_CellFocus}
+              handle_dispatch_LogSubmit = {this.handle_dispatch_LogSubmit}
+              handle_dispatch_positionChangeSubmit={this.handle_dispatch_positionChangeSubmit}
+              handle_dispatch_RecycleBrickSubmit={this.handle_dispatch_RecycleBrickSubmit}
+              />
             {
               this.state.isEditing &&
               <ModalBox>

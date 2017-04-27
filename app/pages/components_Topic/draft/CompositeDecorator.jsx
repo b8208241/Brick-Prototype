@@ -1,8 +1,8 @@
 import {questionmarkDecorator, hyphenDecorator} from './decorator/Decorators.js';
 import questionmarkStrategy from './decorator/questionmarkStrategy.js'
 import hyphenStrategy from './decorator/hyphenStrategy.js';
-import {CompositeDecorator} from 'draft-js';
-// function CompositeDecorator(){}
+// import {CompositeDecorator} from 'draft-js';
+function CompositeDecorator(){}
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

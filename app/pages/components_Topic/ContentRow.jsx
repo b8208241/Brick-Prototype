@@ -1,7 +1,7 @@
 import React from 'react';
 import {Brick} from './Brick.jsx';
 import {BrickDisplay} from './BrickDisplay.jsx';
-import {convertToRaw, convertFromRaw} from 'draft-js';
+// import {convertToRaw, convertFromRaw} from 'draft-js';
 
 export class ContentRow extends React.Component {
   constructor(props){

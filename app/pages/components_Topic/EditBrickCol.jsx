@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleGroup} from './draft/StyleGroup.jsx'
 import {keyBindingFn} from './draft/KeyBindingFn.js';
 import {compositeDecorator} from './draft/CompositeDecorator.jsx';
-import {Editor, EditorState, ContentState, convertToRaw, convertFromRaw, Modifier, RichUtils} from 'draft-js';
+/*import {Editor, EditorState, ContentState, convertToRaw, convertFromRaw, Modifier, RichUtils} from 'draft-js';
 import createHashtagPlugin from 'draft-js-hashtag-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
@@ -12,7 +12,7 @@ const hashtagPluginContent = createHashtagPlugin();
 const hashtagPluginSub = createHashtagPlugin();
 const pluginDecoratorsContent = [linkifyPluginContent, hashtagPluginContent];
 const pluginDecoratorsSub = [linkifyPluginSub, hashtagPluginSub];
-
+*/
 export class EditBrickCol extends React.Component {
   constructor(props){
     super(props);

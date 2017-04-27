@@ -1,6 +1,6 @@
 import React from 'react';
 import {TopicLogItem} from './TopicLogItem.jsx';
-import {Editor, EditorState, convertToRaw} from 'draft-js';
+// import {Editor, EditorState, convertToRaw} from 'draft-js';
 
 export class EditLogCol extends React.Component {
   constructor(props){

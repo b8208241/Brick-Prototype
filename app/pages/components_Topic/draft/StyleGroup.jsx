@@ -1,5 +1,5 @@
 import React from 'react';
-import {RichUtils} from 'draft-js';
+// import {RichUtils} from 'draft-js';
 
 export class StyleGroup extends React.Component {
   constructor(props){

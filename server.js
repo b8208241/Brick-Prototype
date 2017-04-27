@@ -21,8 +21,6 @@ const ReactDOMServer = require('react-dom/server');
     const script = DOM.script;
     const meta = DOM.meta;
     const link = DOM.link;
-const browserify = require('browserify');
-const babelify = require("babelify");
 
 const mysqlPool = mysql.createPool({
   host: 'localhost',
@@ -33,11 +31,13 @@ const mysqlPool = mysql.createPool({
 });
 
 //Important!! babel/register is here for the whole code after it!
-//It include babel-polyfill automatically for this file use,
-//and transit every ES6 technique in this file to ES5
-require('babel/register')({
-    ignore: false
-});
+//'babel/register' is only for babel version under 6.0.0
+//Babel 5.0.0 include babel-polyfill so we don't need to include it seperately,
+//but also some redundent plugin would not be used
+//and ignore node_modules/ by default.
+require('babel/register');
+const browserify = require('browserify');
+const babelify = require("babelify");
 
 const Login = require('./authorize/Login.jsx');
   const loginFlow = require('./authorize/login.js');
@@ -104,50 +104,28 @@ const process_LogIn =  {
     console.log('start bundling login process');
     browserify({debug: true})
       .transform(babelify.configure({
-        presets: ["react", "es2015", "stage-2"],
-        //plugins: ["transform-runtime", "transform-object-rest-spread"],
+        presets: [
+          "react",
+          "es2015",
+          "stage-2"
+        ],
         compact: false
       }))
       //.require("babel-polyfill")
       .require("./authorize.js", {entry: true})
       .bundle()
+      .on("error", function (err) { console.log("Error: " + err.message); })
       .pipe(res);
   },
   log: function(req, res){
     console.log('recieve log request')
     jsonfile.readFile(accountData, function(err, data){
       if(err) {
-        throw err;
+		 throw err;
+        res.json({err: err});
       }else{
         let user = req.body.username;
         let userData = data[user];
-        mysqlPool.getConnection(function(err, connection){
-          console.log("enter mysqlPool")
-          if (err) {
-             console.log("Error in connection database");
-             console.log(err);
-             return;
-          };
-          connection.query({
-              sql: 'SELECT*FROM `User` WHERE `User name` = ?'
-            },
-            [user],
-            function(err, result){
-              console.log("enter connection_query")
-              if(err) throw err;
-              if(!result){
-                console.log('Authenticate failed. User not found');
-              }else if(result){
-                console.log(result);
-                console.log("test success")
-              }
-            }
-          )
-        })
-        console.log(user)
-        console.log(userData)
-        console.log(req.body.password)
-        console.log(userData.password)
         if(userData){
           if(req.body.password = userData.password){
             console.log('start jwt sign')
@@ -291,8 +269,11 @@ const server_Main = {
     console.log('bundle for "/", in server_Main')
     browserify({debug: true})
       .transform(babelify.configure({
-        presets: ["react", "es2015", "stage-2"],
-        //plugins: ["transform-runtime", "transform-object-rest-spread"],
+        presets: [
+          "react",
+          "es2015",
+          "stage-2"
+        ],
         compact: false
       }))
       //.require("babel-polyfill")
@@ -325,7 +306,7 @@ app.get('/resource', function(req, res){
 })
 
 //attach required resource to the html
-app.use('/resource/:filetype/:filename', function(req, res){
+app.get('/resource/:filetype/:filename', function(req, res){
   let filetype = req.params.filetype;
   let filename = req.params.filename;
   if(filetype == "basic"){
@@ -587,5 +568,5 @@ app.delete('/recycle/brick/:username', function(req, res){
     res.json(updatedData);
   })
 })
-app.listen(3000);
+app.listen(process.env.port || 3000);
 console.log("Running at Port 3000~");

@@ -1,14 +1,10 @@
 .topic-wall{
 	display: inline-block;
-	width: 90%;
+	width: 87%;
 	height: 90%;
-	margin-left: 5%;
-	background-color: rgba(242, 247, 246);
-}
-
-.topic-wall-container{
-	height: 100%;
-	font-size: 14px;
+	margin-left: 7%;
+	margin-top: 2%;
+	border-bottom-left-radius: 1em;
 }
 
 .topic-wall-row {
@@ -40,8 +36,8 @@
 }
 
 .topic-wall-row-block-topic span {
-	font-weight: bold;
-	font-size: 1.37em;
+	font-weight: normal;
+	font-size: 1.55em;
 	color: #9C9898;
 	vertical-align: middle;
 	cursor: pointer;
@@ -52,11 +48,11 @@
 	padding: 0 0 5% 0;
 	box-sizing: border-box;
 	border-bottom: solid 2px;
-	border-color: #9C9898;
-	font-size: 2.4em;
-	font-weight: 700;
+	border-color: #FCE481;
+	font-size: 2.3em;
+	font-weight: bold;
 	letter-spacing: 1;
-	color: ;
+	color: #9C9898;
 	cursor: pointer;
 }
 
@@ -78,14 +74,14 @@
 }
 
 .cell {
-	height: 97%;
+	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
 	box-sizing: border-box;
 }
 
 .cell-default {
-	height: 97%;
+	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
 	box-sizing: border-box;
